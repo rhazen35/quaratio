@@ -20,7 +20,6 @@ if(!class_exists("Validator")):
          * Validator constructor.
          * @param $value
          */
-        
         public function __construct( $value )
         {
             $this->value = $value;
@@ -29,7 +28,6 @@ if(!class_exists("Validator")):
         /**
          * @return string
          */
-
         public function validateIsDigit()
         {
 
@@ -46,7 +44,6 @@ if(!class_exists("Validator")):
         /**
          * @return string
          */
-
         public function validateIsRealDate()
         {
 
@@ -68,6 +65,9 @@ if(!class_exists("Validator")):
             return( $value );
         }
 
+        /**
+         * @return bool|string
+         */
         public function validateIsRealTime()
         {
 

@@ -15,114 +15,140 @@ use \application\core;
 use application\xmlController;
 
 /**
- * Prepare the model
+ * Get the xml controller
  */
-
-// Get the xml controller
 ( new core\Core( "xmlController", "xmlController", "xmlController" ) )->request();
 
-// Set the model
-$model = $_SERVER['DOCUMENT_ROOT'].'/quaratio/web/files/test2.xml';
-
-// Set the type to load xml object from file
-$type = "fileToSimpleXmlObject";
-
-// Load the model into an simpleXmlObject
-$xmlObject = ( new xmlController\XmlController( $model, $type, "" ) )->request();
+/**
+ * Prepare the model
+ */
+$model = $_SERVER['DOCUMENT_ROOT'].'/quaratio/web/files/test2.xml'; // define the model
+$xmlObject = ( new xmlController\XmlController( $model, "fileToSimpleXmlObject", "" ) )->request(); // convert model to simple xml object
 
 /**
- * Get specific nodes
+ * Set xml paths and pass them trough the controller to get a specific node
  */
+$xmiPath     = "//xmi:Extension[@extenderID]"; // Path for extender information
+$elementPath = "//xmi:Extension/elements/element"; // Path for elements
 
-// Set type to get node
-$type = "getNode";
+$extensionAttributes = ( new xmlController\XmlController( $xmlObject, "getNode", $xmiPath ) )->request(); // Get the extension attributes
+$elements            = ( new xmlController\XmlController( $xmlObject, "getNode", $elementPath ) )->request(); // Get the elements
 
-// Get the elements
+/**
+ * Collect the model's extension information
+ */
+$modelExtensionInfo = array();
 
-$xmiPath = "//xmi:Extension";
-$elementPath = "//xmi:Extension/elements/element";
+foreach($extensionAttributes as $extensionAttribute):
 
-// Get the xmi extension and the elements
-$xmi = ( new xmlController\XmlController( $xmlObject, $type, $xmiPath ) )->request();
-$elements = ( new xmlController\XmlController( $xmlObject, $type, $elementPath ) )->request();
+    $extender   = ( new xmlController\XmlController( $extensionAttribute, "getNodeAttribute", "extender" ) )->request();
+    $extenderID = ( new xmlController\XmlController( $extensionAttribute, "getNodeAttribute", "extenderID" ) )->request();
 
-// Set type to get node attribute
-$type = "getNodeAttribute";
+    // Add the extender and extender id to the model array
+    $modelExtensionInfo['model']['extender_info']['extender']    = $extender;
+    $modelExtensionInfo['model']['extender_info']['extenderID']  = $extenderID;
 
-// Model
+endforeach;
 
-$model = array();
-$extension = $xmi;
-$extenderID = ( new xmlController\XmlController( $xmi, $type, "extenderID" ) )->request();
-$model['model']['extension']['extender_id'] = $extenderID;
+/**
+ * Collect the required model information
+ *
+ * - Required data is specified in the model interface supplied by the modeller.
+ * - Required data has standards which are expressed in the QuaRatio XML Standards(QXS)
+ */
+$j = 1;
+foreach( $elements as $element ): /** @var  $properties */
 
-echo '<pre>';
-//print_r($xmiPath);
+    $namespaces = $element->getNameSpaces(true);
 
-foreach( $elements as $element ):
+    /**
+     * Get the element properties to access the isRoot value
+     */
+    $properties = $element->children()->properties; /** @var  $property */
 
-    $properties = $element->children()->properties;
+    foreach( $properties as $property ): /** @var  $isRoot */
 
-    foreach( $properties as $property ):
+        /**
+         * Get the isRoot, this class will be shown first.
+         * The root also defines the base which the template generator will request
+         */
+        $isRoot = ( new xmlController\XmlController( $property, "getNodeAttribute", "isRoot" ) )->request();
 
-        $isRoot = ( new xmlController\XmlController( $property, $type, "isRoot" ) )->request();
+        /** Class name */
+        $input_fields['class'.$j]['name'] = ( new xmlController\XmlController( $element, "getNodeAttribute", "name" ) )->request().'<br>';
 
+        /**
+         * Only continue parsing if isRoot is true
+         */
         if( $isRoot === "true" ):
-
-            $abstract = ( new xmlController\XmlController( $property, $type, "isAbstract" ) )->request().'<br><br>';
-
-            $input_fields['class']['name'] = ( new xmlController\XmlController( $element, $type, "name" ) )->request().'<br>';
-            $input_fields['class']['documentation'] = ( new xmlController\XmlController( $property, $type, "documentation" ) )->request().'<br><br>';
-            $input_fields['class']['abstract'] = $abstract;
-
-            // Operations
-            $operations = $element->children()->operations;
-
-            // Count the operations
-            $totalOperations = count($operations->operation);
-
-            // Create an array for class operations
-            for($i = 0; $i < $totalOperations; $i++):
-
-                $operationName = (string) $operations->operation[$i]->attributes()->name;
-                $input_fields['class']['operations'] = array();
-                $input_fields['class']['operations'][] = $operationName;
-
-            endfor;
-
-            // Attributes
-            $attributes = $element->children()->attributes;
-
-            // Count the attributes
-            $totalAttributes = count($attributes->attribute);
-
-            // Create an array with input field markup
-            for($i = 0; $i < $totalAttributes; $i++):
-
-                // Input field names
-                $inputName = (string) $attributes->attribute[$i]->attributes()->name;
-                $input_fields['class']['fields'][$inputName] = array();
-
-                // Input field documentation
-                $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
-                $input_fields['class']['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
-
-                // Input field data type
-                $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
-                $input_fields['class']['fields'][$inputName]['data_type'] = $inputFieldDataType;
-
-            endfor;
-            echo '<pre>';
-            print_r($input_fields);
-
+            $input_fields['class'.$j]['Root'] = "true";
         else:
-            echo 'Class is no root!<br>';
+            $input_fields['class'.$j]['Root'] = "false";
         endif;
+
+        /** @var  $abstract */
+        $abstract = ( new xmlController\XmlController( $property, "getNodeAttribute", "isAbstract" ) )->request();
+
+        /**
+         * Detailed class information
+         */
+
+        $xmiNamespace = $namespaces['xmi'];
+
+        $type  = (string) $element->attributes($xmiNamespace)->type;
+        $idref = (string) $element->attributes($xmiNamespace)->idref;
+
+
+        $input_fields['class'.$j]['type']           = $type;
+        $input_fields['class'.$j]['idref']          = $idref;
+        $input_fields['class'.$j]['scope']          = ( new xmlController\XmlController( $element, "getNodeAttribute", "scope" ) )->request();
+        $input_fields['class'.$j]['documentation']  = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
+        $input_fields['class'.$j]['abstract']       = $abstract;
+
+        $operations = $element->children()->operations; /** @var  $totalOperations */
+
+        $totalOperations = count($operations->operation); /** @var  $i */
+
+        for($i = 0; $i < $totalOperations; $i++): /** @var  $operationName */
+
+            $operationName = (string) $operations->operation[$i]->attributes()->name;
+            $input_fields['class'.$j]['operations'][$operationName] = array();
+
+        endfor;
+
+        // Attributes
+        $attributes = $element->children()->attributes;
+
+        // Count the attributes
+        $totalAttributes = count($attributes->attribute);
+
+        // Create an array with input field markup
+        for($i = 0; $i < $totalAttributes; $i++):
+
+            // Input field names
+            $inputName = (string) $attributes->attribute[$i]->attributes()->name;
+            $input_fields['class'.$j]['fields'][$inputName] = array();
+
+            // Input field documentation
+            $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
+            $input_fields['class'.$j]['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
+
+            // Input field data type
+            $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
+            $input_fields['class'.$j]['fields'][$inputName]['data_type'] = $inputFieldDataType;
+
+        endfor;
+
+        $j++; /** Increment for class name identities */
 
     endforeach;
 
-
 endforeach;
+
+$result = array_merge($modelExtensionInfo, $input_fields);
+
+echo '<pre>';
+print_r($result);
 
 ?>
 
