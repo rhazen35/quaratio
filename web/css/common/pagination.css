@@ -1,0 +1,47 @@
+.pagination {
+    display:flex;
+    flex-flow: wrap;
+    width:99%;
+    margin:0 auto;
+    margin-top:0.5em;
+    margin-bottom:0.5em;
+    padding:0.25em;
+    font-size:90%;
+    background-color:#FFFFFF;
+}
+
+.pagination
+{
+    color:white;
+}
+.pagination a 
+{
+    color: black;
+}
+
+.pagination a 
+{
+    display: block;
+    padding: 0.5em 0.5em;
+    text-decoration:none;
+}
+
+.pagination a:hover 
+{
+    color:#FFFFFF;
+    background-color: #3a6ea5;
+}
+
+.pagination-title
+{
+    background-color: #494949;
+    padding:0.5em;
+
+}
+
+.pagination-current 
+{
+    padding: 0.5em 0.5em;
+    color:#000000;
+    background-color:lightblue;
+}

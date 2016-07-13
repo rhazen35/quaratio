@@ -1,0 +1,18 @@
+header
+{
+    clear:both;
+    width:98%;
+    margin: 0 auto;
+}
+
+.header
+{
+    height:auto;
+    border-bottom:1px solid #CCCCCC;
+}
+
+.header-Logo
+{
+    padding:1em;
+    font-size:125%;
+}

@@ -1,0 +1,128 @@
+<?php
+
+//pension consultant westland
+
+/**
+ * Created by PhpStorm.
+ * User: Ruben Hazenbosch
+ * Date: 17-6-2016
+ * Time: 17:49
+ */
+
+namespace web\tmp\common\home;
+
+use \application\core;
+use application\xmlController;
+
+/**
+ * Prepare the model
+ */
+
+// Get the xml controller
+( new core\Core( "xmlController", "xmlController", "xmlController" ) )->request();
+
+// Set the model
+$model = $_SERVER['DOCUMENT_ROOT'].'/quaratio/web/files/test2.xml';
+
+// Set the type to load xml object from file
+$type = "fileToSimpleXmlObject";
+
+// Load the model into an simpleXmlObject
+$xmlObject = ( new xmlController\XmlController( $model, $type, "" ) )->request();
+
+/**
+ * Get specific nodes
+ */
+
+// Set type to get node
+$type = "getNode";
+
+// Get the elements
+
+$xmiPath = "//xmi:Extension";
+$elementPath = "//xmi:Extension/elements/element";
+
+// Get the xmi extension and the elements
+$xmi = ( new xmlController\XmlController( $xmlObject, $type, $xmiPath ) )->request();
+$elements = ( new xmlController\XmlController( $xmlObject, $type, $elementPath ) )->request();
+
+// Set type to get node attribute
+$type = "getNodeAttribute";
+
+// Model
+
+$model = array();
+$extension = $xmi;
+$extenderID = ( new xmlController\XmlController( $xmi, $type, "extenderID" ) )->request();
+$model['model']['extension']['extender_id'] = $extenderID;
+
+echo '<pre>';
+//print_r($xmiPath);
+
+foreach( $elements as $element ):
+
+    $properties = $element->children()->properties;
+
+    foreach( $properties as $property ):
+
+        $isRoot = ( new xmlController\XmlController( $property, $type, "isRoot" ) )->request();
+
+        if( $isRoot === "true" ):
+
+            $abstract = ( new xmlController\XmlController( $property, $type, "isAbstract" ) )->request().'<br><br>';
+
+            $input_fields['class']['name'] = ( new xmlController\XmlController( $element, $type, "name" ) )->request().'<br>';
+            $input_fields['class']['documentation'] = ( new xmlController\XmlController( $property, $type, "documentation" ) )->request().'<br><br>';
+            $input_fields['class']['abstract'] = $abstract;
+
+            // Operations
+            $operations = $element->children()->operations;
+
+            // Count the operations
+            $totalOperations = count($operations->operation);
+
+            // Create an array for class operations
+            for($i = 0; $i < $totalOperations; $i++):
+
+                $operationName = (string) $operations->operation[$i]->attributes()->name;
+                $input_fields['class']['operations'] = array();
+                $input_fields['class']['operations'][] = $operationName;
+
+            endfor;
+
+            // Attributes
+            $attributes = $element->children()->attributes;
+
+            // Count the attributes
+            $totalAttributes = count($attributes->attribute);
+
+            // Create an array with input field markup
+            for($i = 0; $i < $totalAttributes; $i++):
+
+                // Input field names
+                $inputName = (string) $attributes->attribute[$i]->attributes()->name;
+                $input_fields['class']['fields'][$inputName] = array();
+
+                // Input field documentation
+                $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
+                $input_fields['class']['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
+
+                // Input field data type
+                $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
+                $input_fields['class']['fields'][$inputName]['data_type'] = $inputFieldDataType;
+
+            endfor;
+            echo '<pre>';
+            print_r($input_fields);
+
+        else:
+            echo 'Class is no root!<br>';
+        endif;
+
+    endforeach;
+
+
+endforeach;
+
+?>
+

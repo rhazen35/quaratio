@@ -1,0 +1,166 @@
+<?php
+
+namespace web\tmp\common\systemInfo;
+
+use \application\core;
+use \application\config;
+use \application\controller;
+use \application\model\service;
+
+/**
+ * Created by PhpStorm.
+ * User: Ruben Hazenbosch
+ * Date: 18-6-2016
+ * Time: 20:12
+ */
+
+// System info / testing
+
+// Get the allowed key groups and database credentials from the configuration file
+
+$allowedKeyGroups = config\allowedKeys();
+$dbArray = config\dbCredentials();
+
+// Get the users IP
+
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    $ip = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+    $ip = $_SERVER['REMOTE_ADDR'];
+}
+
+$usedMemory     = memory_get_peak_usage( false );
+$precision      = 2;
+$base           = log( $usedMemory, 1024 );
+$suffixes       = array(' B', ' Kb', ' Mb', ' Gb', ' Tb');
+$usedMemoryInMb = ( round( pow( 1024, $base - floor( $base ) ), $precision ) ) . $suffixes[floor( $base )];
+
+?>
+
+<div class="systemInfo">
+
+    <div class="systemInfo-Title">System info</div>
+
+    <div class="systemInfo-phpVersionCheck">
+        <?php if (version_compare(PHP_VERSION, '5.3.4') > 0): ?>
+        <div class="sysInfo-left">
+            PHP version information
+        </div>
+        <div class="sysInfo-right">
+            PHP version check successfull
+            | Build version: 5.3.4&nbsp;
+            | Server version: <?= PHP_VERSION; ?>&nbsp;
+            | Your remote address: <?php echo $ip; ?>
+        </div>
+        <?php else: ?>
+        <div class="sysInfo-left">
+            PHP version information
+        </div>
+        <div class="sysInfo-right">
+            PHP version check unsuccesfull!&nbsp;
+            <small>- Check the server's PHP version and/or the build version!</small>
+        </div>
+        <?php endif; ?>
+    </div>
+
+    <div class="systemInfo-MemoryLimit">
+        <div class="sysInfo-left">
+            PHP memory
+        </div>
+        <div class="sysInfo-right">
+            Memory limit set by application/init/init.php: 500M&nbsp;
+            | Current memory limit: <?php echo $memory_limit = ini_get('memory_limit'); ?>&nbsp;
+            | This script used: <?php echo $usedMemoryInMb; ?>
+        </div>
+    </div>
+
+    <div class="systemInfo-InitCheck">
+        <div class="sysInfo-left">
+            Litening framework initialization
+        </div>
+        <div class="sysInfo-right">
+            <?php
+                $core       = new core\Core("","","");
+                $controller = new controller\Controller("","","");
+                $service    = new core\Core( "service", "service", "service" );
+
+                if( $core ) echo 'Core initialized';
+                if( $controller ) echo ' -> Controller is available';
+                if( $service ) echo ' -> Service is ready';
+            ?>
+        </div>
+    </div>
+
+    <div class="systemInfo-databaseCheck">
+        <?php
+
+            $DbServerConnCheck  = ( new service\Service( " " ) )->checkDbServerConnection();
+            $DbConnCheck        = ( new service\Service( " " ) )->checkDbConnection();
+        
+            if( $DbServerConnCheck === true ):
+
+                echo '<div class="sysInfo-left">';
+                echo 'Database connection established';
+                echo '</div>';
+
+                if( $DbConnCheck === true ):
+                    echo '<div class="sysInfo-right">';
+                    echo 'Connected to '.$dbArray['dbname'];
+                    echo '</div>';
+                endif;
+
+            elseif( $DbServerConnCheck === false ):
+                echo '<div class="sysInfo-right">';
+                echo 'Could not established database connection';
+                echo '</div>';
+            endif;
+
+        ?>
+    </div>
+    <?php if( !empty( $_GET['data']) || !empty( $_SESSION ) ): ?>
+    <div class="systemInfo-DataTitle">
+        <div class="sysInfo-left">
+        Detailed data information
+        </div>
+        <div class="sysInfo-right">
+        <?php
+
+            if( !empty( $allowedKeyGroups ) && !empty( $_GET['data'] ) ):
+
+                echo 'Key validator [allowed key groups]: ';
+
+                $count = count( $allowedKeyGroups );
+                $i = 1;
+
+                foreach($allowedKeyGroups as $allowedKeyGroup):
+                    echo $allowedKeyGroup;
+                    if( $i > 0 && $i < ( $count ) ):
+                        echo',&nbsp;';
+                    endif;
+                    $i++;
+                endforeach;
+            
+             endif;
+
+            ?>
+
+        </div>
+    </div>
+    <?php endif; ?>
+    <?php if( !empty( $_SESSION ) ): ?>
+        <div class="systemInfo-sessionData">$_SESSION data found</div>
+        <div class="systemInfo-sessionData-data">
+            <span class="systemInfo-xDebug"><?php var_dump( $_SESSION ); ?></span>
+        </div>
+    <?php endif; ?>
+    <?php if( !empty( $_GET['data'] ) ): ?>
+    <div class="systemInfo-getData">$_GET data found</div>
+    <div class="systemInfo-getData-data">
+        <small>Encoded data: <?php echo $_GET['data'].'<br><br>'; ?></small>
+        <small>Decoded data: </small><span class="systemInfo-xDebug"><?php var_dump( json_decode( base64_decode( $_GET['data'] ) ) ); ?></span>
+    </div>
+    <?php endif; ?>
+</div>
+

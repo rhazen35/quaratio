@@ -1,0 +1,99 @@
+/* Global markup */
+
+.clock
+{
+    padding-left:0.5em;
+}
+
+/* System info markup */
+
+.systemInfo
+{
+    width:98%;
+    margin: 0 auto;
+    margin-top:0.5em;
+    padding:0;
+    font-size:100%;
+}
+
+.sysInfo-left
+{
+    float:left;
+}
+
+.sysInfo-right
+{
+    float:right;
+}
+
+.systemInfo-Title
+{
+    padding:0.25em;
+    font-size:100%;
+    border-top: 10px solid lightblue;
+}
+
+.systemInfo-phpVersionCheck,
+.systemInfo-MemoryLimit,
+.systemInfo-databaseCheck,
+.systemInfo-InitCheck,
+.systemInfo-keyValidator,
+.systemInfo-DataTitle
+{
+    clear:both;
+    height:0.75em;
+    line-height:0.75em;
+    padding:0.5em;
+    font-size: 70%;
+    color:#000000;
+    background-color: lightblue;
+}
+
+.systemInfo-DataTitle
+{
+    color: #ffffff;
+    background-color: #404040;
+}
+
+.systemInfo-xDebug
+{
+    font-size:80%;
+    font-size:100%;
+}
+
+.systemInfo-sessionData
+{
+    font-size: 70%;
+    background-color:#707070;
+    color:#FFFFFF;
+    padding:0.5em;
+}
+
+.systemInfo-sessionData-data
+{
+    padding:0.5em;
+    padding-left:1em;
+    background-color:#CCCCCC;
+    color:#000000;
+}
+
+.systemInfo-getData
+{
+    padding:0.5em;
+    background-color:#707070;
+    color:#FFFFFF;
+    font-size: 80%;
+}
+
+.systemInfo-getData-data
+{
+    line-height:0.68em;
+    padding:0.5em;
+    padding-top:1em;
+    padding-left:1em;
+    background-color:#CCCCCC;
+    color:#000000;
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

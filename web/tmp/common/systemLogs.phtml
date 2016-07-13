@@ -1,0 +1,441 @@
+<?php
+
+namespace web\tmp\common\systemLogs;
+
+use \application\controller;
+use \application\classes\login;
+use \application\classes\pagination;
+use \application\classes\systemLogger;
+
+if( $_SERVER['REQUEST_METHOD'] === "POST" ):
+    (new controller\Controller( "handler", "systemLogsFilter", "systemLogs" ))->request();
+endif;
+
+// Collect data required on this page
+
+$data    = unserialize(CMS_GET_DATA);
+$allowed = ['limit', 'pageNumber', 'totalRows', 'sysLogFilterParams', 'sysLogFilter', 'sysLogFilter_sort', 'sysLogFilter_sortType'];
+
+if(!empty($data)):
+
+    foreach($data as $key => $value):
+
+        if(in_array($key, $allowed)) ${$key} = $value;
+
+    endforeach;
+
+endif;
+
+// Limit and page number
+
+$limit                  = ( !empty( $limit ) ? $limit : 10 );
+$pageNumber             = ( !empty( $pageNumber ) ? $pageNumber : 1 );
+$totalRows              = ( !empty( $totalRows ) ? $totalRows : "" );
+
+// System log filter, params and total logs
+
+$sysLogFilter           = ( !empty( $sysLogFilter ) ? $sysLogFilter : "" );
+$sysLogFilter_sort      = ( !empty( $sysLogFilter_sort ) ? $sysLogFilter_sort : "" );
+$sysLogFilter_sortType  = ( !empty( $sysLogFilter_sortType ) ? $sysLogFilter_sortType : "" );
+
+$sysLogFilterParams     = ( !empty( $sysLogFilterParams ) ? $sysLogFilterParams : "" );
+$sysLogFilterParams     = unserialize($sysLogFilterParams);
+$countSystemLogs        = ( new systemLogger\SystemLogger("", "", "") )->countSystemLogs();
+
+// Data for filter
+
+$systemLogsUserIds      = ( new systemLogger\SystemLogger( "", "", "" ) )->getSystemLogsUserIds();
+$systemLogsGroups       = ( new systemLogger\SystemLogger( "", "", "" ) )->getSystemLogsGroups();
+$systemLogsActions      = ( new systemLogger\SystemLogger( "", "", "" ) )->getSystemLogsActions();
+$systemLogsMessages     = ( new systemLogger\SystemLogger( "", "", "" ) )->getSystemLogsMessages();
+$systemLogsDates        = ( new systemLogger\SystemLogger( "", "", "" ) )->getSystemLogsDates();
+$systemLogsTimes        = ( new systemLogger\SystemLogger( "", "", "" ) )->getSystemLogsTimes();
+
+// Check if system log filter is set to true, if so count the filter results
+// Set the total rows to the counted logs
+
+$systemLogs     = ( new systemLogger\SystemLogger("", "", "") )->filterSystemLogs( $limit, $pageNumber, $sysLogFilterParams, $sysLogFilter_sort, $sysLogFilter_sortType );
+
+if( !empty( $sysLogFilter ) && $sysLogFilter === true ):
+
+    $countSysLogs   = ( new systemLogger\SystemLogger("", "", "") )->filterSystemLogs( "", "", $sysLogFilterParams, $sysLogFilter_sort, $sysLogFilter_sortType );
+    $countSysLogs   = count( $countSysLogs );
+    $totalRows      = ( !empty( $totalRows ) ? $totalRows : $countSysLogs );
+
+else:
+
+    // Set the total rows if the filter hasn't been used
+
+    if( !empty( $countSystemLogs ) ):
+
+        foreach($countSystemLogs as $countSystemLog):
+
+            $totalRows = $countSystemLog[0];
+
+        endforeach;
+
+    endif;
+
+endif;
+
+// Create variables from the $sysLogFilterParams array
+
+if( !empty( $sysLogFilterParams ) ):
+
+    $logUserId       = ( !empty( $sysLogFilterParams['logUserId'] ) ? $sysLogFilterParams['logUserId'] : "");
+    $logGroup        = ( !empty( $sysLogFilterParams['logGroup'] ) ? $sysLogFilterParams['logGroup'] : "");
+    $logAction       = ( !empty( $sysLogFilterParams['logAction'] ) ? $sysLogFilterParams['logAction'] : "");
+    $logMessage      = ( !empty( $sysLogFilterParams['logMessage'] ) ? $sysLogFilterParams['logMessage'] : "");
+    $logStartDate    = ( !empty( $sysLogFilterParams['logStartDate'] ) ? $sysLogFilterParams['logStartDate'] : "");
+    $logEndDate      = ( !empty( $sysLogFilterParams['logEndDate'] ) ? $sysLogFilterParams['logEndDate'] : "");
+    $logStartTime    = ( !empty( $sysLogFilterParams['logStartTime'] ) ? $sysLogFilterParams['logStartTime'] : "");
+    $logEndTime      = ( !empty( $sysLogFilterParams['logEndTime'] ) ? $sysLogFilterParams['logEndTime'] : "");
+
+    // Convert the group, action and message to human readable format
+
+    $converted = ( new systemLogger\SystemLogger( $logGroup, $logAction, $logMessage ) )->convertSystemLogs();
+
+    $convertedLogGroup    = ( !empty( $converted['group'] ) ? $converted['group'] : "" );
+    $convertedLogAction   = ( !empty( $converted['action'] ) ? $converted['action'] : "" );
+    $convertedLogMessage  = ( !empty( $converted['message'] ) ? $converted['message'] : "" );
+
+    // Convert user to human readable format
+
+    $userName    = ( new login\Login( "", "" ) )->getUsernameByEmailById( $logUserId );
+
+endif;
+
+?>
+
+<div class="systemLogs">
+    <div class="systemLogs-Title">System logs</div>
+
+    <div class="systemLogs-Filter">
+        <form action="<?php echo LITENING_SELF; ?>" method="POST">
+            <?php if( !empty( $systemLogsUserIds ) ): ?>
+            <select name="userIds" class="js-onchangeSubmit">
+                <?php
+
+                    if( !empty( $logUserId ) ):
+                        echo '<option name="userId" value="'.$logUserId.'">'.$logUserId.' -> '.$userName.'</option>';
+                    endif;
+
+                    echo'<option name="" value="">Select a user</option>';
+
+                    foreach($systemLogsUserIds as $systemLogsUserId):
+
+                        if( $logUserId !== $systemLogsUserId['user_id'] ):
+                            echo '<option name="userId" value="'.$systemLogsUserId['user_id'].'">'.$systemLogsUserId['user_id'].' -> '.( new login\Login( "", "" ) )->getUsernameByEmailById( $systemLogsUserId['user_id'] ).'</option>';
+                        endif;
+
+                    endforeach;
+
+                ?>
+            </select>
+            <?php endif; ?>
+            <?php if( !empty( $systemLogsGroups ) ): ?>
+                <select name="groups" class="js-onchangeSubmit">
+                    <?php
+
+                        if( !empty( $logGroup ) ):
+                            echo '<option name="group" value="'.$logGroup.'">'.$convertedLogGroup.'</option>';
+                        endif;
+
+                        echo '<option name="" value="">Select a group</option>';
+
+                        foreach($systemLogsGroups as $systemLogsGroup):
+                            $converted          = ( new systemLogger\SystemLogger( $systemLogsGroup['log_group'], "", "" ) )->convertSystemLogs();
+                            $convertedLogGroup  = $converted['group'];
+
+                            if( $logGroup !== $systemLogsGroup['log_group'] ):
+                                echo '<option name="group" value="'.$systemLogsGroup['log_group'].'">'.$convertedLogGroup.'</option>';
+                            endif;
+
+                        endforeach;
+
+                    ?>
+                </select>
+            <?php endif; ?>
+            <?php if( !empty( $systemLogsActions ) && !empty( $logGroup ) ): ?>
+                <select name="actions" class="js-onchangeSubmit">
+                    <?php
+
+                        if( !empty( $logAction ) ):
+                            echo '<option name="action" value="'.$logAction.'">'.$convertedLogAction.'</option>';
+                        endif;
+
+                        echo '<option name="" value="">Select an action</option>';
+
+
+                        foreach($systemLogsActions as $systemLogsAction):
+
+                            $converted = ( new systemLogger\SystemLogger( $logGroup, $systemLogsAction['log_action'], "" ) )->convertSystemLogs();
+                            $convertedLogAction = $converted['action'];
+
+                            if( $logAction !== $systemLogsAction['log_action'] ):
+                                echo '<option name="action" value="'.$systemLogsAction['log_action'].'">'.$convertedLogAction.'</option>';
+                            endif;
+
+                        endforeach;
+
+                    ?>
+                </select>
+            <?php endif; ?>
+            <?php if( !empty( $systemLogsMessages ) && !empty( $logGroup ) && !empty( $logAction ) ): ?>
+                <select name="messages" class="js-onchangeSubmit">
+                    <?php
+
+                    if( !empty( $logMessage ) ):
+                        echo '<option name="message" value="'.$logMessage.'">'.$convertedLogMessage.'</option>';
+                    endif;
+
+                    echo '<option name="" value="">Select a message</option>';
+
+                    foreach($systemLogsMessages as $systemLogsMessage):
+
+                        $converted = ( new systemLogger\SystemLogger( $logGroup, $logAction, $systemLogsMessage['log_message'] ) )->convertSystemLogs();
+                        $convertedLogMessage = $converted['message'];
+
+                        echo '<option name="message" value="'.$systemLogsMessage['log_message'].'">'.$convertedLogMessage.'</option>';
+
+                    endforeach;
+
+                    ?>
+                </select>
+            <?php endif; ?>
+            <?php if( !empty( $systemLogsDates ) ): ?>
+                <select name="startDates" class="js-onchangeSubmit">
+                    <?php
+
+                        if( !empty( $logStartDate ) ):
+                            echo '<option name="startDate" value="'.$logStartDate.'">'.$logStartDate.'</option>';
+                        endif;
+
+                        echo '<option name="" value="">Select a start date</option>';
+
+                        foreach($systemLogsDates as $systemLogsDate):
+                            echo '<option name="startDate" value="'.$systemLogsDate['log_date'].'">'.$systemLogsDate['log_date'].'</option>';
+                        endforeach;
+
+                    ?>
+                </select>
+            <?php endif; ?>
+            <?php if( !empty( $systemLogsDates ) ): ?>
+                <select name="endDates" class="js-onchangeSubmit">
+                    <?php
+
+                        if( !empty( $logEndDate ) ):
+                            echo '<option name="endDate" value="'.$logEndDate.'">'.$logEndDate.'</option>';
+                        endif;
+
+                        echo'<option name="" value="">Select an end date</option>';
+
+                        foreach($systemLogsDates as $systemLogsDate):
+                            echo '<option name="endDate" value="'.$systemLogsDate['log_date'].'">'.$systemLogsDate['log_date'].'</option>';
+                        endforeach;
+
+                    ?>
+                </select>
+            <?php endif; ?>
+            <?php if( !empty( $systemLogsTimes ) ): ?>
+                <select name="startTimes" class="js-onchangeSubmit">
+                    <?php
+
+                        if( !empty( $logStartTime ) ):
+                            echo '<option name="startTime" value="'.$logStartTime.'">'.$logStartTime.'</option>';
+                        endif;
+
+                        echo '<option name="" value="">Select a start time</option>';
+
+                        foreach($systemLogsTimes as $systemLogsTime):
+                            echo '<option name="startTime" value="'.$systemLogsTime['log_time'].'">'.$systemLogsTime['log_time'].'</option>';
+                        endforeach;
+
+                    ?>
+                </select>
+            <?php endif; ?>
+            <?php if( !empty( $systemLogsTimes ) ): ?>
+                <select name="endTimes" class="js-onchangeSubmit">
+
+                    <?php
+
+                        if( !empty( $logEndTime ) ):
+                            echo '<option name="endTime" value="'.$logEndTime.'">'.$logEndTime.'</option>';
+                        endif;
+
+                        echo ' <option name="" value="">Select an end time</option>';
+
+                        foreach($systemLogsTimes as $systemLogsTime):
+                            echo '<option name="endTime" value="'.$systemLogsTime['log_time'].'">'.$systemLogsTime['log_time'].'</option>';
+                        endforeach;
+
+                    ?>
+                </select>
+            <?php endif; ?>
+            <input type="hidden" name="sysLogFilter_sort" value="<?php echo $sysLogFilter_sort; ?>">
+            <input type="hidden" name="sysLogFilter_sortType" value="<?php echo $sysLogFilter_sortType; ?>">
+            <input type="submit" name="filterSysLogsSubmit" value="Filter">
+            <?php if( $sysLogFilter === true ): ?>
+                <a class="systemLog-ResetFilter" href="<?php echo LITENING_SELF; ?>">reset filter</a>
+            <?php endif; ?>
+        </form>
+    </div>
+
+    <div class="systemLogs-Logs">
+
+    <?php
+
+        // Show the system logs if available
+
+        if( !empty( $systemLogs ) ):
+
+            // Url data array
+
+            $sysLogFilterParams = serialize($sysLogFilterParams);
+            $urlData = array("sysLogFilterParams" => $sysLogFilterParams,
+                             "limit" => $limit,
+                             "totalRows" => $totalRows,
+                             "sysLogFilter" => true
+            );
+            ?>
+
+            <div class="systemLogs-FilterResults">
+                <?php echo $totalRows; ?> results found.
+            </div>
+
+            <div class="systemLog-FilterBox-Head">
+
+                <div class="systemLog-FilterBoxItem-Head sysLogUserId">
+                    <div class="systemLog-FilterBoxItem-left">User ID</div>
+                    <div class="systemLog-FilterBoxItem-Arrows">
+                        <?php $urlData['sysLogFilter_sort']     = "user_id" ?>
+                        <?php $urlData['sysLogFilter_sortType'] = "asc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order ascending"><img src="images/icons/up_arrow_icon.png"></a><br>
+                        <?php $urlData['sysLogFilter_sortType'] = "desc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order descending"><img src="images/icons/down_arrow_icon.png"></a>
+                    </div>
+                </div>
+
+                <div class="systemLog-FilterBoxItem-Head sysLogGroup">
+                    <div class="systemLog-FilterBoxItem-left">Group</div>
+                    <div class="systemLog-FilterBoxItem-Arrows">
+                        <?php $urlData['sysLogFilter_sort']     = "group" ?>
+                        <?php $urlData['sysLogFilter_sortType'] = "asc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order ascending"><img src="images/icons/up_arrow_icon.png"></a><br>
+                        <?php $urlData['sysLogFilter_sortType'] = "desc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order descending"><img src="images/icons/down_arrow_icon.png"></a>
+                    </div>
+                </div>
+
+                <div class="systemLog-FilterBoxItem-Head sysLogAction">
+                    <div class="systemLog-FilterBoxItem-left">Action</div>
+                    <?php if( !empty( $logGroup ) ): ?>
+                    <div class="systemLog-FilterBoxItem-Arrows">
+                        <?php $urlData['sysLogFilter_sort']     = "action" ?>
+                        <?php $urlData['sysLogFilter_sortType'] = "asc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order ascending"><img src="images/icons/up_arrow_icon.png"></a><br>
+                        <?php $urlData['sysLogFilter_sortType'] = "desc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order descending"><img src="images/icons/down_arrow_icon.png"></a>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <div class="systemLog-FilterBoxItem-Head sysLogMessage">
+                    <div class="systemLog-FilterBoxItem-left">Message</div>
+                    <?php if( !empty( $logGroup ) && !empty( $logAction ) ): ?>
+                    <div class="systemLog-FilterBoxItem-Arrows">
+                        <?php $urlData['sysLogFilter_sort']     = "message" ?>
+                        <?php $urlData['sysLogFilter_sortType'] = "asc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order ascending"><img src="images/icons/up_arrow_icon.png"></a><br>
+                        <?php $urlData['sysLogFilter_sortType'] = "desc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order descending"><img src="images/icons/down_arrow_icon.png"></a>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="systemLog-FilterBoxItem-Head sysLogDate">
+                    <div class="systemLog-FilterBoxItem-left">Date</div>
+                    <div class="systemLog-FilterBoxItem-Arrows">
+                        <?php $urlData['sysLogFilter_sort']     = "date" ?>
+                        <?php $urlData['sysLogFilter_sortType'] = "asc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order ascending"><img src="images/icons/up_arrow_icon.png"></a><br>
+                        <?php $urlData['sysLogFilter_sortType'] = "desc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order descending"><img src="images/icons/down_arrow_icon.png"></a>
+                    </div>
+                </div>
+
+                <div class="systemLog-FilterBoxItem-Head sysLogTime">
+                    <div class="systemLog-FilterBoxItem-left">Time</div>
+                    <div class="systemLog-FilterBoxItem-Arrows">
+                        <?php $urlData['sysLogFilter_sort']     = "time" ?>
+                        <?php $urlData['sysLogFilter_sortType'] = "asc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order ascending"><img src="images/icons/up_arrow_icon.png"></a><br>
+                        <?php $urlData['sysLogFilter_sortType'] = "desc" ?>
+                        <a href="<?php echo LITENING_SELF.'?data='.base64_encode( json_encode( $urlData ) ); ?>" title="Order descending"><img src="images/icons/down_arrow_icon.png"></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <?php
+
+            // Sort logs
+
+//            usort($systemLogs, function($a, $b) use ($sysLogFilter_sort, $sysLogFilter_sortType) {
+//                switch( $sysLogFilter_sort ):
+//
+//                    case"id":
+//
+//                        switch($sysLogFilter_sortType):
+//                            case"asc":
+//                                return( strnatcmp( $b['user_id'], $a['user_id'] ) );
+//                                break;
+//                            case"desc":
+//                                return( strnatcmp( $a['user_id'], $b['user_id'] ) );
+//                                break;
+//                        endswitch;
+//
+//                        break;
+//
+//                endswitch;
+//            });
+
+            foreach($systemLogs as $systemLog):
+
+                $converted = ( new systemLogger\SystemLogger( $systemLog['log_group'], $systemLog['log_action'], $systemLog['log_message'] ) )->convertSystemLogs();
+
+                $logGroup    = $converted['group'];
+                $logAction   = $converted['action'];
+                $logMessage  = $converted['message'];
+
+                $userName    = ( new login\Login( "", "" ) )->getUsernameByEmailById( $systemLog['user_id'] );
+
+                ?>
+                <div class="systemLog-FilterBox">
+                    <div class="systemLog-FilterBoxItem sysLogUserId"><?php echo $systemLog['user_id'].' -> '.$userName; ?></div>
+                    <div class="systemLog-FilterBoxItem sysLogGroup"><?php echo $logGroup; ?></div>
+                    <div class="systemLog-FilterBoxItem sysLogAction"><?php echo $logAction; ?></div>
+                    <div class="systemLog-FilterBoxItem sysLogMessage"><?php echo $logMessage; ?></div>
+                    <div class="systemLog-FilterBoxItem sysLogDate"><?php echo $systemLog['log_date']; ?></div>
+                    <div class="systemLog-FilterBoxItem sysLogTime"><?php echo $systemLog['log_time']; ?></div>
+                </div>
+                <?php
+
+            endforeach;
+
+        elseif( $sysLogFilter === true ):
+
+            echo 'The filter returned no results, please adjust the filter settings.';
+
+        endif;
+
+        // Show the pagination if total rows is bigger then the limit.
+
+        if( $totalRows > $limit ):
+            echo ( new pagination\Pagination( $totalRows, $limit, $pageNumber ) )->createPagination();
+        endif;
+
+    ?>
+
+    </div>
+
+</div>

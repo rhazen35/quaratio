@@ -1,0 +1,29 @@
+Private Sub Worksheet_Change(ByVal Target As Range)
+    Dim KeyCells As Range
+    Dim MyRequest As Object
+    Dim argumentString
+
+    argumentString = "&excel=excel"
+
+
+    ' The variable KeyCells contains the cells that will
+    ' cause an alert when they are changed.
+    Set KeyCells = Target.Worksheet.Range("A1:C10")
+
+    If Not Application.Intersect(KeyCells, Range(Target.Address)) _
+           Is Nothing Then
+
+        ' Display a message when one of the designated cells has been
+        ' changed.
+        ' Place your code here.
+        Set objHTTP = CreateObject("WinHttp.WinHttpRequest.5.1")
+        URL = "http://localhost/quaratio/web/index.php"
+        objHTTP.Open "POST", URL, False
+        objHTTP.setRequestHeader "User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"
+        objHTTP.setRequestHeader "Content-type", "application/x-www-form-urlencoded"
+        objHTTP.Send argumentString
+
+        MsgBox objHTTP.ResponseText
+
+    End If
+End Sub

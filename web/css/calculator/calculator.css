@@ -1,0 +1,57 @@
+.calculator
+{
+    width:100%;
+    height:auto;
+    margin: 0 auto;
+    margin-top:2em;
+    padding:0;
+}
+
+.calculator-Title
+{
+    padding:1em;
+    font-size:125%;
+    color:#002a80;
+
+}
+
+.calculator-Intro
+{
+    padding:1.25em;
+    font-size:90%;
+}
+
+.calculator-Intro ul
+{
+    list-style-type: decimal;
+}
+
+.calculator-Intro ul li
+{
+
+}
+
+.calculator-Form
+{
+    width:30em;
+    margin-left:1em;
+    padding:1em;
+    border:1px solid #002a80;
+    font-size:90%;
+}
+
+.calculator-FormBox
+{
+    clear:both;
+    padding:0.25em;
+}
+
+.calculator-FormBox-left
+{
+    float:left;
+}
+
+.calculator-FormBox-right
+{
+    float:right;
+}

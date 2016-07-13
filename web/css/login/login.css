@@ -1,0 +1,101 @@
+.login
+{
+    width:30em;
+    margin: 0 auto;
+    margin-top:10em;
+}
+
+.loginTitle
+{
+    padding:0.5em;
+    padding-left:0;
+    font-size:110%;
+    font-weight:bold;
+}
+
+.loginTitle span
+{
+    float:right;
+    font-size:80%;
+    font-weight:normal;
+}
+
+.loginTitle-Msg
+{
+    color:#69995d;
+}
+
+.loginTitle span a
+{
+    color: #000000;
+    text-decoration: none;
+}
+
+.loginTitle span a:hover
+{
+    text-decoration:underline;
+}
+
+.loginMessage
+{
+
+}
+
+.loginMessage-Msg
+{
+    margin-bottom:1em;
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+}
+
+.loginBox
+{
+    clear:both;
+    width:100%;
+    padding:0.25em;
+    overflow:hidden;
+}
+
+.loginLeft, .loginRight
+{
+    padding-top:0.25em;
+    padding-bottom:0.25em;
+}
+
+.loginLeft
+{
+    float:left;
+    line-height:2em;
+}
+
+.loginRight
+{
+    float:right;
+}
+
+.loginRight input
+{
+    width:25em;
+}
+
+.loginRight input[type=email],
+.loginRight input[type=password]
+{
+    padding:0.5em;
+}
+
+.loginSubmit
+{
+    clear:both;
+    float:right;
+}
+
+.loginSubmit input[type="submit"]
+{
+    padding:0.5em 1.5em 0.5em 1.5em;
+}
+
+.loginSubmit input[type="submit"]:hover
+{
+    cursor:pointer;
+}

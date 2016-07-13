@@ -1,0 +1,144 @@
+.systemLogs
+{
+    width:98%;
+    margin: 0 auto;
+    margin-top:0.5em;
+    border-top: 10px solid lightblue;
+    overflow:hidden;
+}
+
+.systemLogs-Title,
+.systemLogs-Intro
+{
+    padding:0.5em;
+}
+
+.systemLogs-Intro
+{
+    font-size:80%;
+}
+
+.systemLog-ResetFilter
+{
+    font-size: 80%;
+    text-decoration:none;
+    color:#000000;
+}
+
+.systemLog-ResetFilter:hover
+{
+    text-decoration:underline;
+}
+
+.systemLogs-FilterResults
+{
+    padding-left:0.5em;
+    padding-bottom:0.25em;
+    font-size:80%;
+}
+
+.systemLogs-Filter
+{
+    width:98%;
+    padding-left:0.5em;
+}
+
+.systemLog-FilterBox,
+.systemLog-FilterBox-Head
+{
+    display:flex;
+    flex-flow:row wrap;
+    justify-content: flex-start;
+    width:99%;
+    min-width:900px;
+    height:1.25em;
+    line-height:1.25em;
+    margin:0 auto;
+    border: 1px solid #CCCCCC;
+}
+
+.systemLog-FilterBox-Head
+{
+    height:1.5em;
+    line-height:1.5em;
+    left:0.5em;
+    background-color:lightblue;
+    text-align:left;
+}
+
+.systemLog-FilterBoxItem
+{
+    padding:0.25%;
+    font-size:80%;
+}
+
+.systemLog-FilterBoxItem-Head
+{
+    padding:0.25%;
+    font-size:80%;
+}
+
+.systemLog-FilterBoxItem-Arrows,
+.systemLog-FilterBoxItem-left
+{
+    float:left;
+}
+
+.systemLog-FilterBoxItem-Arrows
+{
+    padding-left:0.5em;
+}
+
+.systemLog-FilterBoxItem-Head a
+{
+    width:100%;
+    height:100%;
+}
+
+.systemLog-FilterBoxItem-Head a:hover
+{
+
+}
+
+.systemLog-FilterBoxItem-Head a img
+{
+    width:1em;
+    height:1em;
+}
+
+.sysLogUserId
+{
+    width:15%;
+    min-width:6em;
+}
+
+.sysLogUser
+{
+    width:10%;
+    min-width:10em;
+}
+
+.sysLogGroup
+{
+    width:8%;
+}
+
+.sysLogAction
+{
+    width:10%;
+}
+
+.sysLogMessage
+{
+    width:20%;
+}
+
+.sysLogDate
+{
+    width:8%;
+}
+
+.sysLogTime
+{
+    width:8%;
+}

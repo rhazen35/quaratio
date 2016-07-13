@@ -1,0 +1,188 @@
+<?php
+
+namespace web\tmp\login;
+
+use application\controller;
+
+// Handle post
+
+if( $_SERVER['REQUEST_METHOD'] === "POST" && !empty( $_POST['loginSubmit'] ) ):
+
+    (new controller\Controller( "handler", "login", "login" ))->request();
+
+elseif( $_SERVER['REQUEST_METHOD'] === "GET" ):
+
+    $data    = unserialize(CMS_GET_DATA);
+    $allowed = ['error', 'email', 'emailError', 'passwordError', 'message'];
+
+    if(!empty($data)):
+
+        foreach($data as $key => $value):
+
+            if(in_array($key, $allowed)) ${$key} = $value;
+
+        endforeach;
+
+    endif;
+
+endif;
+
+$error          = (!empty($error) ? $error : "");
+$email          = (!empty($email) ? $email : "");
+$emailError     = (!empty($emailError) ? $emailError : "");
+$passwordError  = (!empty($passwordError) ? $passwordError : "");
+$message        = (!empty($message) ? $message : "");
+
+// Register url data
+
+$urlDataRegister = array();
+$urlDataRegister['requestType'] = "template";
+$urlDataRegister['requestAttribute'] = "register";
+$urlDataRegister['requestDirectory'] = "register";
+$urlDataRegister = base64_encode( json_encode( $urlDataRegister ) );
+
+?>
+
+<div class="login">
+    <div class="loginTitle">
+        Login
+        <?php if( $message === "signedUp" ) echo '<div class="loginTitle-Msg">Registered succesfully.</div>'; ?>
+    </div>
+    <div class="loginMessage">
+        <?php
+
+            if(!empty($error)):
+
+                echo'<div class="loginMessage-Msg redText">';
+
+                switch($error):
+                    case"noEmail":
+                        echo'Please fill in your email adress.';
+                        break;
+                    case"invalidEmail":
+                        echo'The email adress you entered is not valid. ';
+                        break;
+                    case"noPassword":
+                        echo'Please fill in your password.';
+                        break;
+                    case"passwordTooLong":
+                        echo'The password you entered is too long. (Max 16 characters)';
+                        break;
+                    case"loginFailed":
+                        echo'The combination you entered is not valid.';
+                    default:
+                        break;
+                endswitch;
+
+                echo'</div>';
+
+            else:
+
+                echo'<div class="loginMessage-Msg">';
+                echo'Please fill in your email and password.';
+                echo'</div>';
+
+            endif;
+
+        ?>
+        <form action="<?php echo LITENING_SELF; ?>" method="POST">
+            <div class="loginBox">
+                <div class="loginLeft
+                   <?php
+                        if($emailError === "empty" ||
+                           $emailError === "notValid" ||
+                           $error === "loginFailed"):
+                            echo 'redText';
+                        endif;
+                    ?>
+                "><span id="email">Email</span>
+                </div>
+                <div class="loginRight">
+                    <input type="email" name="email" placeholder="Your email adress"
+                        <?php
+
+                            if(!empty($email)): echo 'value="'.$email.'"'; endif;
+
+                            if($emailError === "empty"
+                                || $emailError === "notValid"
+                                || $error === "loginFailed"):
+
+                                    echo 'class="redBorder"';
+                                    echo 'autofocus';
+
+                            elseif(empty($error)):
+
+                               echo'autofocus';
+
+                            endif;
+                        ?>
+                    >
+                </div>
+            </div>
+            <div class="loginBox">
+                <div class="loginLeft
+                    <?php
+
+                        if($passwordError === "empty"
+                            || $error === "passwordTooLong"
+                            || $error === "loginFailed"):
+
+                                echo 'redText';
+
+                        endif;
+                    ?>
+                "><span id="password">Password</span>
+                </div>
+                <div class="loginRight">
+                    <input type="password" name="password" placeholder="Your password"
+                        <?php
+                            if($passwordError === "empty"
+                                || $error === "passwordTooLong"
+                                || $error === "loginFailed"):
+
+                                echo 'class="redBorder"';
+
+                            endif;
+
+                        ?>
+                    >
+                </div>
+            </div>
+            <div class="loginBox">
+                <div class="loginSubmit">
+                    <input type="submit" name="loginSubmit" value="Login">
+                </div>
+            </div>
+        </form>
+         <div class="loginOptions">
+            <div class="loginOption">
+                <a href="<?php echo LITENING_SELF.'?data=?'.$urlDataRegister ;?>">Register</a>
+            </div>
+            <div class="loginOption">
+                <a href="">Reset password</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(function() {
+            $('input').on('focus blur', function () {
+                var name = $(this).attr('name');
+                switch(name)
+                {
+                    case"email":
+                        $('#email').css('color', '#000000');
+                        break;
+                    case"password":
+                        $('#password').css('color', '#000000');
+                        break;
+                    default:
+                        break;
+                }
+            });
+        });
+    });
+</script>
