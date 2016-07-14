@@ -117,8 +117,8 @@ if( !class_exists( "IOXMLModelParser" ) ):
                      * @var  $idref
                      */
                     $xmiNamespace = $namespaces['xmi'];
-                    $type         = (string) $element->attributes($xmiNamespace)->type;
-                    $idref        = (string) $element->attributes($xmiNamespace)->idref;
+                    $type         = (string) $element->attributes( $xmiNamespace )->type;
+                    $idref        = (string) $element->attributes( $xmiNamespace )->idref;
 
                     /** Namespaced type and idref to class array*/
                     $input_fields[$className]['type']  = $type;
