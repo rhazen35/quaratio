@@ -139,7 +139,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
                      * The input data will be added to match the collected excel cells
                      *
                      * @var  $operations
-                     * $var  $totalOperations
+                     * @var  $totalOperations
                      */
 
                     $operations      = $element->children()->operations;
