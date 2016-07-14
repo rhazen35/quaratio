@@ -117,8 +117,8 @@ if( !class_exists( "IOXMLModelParser" ) ):
                      * @var  $idref
                      */
                     $xmiNamespace = $namespaces['xmi'];
-                    $type         = (string)$element->attributes($xmiNamespace)->type;
-                    $idref        = (string)$element->attributes($xmiNamespace)->idref;
+                    $type         = (string) $element->attributes($xmiNamespace)->type;
+                    $idref        = (string) $element->attributes($xmiNamespace)->idref;
 
                     /** Namespaced type and idref to class array*/
                     $input_fields[$className]['type']  = $type;
@@ -128,8 +128,8 @@ if( !class_exists( "IOXMLModelParser" ) ):
                      * Non-namespaced attributes
                      * Scope, documentation and abstract to class array
                      */
-                    $input_fields[$className]['scope']         = (new xmlController\XmlController($element, "getNodeAttribute", "scope"))->request();
-                    $input_fields[$className]['documentation'] = (new xmlController\XmlController($property, "getNodeAttribute", "documentation"))->request();
+                    $input_fields[$className]['scope']         = ( new xmlController\XmlController( $element, "getNodeAttribute", "scope" ) )->request();
+                    $input_fields[$className]['documentation'] = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
                     $input_fields[$className]['abstract']      = $abstract;
 
                     /**
@@ -143,13 +143,13 @@ if( !class_exists( "IOXMLModelParser" ) ):
                      */
 
                     $operations      = $element->children()->operations;
-                    $totalOperations = count($operations->operation);
+                    $totalOperations = count( $operations->operation );
 
                     /** Create an array with the operation name and add it to the operations array */
 
                     for ($i = 0; $i < $totalOperations; $i++):
 
-                        $operationName = (string)$operations->operation[$i]->attributes()->name;
+                        $operationName = (string) $operations->operation[$i]->attributes()->name;
                         $input_fields[$className]['operations'][$operationName] = array();
 
                     endfor;
@@ -161,21 +161,21 @@ if( !class_exists( "IOXMLModelParser" ) ):
                      */
 
                     $attributes      = $element->children()->attributes;
-                    $totalAttributes = count($attributes->attribute);
+                    $totalAttributes = count( $attributes->attribute );
 
                     /** Loop trough the attributes of the class */
                     for ($i = 0; $i < $totalAttributes; $i++):
 
                         /** Input field names /enumeration/data type names */
-                        $inputName = (string)$attributes->attribute[$i]->attributes()->name;
+                        $inputName = (string) $attributes->attribute[$i]->attributes()->name;
                         $input_fields[$className]['fields'][$inputName] = array();
 
                         /** input field documentation */
-                        $inputFieldDocumentation = (string)$attributes->attribute[$i]->documentation->attributes()->value;
+                        $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
                         $input_fields[$className]['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
 
                         /** Input field data type */
-                        $inputFieldDataType = (string)$attributes->attribute[$i]->properties->attributes()->type;
+                        $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
                         $input_fields[$className]['fields'][$inputName]['data_type'] = $inputFieldDataType;
 
                     endfor;
