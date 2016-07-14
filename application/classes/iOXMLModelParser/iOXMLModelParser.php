@@ -101,9 +101,9 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     $className = ( new xmlController\XmlController( $element, "getNodeAttribute", "name" ) )->request();
 
                     if ($isRoot === "true"):
-                        $input_fields[$className]['Root'] = "true";
+                        $classArray[$className]['Root'] = "true";
                     else:
-                        $input_fields[$className]['Root'] = "false";
+                        $classArray[$className]['Root'] = "false";
                     endif;
 
                     /** @var  $abstract */
@@ -121,16 +121,16 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     $idref        = (string) $element->attributes( $xmiNamespace )->idref;
 
                     /** Namespaced type and idref to class array*/
-                    $input_fields[$className]['type']  = $type;
-                    $input_fields[$className]['idref'] = $idref;
+                    $classArray[$className]['type']  = $type;
+                    $classArray[$className]['idref'] = $idref;
 
                     /**
                      * Non-namespaced attributes
                      * Scope, documentation and abstract to class array
                      */
-                    $input_fields[$className]['scope']         = ( new xmlController\XmlController( $element, "getNodeAttribute", "scope" ) )->request();
-                    $input_fields[$className]['documentation'] = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
-                    $input_fields[$className]['abstract']      = $abstract;
+                    $classArray[$className]['scope']         = ( new xmlController\XmlController( $element, "getNodeAttribute", "scope" ) )->request();
+                    $classArray[$className]['documentation'] = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
+                    $classArray[$className]['abstract']      = $abstract;
 
                     /**
                      * Get the operations of the class.
@@ -150,7 +150,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     for ($i = 0; $i < $totalOperations; $i++):
 
                         $operationName = (string) $operations->operation[$i]->attributes()->name;
-                        $input_fields[$className]['operations'][$operationName] = array();
+                        $classArray[$className]['operations'][$operationName] = array();
 
                     endfor;
 
@@ -168,15 +168,15 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
                         /** Input field names /enumeration/data type names */
                         $inputName = (string) $attributes->attribute[$i]->attributes()->name;
-                        $input_fields[$className]['fields'][$inputName] = array();
+                        $classArray[$className]['fields'][$inputName] = array();
 
                         /** input field documentation */
                         $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
-                        $input_fields[$className]['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
+                        $classArray[$className]['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
 
                         /** Input field data type */
                         $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
-                        $input_fields[$className]['fields'][$inputName]['data_type'] = $inputFieldDataType;
+                        $classArray[$className]['fields'][$inputName]['data_type'] = $inputFieldDataType;
 
                     endfor;
 
@@ -188,7 +188,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
              * Merge the model and the class array and return the parsed xml
              */
 
-            $parsedXML = array_merge($modelExtensionInfo, $input_fields);
+            $parsedXML = array_merge($modelExtensionInfo, $classArray);
 
             return($parsedXML);
 
