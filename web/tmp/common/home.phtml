@@ -14,7 +14,7 @@ use application\classes\iOXMLModelParser;
 
 ( new controller\Controller( "class", "iOXMLModelParser", "iOXMLModelParser" ) )->request();
 
-$xmlFile = $_SERVER['DOCUMENT_ROOT'] . '/quaratio/web/files/test2.xml';
+$xmlFile = $_SERVER['DOCUMENT_ROOT'] . '/quaratio/web/files/test3.xml';
 
 $parsedXML = ( new iOXMLModelParser\IOXMLModelParser( $xmlFile ) )->parseXMLModel();
 
