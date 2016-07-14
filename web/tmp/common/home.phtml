@@ -1,7 +1,5 @@
 <?php
 
-//pension consultant westland
-
 /**
  * Created by PhpStorm.
  * User: Ruben Hazenbosch
@@ -11,144 +9,17 @@
 
 namespace web\tmp\common\home;
 
-use \application\core;
-use application\xmlController;
+use \application\controller;
+use application\classes\iOXMLModelParser;
 
-/**
- * Get the xml controller
- */
-( new core\Core( "xmlController", "xmlController", "xmlController" ) )->request();
+( new controller\Controller( "class", "iOXMLModelParser", "iOXMLModelParser" ) )->request();
 
-/**
- * Prepare the model
- */
-$model = $_SERVER['DOCUMENT_ROOT'].'/quaratio/web/files/test2.xml'; // define the model
-$xmlObject = ( new xmlController\XmlController( $model, "fileToSimpleXmlObject", "" ) )->request(); // convert model to simple xml object
+$xmlFile = $_SERVER['DOCUMENT_ROOT'] . '/quaratio/web/files/test2.xml';
 
-/**
- * Set xml paths and pass them trough the controller to get a specific node
- */
-$xmiPath     = "//xmi:Extension[@extenderID]"; // Path for extender information
-$elementPath = "//xmi:Extension/elements/element"; // Path for elements
-
-$extensionAttributes = ( new xmlController\XmlController( $xmlObject, "getNode", $xmiPath ) )->request(); // Get the extension attributes
-$elements            = ( new xmlController\XmlController( $xmlObject, "getNode", $elementPath ) )->request(); // Get the elements
-
-/**
- * Collect the model's extension information
- */
-$modelExtensionInfo = array();
-
-foreach($extensionAttributes as $extensionAttribute):
-
-    $extender   = ( new xmlController\XmlController( $extensionAttribute, "getNodeAttribute", "extender" ) )->request();
-    $extenderID = ( new xmlController\XmlController( $extensionAttribute, "getNodeAttribute", "extenderID" ) )->request();
-
-    // Add the extender and extender id to the model array
-    $modelExtensionInfo['model']['extender_info']['extender']    = $extender;
-    $modelExtensionInfo['model']['extender_info']['extenderID']  = $extenderID;
-
-endforeach;
-
-/**
- * Collect the required model information
- *
- * - Required data is specified in the model interface supplied by the modeller.
- * - Required data has standards which are expressed in the QuaRatio XML Standards(QXS)
- */
-$j = 1;
-foreach( $elements as $element ): /** @var  $properties */
-
-    $namespaces = $element->getNameSpaces(true);
-
-    /**
-     * Get the element properties to access the isRoot value
-     */
-    $properties = $element->children()->properties; /** @var  $property */
-
-    foreach( $properties as $property ): /** @var  $isRoot */
-
-        /**
-         * Get the isRoot, this class will be shown first.
-         * The root also defines the base which the template generator will request
-         */
-        $isRoot = ( new xmlController\XmlController( $property, "getNodeAttribute", "isRoot" ) )->request();
-
-        /** Class name */
-        $input_fields['class'.$j]['name'] = ( new xmlController\XmlController( $element, "getNodeAttribute", "name" ) )->request().'<br>';
-
-        /**
-         * Only continue parsing if isRoot is true
-         */
-        if( $isRoot === "true" ):
-            $input_fields['class'.$j]['Root'] = "true";
-        else:
-            $input_fields['class'.$j]['Root'] = "false";
-        endif;
-
-        /** @var  $abstract */
-        $abstract = ( new xmlController\XmlController( $property, "getNodeAttribute", "isAbstract" ) )->request();
-
-        /**
-         * Detailed class information
-         */
-
-        $xmiNamespace = $namespaces['xmi'];
-
-        $type  = (string) $element->attributes($xmiNamespace)->type;
-        $idref = (string) $element->attributes($xmiNamespace)->idref;
-
-
-        $input_fields['class'.$j]['type']           = $type;
-        $input_fields['class'.$j]['idref']          = $idref;
-        $input_fields['class'.$j]['scope']          = ( new xmlController\XmlController( $element, "getNodeAttribute", "scope" ) )->request();
-        $input_fields['class'.$j]['documentation']  = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
-        $input_fields['class'.$j]['abstract']       = $abstract;
-
-        $operations = $element->children()->operations; /** @var  $totalOperations */
-
-        $totalOperations = count($operations->operation); /** @var  $i */
-
-        for($i = 0; $i < $totalOperations; $i++): /** @var  $operationName */
-
-            $operationName = (string) $operations->operation[$i]->attributes()->name;
-            $input_fields['class'.$j]['operations'][$operationName] = array();
-
-        endfor;
-
-        // Attributes
-        $attributes = $element->children()->attributes;
-
-        // Count the attributes
-        $totalAttributes = count($attributes->attribute);
-
-        // Create an array with input field markup
-        for($i = 0; $i < $totalAttributes; $i++):
-
-            // Input field names
-            $inputName = (string) $attributes->attribute[$i]->attributes()->name;
-            $input_fields['class'.$j]['fields'][$inputName] = array();
-
-            // Input field documentation
-            $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
-            $input_fields['class'.$j]['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
-
-            // Input field data type
-            $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
-            $input_fields['class'.$j]['fields'][$inputName]['data_type'] = $inputFieldDataType;
-
-        endfor;
-
-        $j++; /** Increment for class name identities */
-
-    endforeach;
-
-endforeach;
-
-$result = array_merge($modelExtensionInfo, $input_fields);
+$parsedXML = ( new iOXMLModelParser\IOXMLModelParser( $xmlFile ) )->parseXMLModel();
 
 echo '<pre>';
-print_r($result);
+print_r($parsedXML);
 
 ?>
 

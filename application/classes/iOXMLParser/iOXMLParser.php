@@ -51,9 +51,9 @@ if( !empty( "IOXMLParser" ) ):
 
         }
 
-        public function getNodeAttribute($attribute)
+        public function getNodeAttribute( $attribute )
         {
-            if(isset($this->xml[$attribute])):
+            if( isset( $this->xml[$attribute] ) ):
                 return (string) $this->xml[$attribute];
             endif;
         }
