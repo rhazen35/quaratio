@@ -17,6 +17,7 @@ use application\classes\iOXMLModelParser;
 $xmlFile = $_SERVER['DOCUMENT_ROOT'] . '/quaratio/web/files/test3.xml';
 
 $parsedXML = ( new iOXMLModelParser\IOXMLModelParser( $xmlFile ) )->parseXMLModel();
+//$parsedXML = ( new iOXMLModelParser\IOXMLModelParser( $xmlFile ) )->parseConnectors();
 
 echo '<pre>';
 print_r($parsedXML);
