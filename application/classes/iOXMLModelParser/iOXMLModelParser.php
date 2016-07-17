@@ -29,7 +29,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
          */
         public function __construct( $xmlFile )
         {
-            $this->xmlFile = $xmlFile;
+            $this->xmlFile = $xmlFile; 
         }
 
         /**
