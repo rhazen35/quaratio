@@ -65,6 +65,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
                 /** @var  $namespaces */
                 $namespaces = $element->getNameSpaces( true );
+                $xmiNamespace = $namespaces['xmi'];
 
                 /** Class name */
                 $className = ( new xmlController\XmlController( $element, "getNodeAttribute", "name" ) )->request();
@@ -106,11 +107,9 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     /**
                      * Get the namespace attributes from the class
                      *
-                     * @var  $xmiNamespace
                      * @var  $type
                      * @var  $idref
                      */
-                    $xmiNamespace = $namespaces['xmi'];
                     $type         = (string) $element->attributes( $xmiNamespace )->type;
                     $idref        = (string) $element->attributes( $xmiNamespace )->idref;
 
@@ -226,6 +225,23 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
                 endfor;
 
+                $links      = $element->children()->links;
+                $totalLinks = count( $links->Aggregation );
+
+                $classArray[$className]['links'] = array();
+
+                for($i = 0; $i < $totalLinks; $i++):
+
+                    $id     = (string) $links->Aggregation[$i]->attributes($xmiNamespace)->id;
+                    $end    = (string) $links->Aggregation[$i]->attributes()->end;
+                    $start  = (string) $links->Aggregation[$i]->attributes()->start;
+
+                    $classArray[$className]['links']['link'.($i+1)]['id']      = $id;
+                    $classArray[$className]['links']['link'.($i+1)]['end']     = $end;
+                    $classArray[$className]['links']['link'.($i+1)]['start']   = $start;
+
+                endfor;
+
             endforeach;
 
             /**
@@ -266,6 +282,75 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
             /** Return the model extension info array */
             return($modelExtensionInfo);
+
+        }
+
+        public function parseConnectors()
+        {
+
+            $model      = $this->xmlFile;
+            $xmlObject  = ( new xmlController\XmlController( $model, "fileToSimpleXmlObject", "" ) )->request(); // Convert model to simple xml object
+
+            /**
+             * Define the connectors path and get the connectors
+             */
+            $connectorPath    = "//xmi:Extension/connectors/connector"; // Path for connectors in the extension
+            $connectors       = ( new xmlController\XmlController( $xmlObject, "getNode", $connectorPath ) )->request(); // Get the elements
+
+            $connectorArray['connectors'] = array();
+
+            $i = 0;
+            foreach($connectors as $connector):
+
+                /** @var  $namespaces */
+                $namespaces   = $connector->getNameSpaces( true );
+                $xmiNamespace = $namespaces['xmi'];
+
+                /** Add the connector idref to the connectors array */
+                $idref = (string) $connector->attributes( $xmiNamespace )->idref;
+                $connectorArray['connectors']['connector'.($i+1)]['idref'] = $idref;
+
+                /**
+                 * Get the connector source and add it as an array to the connectors array
+                 */
+                $source = $connector->children()->source;
+                $connectorArray['connectors']['connector'.($i+1)]['source'] = array();
+
+                /** Add the source idref to the source array */
+                $idref = (string) $source->attributes( $xmiNamespace )->idref;
+                $connectorArray['connectors']['connector'.($i+1)]['source']['idref'] = $idref;
+
+                $modelName      = (string) $source->children()->model->attributes()->name;
+                $modelType      = (string) $source->children()->model->attributes()->type;
+                $modelEALocalId = (string) $source->children()->model->attributes()->ea_localid;
+
+                $connectorArray['connectors']['connector'.($i+1)]['source']['model']['name']        = $modelName;
+                $connectorArray['connectors']['connector'.($i+1)]['source']['model']['type']        = $modelType;
+                $connectorArray['connectors']['connector'.($i+1)]['source']['model']['ea_localid']  = $modelEALocalId;
+
+                /**
+                 * Get the connector target and add it as an array to the connectors array
+                 */
+                $target = $connector->children()->target;
+                $connectorArray['connectors']['connector'.($i+1)]['target'] = array();
+
+                /** Add the target idref to the target array */
+                $idref = (string) $target->attributes( $xmiNamespace )->idref;
+                $connectorArray['connectors']['connector'.($i+1)]['target']['idref'] = $idref;
+
+                $modelName      = (string) $target->children()->model->attributes()->name;
+                $modelType      = (string) $target->children()->model->attributes()->type;
+                $modelEALocalId = (string) $target->children()->model->attributes()->ea_localid;
+
+                $connectorArray['connectors']['connector'.($i+1)]['target']['model']['name']        = $modelName;
+                $connectorArray['connectors']['connector'.($i+1)]['target']['model']['type']        = $modelType;
+                $connectorArray['connectors']['connector'.($i+1)]['target']['model']['ea_localid']  = $modelEALocalId;
+
+                $i++;
+
+            endforeach;
+
+            return( $connectorArray );
 
         }
     }
