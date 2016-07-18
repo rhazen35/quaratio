@@ -35,7 +35,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
         /**
          * @return array
          */
-        public function parseXMLModel()
+        public function parseXMLClasses()
         {
 
             /**
@@ -43,11 +43,6 @@ if( !class_exists( "IOXMLModelParser" ) ):
              */
             $model      = $this->xmlFile;
             $xmlObject  = ( new xmlController\XmlController( $model, "fileToSimpleXmlObject", "" ) )->request(); // Convert model to simple xml object
-
-            /**
-             * Get the model extension info array
-             */
-            $modelExtensionInfo = $this->parseModelExtensionInfo( $xmlObject );
 
             /**
              * Define the elements path and get the elements
@@ -245,22 +240,21 @@ if( !class_exists( "IOXMLModelParser" ) ):
             endforeach;
 
             /**
-             * Merge the model and the class array and return the parsed xml
+             * Return the class array
              */
 
-            $parsedXML = array_merge( $modelExtensionInfo, $classArray );
-
-            return( $parsedXML );
+            return( $classArray );
 
         }
 
-        private function parseModelExtensionInfo( $xmlObject )
+        public function parseModelExtensionInfo()
         {
 
             /**
-             * Set xml path and pass them trough the controller to get a specific node
+             * Set xml path, xml object and pass it trough the controller to get a specific node
              */
             $xmiPath             = "//xmi:Extension[@extenderID]"; // Path for extender information
+            $xmlObject           = ( new xmlController\XmlController( $this->xmlFile, "fileToSimpleXmlObject", "" ) )->request(); // Convert model to simple xml object
             $extensionAttributes = ( new xmlController\XmlController( $xmlObject, "getNode", $xmiPath ) )->request(); // Get the extension attributes
 
             /**

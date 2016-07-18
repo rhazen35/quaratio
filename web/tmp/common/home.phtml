@@ -10,17 +10,48 @@
 namespace web\tmp\common\home;
 
 use \application\controller;
-use application\classes\iOXMLModelParser;
+use application\classes\iOXMLModelUpload;
 
-( new controller\Controller( "class", "iOXMLModelParser", "iOXMLModelParser" ) )->request();
+( new controller\Controller( "class", "iOXMLModelUpload", "iOXMLModelUpload" ) )->request();
 
-$xmlFile = $_SERVER['DOCUMENT_ROOT'] . '/quaratio/web/files/test3.xml';
+?>
+<div class="">
+    <div class="">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="">
+                <div class="">
+                    Kies een xml bestand, gegenereerd door Enterprise Architecture.
+                </div>
+                <div class="">
+                    <input type="file" name="xmlFile" value="" title="Kies een xml bestand.">
+                    <input type="submit" name="xmlFileUploadSubmit" value="Uploaden" title="Upload een xml file naar de parser.">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<?php
 
-$parsedXML = ( new iOXMLModelParser\IOXMLModelParser( $xmlFile ) )->parseXMLModel();
-//$parsedXML = ( new iOXMLModelParser\IOXMLModelParser( $xmlFile ) )->parseConnectors();
+if( $_SERVER['REQUEST_METHOD'] === "POST" ):
 
-echo '<pre>';
-print_r($parsedXML);
+    if( !empty( $_FILES ) ):
+        if ( isset( $_FILES['xmlFile'] ) && ( $_FILES['xmlFile']['error'] == UPLOAD_ERR_OK ) ) {
+
+            $uploadedAt         = date( "Y-m-d H:i:s" );
+            $xmlFile            = $_FILES['xmlFile']['tmp_name'];
+
+            /**
+             * Pass the xml file with the new model command and the timestamp
+             */
+            $parsedXML = ( new iOXMLModelUpload\IOXMLModelUpload( "newModel", $xmlFile, $uploadedAt ) )->request();
+
+            echo '<pre>';
+            print_r($parsedXML);
+
+        }
+    endif;
+
+endif;
 
 ?>
 
