@@ -120,6 +120,31 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     $classArray[$className]['documentation'] = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
                     $classArray[$className]['abstract']      = $abstract;
 
+                    /** Tags for excel file, sheet and cell */
+                    $tags = $element->tags->tag;
+                    $totalTags = count($tags);
+
+                    if( !empty( $totalTags ) ):
+
+                        for($l = 0; $l < $totalTags; $l++):
+
+                            $tagName  = (string) $element->tags->tag[$l]->attributes()->name;
+                            $tagValue = (string) $element->tags->tag[$l]->attributes()->value;
+
+                            if( !empty( $tagValue ) ):
+                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+
+                                $classArray[$className]['tags'][$tagName]['file'] = trim($file);
+                                $classArray[$className]['tags'][$tagName]['tab']  = trim($tab);
+                                $classArray[$className]['tags'][$tagName]['cell'] = trim($cell);
+
+                            endif;
+
+                        endfor;
+
+                    endif;
+
+
                 endforeach;
 
                 /**
@@ -193,6 +218,32 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
                     endif;
 
+                    /**
+                     * Tags for excel address
+                     */
+                    $tags = $operations->operation[$i]->tags->tag;
+                    $totalTags = count($tags);
+
+                    if( !empty( $totalTags ) ):
+
+                        for($l = 0; $l < $totalTags; $l++):
+
+                            $tagName  = (string) $operations->operation[$l]->tags->tag[$l]->attributes()->name;
+                            $tagValue = (string) $operations->operation[$i]->tags->tag[$l]->attributes()->value;
+
+                            if( !empty( $tagValue ) ):
+                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+
+                                $classArray[$className]['operations'][$operationName]['tags'][$tagName]['file'] = trim($file);
+                                $classArray[$className]['operations'][$operationName]['tags'][$tagName]['tab']  = trim($tab);
+                                $classArray[$className]['operations'][$operationName]['tags'][$tagName]['cell'] = trim($cell);
+
+                            endif;
+
+                        endfor;
+
+                    endif;
+
                 endfor;
 
                 /**
@@ -217,6 +268,33 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     /** Input field data type */
                     $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
                     $classArray[$className]['fields'][$inputName]['data_type'] = $inputFieldDataType;
+
+                    /**
+                     * Tags for excel address
+                     */
+                    $tags = $attributes->attribute[$i]->tags->tag;
+                    $totalTags = count($tags);
+
+                    if( !empty( $totalTags ) ):
+
+                        for($l = 0; $l < $totalTags; $l++):
+
+                            $tagName  = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->name;
+                            $tagValue = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->value;
+
+                            if( !empty( $tagValue ) ):
+
+                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+
+                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['file'] = trim($file);
+                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['tab']  = trim($tab);
+                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['cell'] = trim($cell);
+
+                            endif;
+
+                        endfor;
+
+                    endif;
 
                 endfor;
 

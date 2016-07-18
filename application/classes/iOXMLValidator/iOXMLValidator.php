@@ -33,47 +33,64 @@ if( !class_exists( "IOXMLValidator" ) ):
              * Check if the file is a XML file
              */
             $xml = @simplexml_load_file( $this->xmlFile );
-            if ( $xml === false ) {
-                $parseReport['xmlValidation'] = "invalid";
-                return( $parseReport );
-            }
 
-            $parseReport['xmlValidation'] = "valid";
+            if ( $xml === false ):
+                $parseReport['validateFileType'] = "invalid";
+                return( $parseReport );
+            else:
+                $parseReport['validateFileType'] = "valid";
+            endif;
 
             /**
-             * Check if the xml file has an extension
+             * Check if a root is available and if only one root is available
              */
-            $modelExtension     = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseModelExtensionInfo();
-            $validatedExtension = $this->validateExtension( $modelExtension );
+            $parsedClasses = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
+            $roots         = array();
+            $trueRoots     = array();
 
-            if( empty( $validatedExtension ) ):
+            foreach( $parsedClasses as $parsedClass):
+                if( !empty( $parsedClass['Root'] ) ):
+                    $roots[] = $parsedClass['Root'];
+                endif;
+            endforeach;
 
+            $totalRoots = count($roots);
 
+            for($i = 0; $i < $totalRoots; $i++):
+                if($roots[$i] === "true"):
+                    $trueRoots[] = $i;
+                endif;
+            endfor;
 
+            $totalTrueRoots = count($trueRoots);
+
+            if( $totalTrueRoots < 1 ):
+                $parseReport['validateRoot'] = "noRoot";
+            elseif( $totalTrueRoots > 1 ):
+                $parseReport['validateRoot'] = "manyRoot";
+            else:
+                $parseReport['validateRoot'] = "valid";
             endif;
 
-            $parsedClasses      = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
-            $parsedConnectors   = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseConnectors();
+            /**
+             * Check for the extension version
+             */
+            $parsedExtensionInfo = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseModelExtensionInfo();
+            $extensionVersion    = $parsedExtensionInfo['model']['extender_info']['extenderID'];
 
-            return( $parsedClasses );
+            if( !empty( $extensionVersion ) ):
 
-        }
-
-        private function validateExtension( $modelExtension )
-        {
-
-            if( empty( $modelExtension ) ):
-
-                return( "No extension could be found." );
+                if( $extensionVersion === "6.5" ):
+                    $parseReport['extensionVersion'] = "valid";
+                else:
+                    $parseReport['extensionVersion'] = "different";
+                endif;
 
             else:
-
-                $extender   = $modelExtension['model']['extender_info']['extender'];
-                $extenderID = $modelExtension['model']['extender_info']['extenderID'];
-
-                return( $extender );
-
+                $parseReport['extensionVersion'] = "invalid";
             endif;
+
+            return( $parsedClasses );
 
         }
 

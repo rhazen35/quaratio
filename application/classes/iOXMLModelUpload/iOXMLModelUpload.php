@@ -49,19 +49,8 @@ if( !class_exists( "IOXMLModelUpload" ) ):
 
             $validateXMLFile    = ( new iOXMLValidator\IOXMLValidator( $this->xmlFile ) )->validate();
 
-            if( !empty( $validateXMLFile['xmlValidation'] ) ):
+            return( $validateXMLFile );
 
-                $report = "";
-
-                $validXML = ( $validateXMLFile['xmlValidation'] === "invalid" ? "Not a valid xml file" : "Valid xml file");
-
-                $report .= '<div class="">'.$validXML.'</div>';
-
-                return( $report );
-
-            else:
-                return( $validateXMLFile );
-            endif;
         }
 
     }
