@@ -10,8 +10,10 @@ namespace application\classes\iOXMLValidator;
 
 use \application\controller;
 use application\classes\iOXMLModelParser;
+use \application\classes\iOXMLParser;
 
 ( new controller\Controller( "class", "iOXMLModelParser", "iOXMLModelParser" ) )->request();
+//
 
 if( !class_exists( "IOXMLValidator" ) ):
 
@@ -29,24 +31,24 @@ if( !class_exists( "IOXMLValidator" ) ):
         {
 
             $parseReport = array();
-            /**
-             * Check if the file is a XML file
-             */
-            $xml = @simplexml_load_file( $this->xmlFile );
+            $parseReport['validation_success'] = "false";
 
-            if ( $xml === false ):
-                $parseReport['validateFileType'] = "invalid";
-                return( $parseReport );
-            else:
-                $parseReport['validateFileType'] = "valid";
-            endif;
+            /**
+             * Check if the file is an xml
+             */
+            $isXML = ( new iOXMLParser\IOXMLParser( $this->xmlFile ) )->isXML();
+
+            if( $isXML === "valid" ):
+
+                $parseReport['isXML'] = $isXML;
 
             /**
              * Check if a root is available and if only one root is available
              */
-            $parsedClasses = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
-            $roots         = array();
-            $trueRoots     = array();
+            $parsedClasses    = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
+            $parsedConnectors = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseConnectors();
+            $roots            = array();
+            $trueRoots        = array();
 
             foreach( $parsedClasses as $parsedClass):
                 if( !empty( $parsedClass['Root'] ) ):
@@ -90,7 +92,18 @@ if( !class_exists( "IOXMLValidator" ) ):
                 $parseReport['extensionVersion'] = "invalid";
             endif;
 
-            return( $parsedClasses );
+            /**
+             * Check if all necessary items have been validated
+             */
+            $parseReport['validation_success'] = true;
+
+            elseif( $isXML === "invalid" ):
+
+                $parseReport['isXML'] = $isXML;
+
+            endif;
+
+            return( $parseReport );
 
         }
 

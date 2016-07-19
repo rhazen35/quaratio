@@ -9,6 +9,7 @@
 namespace application\classes\iOXMLModelUpload;
 
 use \application\controller;
+use \application\model\service;
 use application\classes\iOXMLValidator;
 
 ( new controller\Controller( "class", "iOXMLValidator", "iOXMLValidator" ) )->request();
@@ -39,7 +40,12 @@ if( !class_exists( "IOXMLModelUpload" ) ):
                 case"newModel":
                     return( $this->newModel() );
                     break;
-
+                case"saveModel":
+                    $this->saveModel();
+                    break;
+                case"matchHash":
+                    return( $this->matchHash() );
+                    break;
             endswitch;
 
         }
@@ -50,6 +56,64 @@ if( !class_exists( "IOXMLModelUpload" ) ):
             $validateXMLFile    = ( new iOXMLValidator\IOXMLValidator( $this->xmlFile ) )->validate();
 
             return( $validateXMLFile );
+
+        }
+
+        private function matchHash()
+        {
+
+            $sql        = "CALL proc_getMatchingModelHash(?)";
+            $data       = array("hash" => $this->xmlFile);
+            $format     = array('s');
+
+            $type       = "read";
+            $database   = "quaratio";
+
+            $returnData = ( new service\Service( $type, $database ) )->dbAction( $sql, $data, $format );
+
+            if( !empty( $returnData ) ):
+
+                foreach($returnData as $returnDat):
+                    $hash = $returnDat;
+                endforeach;
+
+                return( $hash );
+
+            else:
+
+                return( false );
+
+            endif;
+
+        }
+
+        private function saveModel()
+        {
+
+            $datetime    = new \DateTime( $this->uploadedAt );
+            $upload_date = $datetime->format('Y-m-d');
+            $upload_time = $datetime->format('H:i:s');
+            $date        = date("Y-m-d");
+            $time        = date("H:i:s");
+            $userId      = !empty( $_SESSION['userId'] ) ? $_SESSION['userId'] : "";
+            $id          = "";
+
+            $sql        = "CALL proc_newModel(?,?,?,?,?,?,?)";
+            $data       = array(
+                                "id"            => $id,
+                                "user_id"       => $userId,
+                                "hash"          => $this->xmlFile,
+                                "upload_date"   => $upload_date,
+                                "upload_time"   => $upload_time,
+                                "date"          => $date,
+                                "time"          => $time
+                                );
+            $format     = array("iisssss");
+
+            $type       = "create";
+            $database   = "quaratio";
+
+            ( new service\Service( $type, $database ) )->dbAction( $sql, $data, $format );
 
         }
 

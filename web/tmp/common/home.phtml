@@ -10,48 +10,32 @@
 namespace web\tmp\common\home;
 
 use \application\controller;
-use application\classes\iOXMLModelUpload;
-
-( new controller\Controller( "class", "iOXMLModelUpload", "iOXMLModelUpload" ) )->request();
-
-?>
-<div class="">
-    <div class="">
-        <form action="" method="POST" enctype="multipart/form-data">
-            <div class="">
-                <div class="">
-                    Kies een xml bestand, gegenereerd door Enterprise Architecture.
-                </div>
-                <div class="">
-                    <input type="file" name="xmlFile" value="" title="Kies een xml bestand.">
-                    <input type="submit" name="xmlFileUploadSubmit" value="Uploaden" title="Upload een xml file naar de parser.">
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<?php
 
 if( $_SERVER['REQUEST_METHOD'] === "POST" ):
 
-    if( !empty( $_FILES ) ):
-        if ( isset( $_FILES['xmlFile'] ) && ( $_FILES['xmlFile']['error'] == UPLOAD_ERR_OK ) ) {
-
-            $uploadedAt         = date( "Y-m-d H:i:s" );
-            $xmlFile            = $_FILES['xmlFile']['tmp_name'];
-
-            /**
-             * Pass the xml file with the new model command and the timestamp
-             */
-            $parsedXML = ( new iOXMLModelUpload\IOXMLModelUpload( "newModel", $xmlFile, $uploadedAt ) )->request();
-
-            echo '<pre>';
-            print_r($parsedXML);
-
-        }
-    endif;
+    ( new controller\Controller( "handler", "xmlModelUpload", "xmlModelUpload" ) )->request();
 
 endif;
 
 ?>
+
+<div class="home">
+    <div class="homeTitle">From Model to User Experience</div>
+    <div class="homeTitle-sub">Welkom op het content management systeem van QuaRatio.</div>
+    <div class="modelUpload-Title">Model upload</div>
+    <div class="modelUpload">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="modelUpload-Header">
+                Kies een XMI bestand, gegenereerd door Enterprise Architecture.
+            </div>
+            <div class="modelUpload-Upload">
+                <input type="file" name="xmlFile" value="" title="Kies een xml bestand.">
+                <input type="submit" name="xmlFileUploadSubmit" value="Uploaden" title="Upload een xml file naar de parser.">
+            </div>
+            <div class="modelUpload-Footer">
+                Na het uploaden wordt het xmi bestand gevalideerd en een rapport getoond.
+            </div>
+        </form>
+    </div>
+</div>
 

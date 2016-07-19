@@ -29,7 +29,8 @@ function allowedKeys()
         'login',
         'pagination',
         'systemLogs',
-        'excel'
+        'excel',
+        'xmlModel'
     );
 
     return( $allowedKeys );

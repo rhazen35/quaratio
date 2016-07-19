@@ -20,24 +20,40 @@ if( !empty( "IOXMLParser" ) ):
 
         /**
          * IOXMLParser constructor.
-         * @param $xml
+         * @param $xmlFile
          */
 
-        public function __construct( $xml )
+        public function __construct( $xmlFile )
         {
-            $this->xml = $xml;
+            $this->xmlFile = $xmlFile;
         }
 
+
         /**
-         * @return \SimpleXMLElement
+         * @return string
          */
+        public function isXML()
+        {
+            /**
+             * Check if the file is a XML file
+             */
+            $xml = @simplexml_load_file( $this->xmlFile );
+
+            if ( $xml === false ):
+                return( "invalid" );
+            else:
+                return( "valid" );
+            endif;
+
+        }
 
         public function fileToSimpleXmlObject()
         {
-            // Load the xml file
-            $xml = simplexml_load_file( $this->xml );
 
-            return( $xml );
+            /**
+             * Check if the file is a XML file
+             */
+            return( simplexml_load_file( $this->xmlFile ) );
 
         }
 
@@ -45,7 +61,7 @@ if( !empty( "IOXMLParser" ) ):
         {
 
             // Get the data with the specified path
-            $data = $this->xml->xpath( $path );
+            $data = $this->xmlFile->xpath( $path );
 
             return( $data );
 
@@ -53,8 +69,8 @@ if( !empty( "IOXMLParser" ) ):
 
         public function getNodeAttribute( $attribute )
         {
-            if( isset( $this->xml[$attribute] ) ):
-                return (string) $this->xml[$attribute];
+            if( isset( $this->xmlFile[$attribute] ) ):
+                return (string) $this->xmlFile[$attribute];
             endif;
         }
 

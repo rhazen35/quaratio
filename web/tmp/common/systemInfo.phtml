@@ -96,8 +96,8 @@ $usedMemoryInMb = ( round( pow( 1024, $base - floor( $base ) ), $precision ) ) .
     <div class="systemInfo-databaseCheck">
         <?php
 
-            $DbServerConnCheck  = ( new service\Service( " " ) )->checkDbServerConnection();
-            $DbConnCheck        = ( new service\Service( " " ) )->checkDbConnection();
+            $DbServerConnCheck  = ( new service\Service( " ", "litening" ) )->checkDbServerConnection();
+            $DbConnCheck        = ( new service\Service( " ", "litening" ) )->checkDbConnection();
         
             if( $DbServerConnCheck === true ):
 

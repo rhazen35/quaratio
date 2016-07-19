@@ -29,11 +29,13 @@ if(!class_exists( "Service" )):
         /**
          * Service constructor.
          * @param $type
+         * @param $database
          */
         
-        public function __construct( $type )
+        public function __construct( $type, $database )
         {
             $this->type = $type;
+            $this->database = $database;
         }
 
         /**
@@ -48,14 +50,14 @@ if(!class_exists( "Service" )):
             switch($this->type):
 
                 case"create":
-                    (new dbCreate\DbCreate( $sql ))->dbInsert( $data, $format );
+                    (new dbCreate\DbCreate( $sql, $this->database ))->dbInsert( $data, $format );
                     break;
                 case"read":
-                    $returnData = (new dbRead\DbRead( $sql ))->dbSelect( $data, $format );
+                    $returnData = (new dbRead\DbRead( $sql, $this->database ))->dbSelect( $data, $format );
                     return($returnData);
                     break;
                 case"update":
-                    (new dbUpdate\DbUpdate( $sql ))->dbUpdate( $data, $format );
+                    (new dbUpdate\DbUpdate( $sql, $this->database ))->dbUpdate( $data, $format );
                     break;
                 case"delete":
 
@@ -72,7 +74,7 @@ if(!class_exists( "Service" )):
 
         public function checkDbServerConnection()
         {
-            $mysqli     = (new database\Database(""))->checkDbConnection();
+            $mysqli     = (new database\Database( $this->database ))->checkDbConnection();
 
             if( $mysqli ):
 
@@ -89,7 +91,7 @@ if(!class_exists( "Service" )):
 
         public function checkDbConnection()
         {
-            $mysqli     = (new database\Database(""))->dbConnect();
+            $mysqli     = (new database\Database( $this->database ))->dbConnect();
 
             if( $mysqli ):
 

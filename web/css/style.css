@@ -10,6 +10,8 @@
 
 @import "calculator/calculator.css";
 
+@import "xmlModel/xmlModelReport.css";
+
 /* Body & HTML */
 body {
     line-height: 1;

@@ -48,6 +48,13 @@ Set the default time zone
 
 date_default_timezone_set('Europe/Amsterdam');
 
+/*---------------------
+Set the cache limiters
+*--------------------*/
+
+ini_set('session.cache_limiter','public');
+session_cache_limiter(false);
+
 /*----------------
 Global constants
 *---------------*/

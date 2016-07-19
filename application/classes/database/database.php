@@ -39,7 +39,9 @@ if(!class_exists('Database')):
 		
         public function dbConnect()
         {
+
             $dbArray = config\dbCredentials();
+
 			$dbName = ( !empty( $this->dbName ) ? $this->dbName : $dbArray['dbname'] );
 
 			try {

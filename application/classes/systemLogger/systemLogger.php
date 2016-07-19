@@ -63,7 +63,7 @@ if(!class_exists('SystemLogger')):
 
             $type       = "create";
 
-            ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
             
         }
 
@@ -75,7 +75,7 @@ if(!class_exists('SystemLogger')):
 
             $type       = "read";
 
-            $returnData = ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            $returnData = ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
 
             if( !empty( $returnData ) ):
                 return(  $returnData );
@@ -243,7 +243,7 @@ if(!class_exists('SystemLogger')):
 
             if( empty( $data ) ) $format = array();
 
-            $returnData = ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            $returnData = ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
 
             return( $returnData );
 
@@ -262,7 +262,7 @@ if(!class_exists('SystemLogger')):
 
             $type       = "read";
 
-            $returnData = ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            $returnData = ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
 
             if( !empty( $returnData ) ):
                 return(  $returnData );
@@ -284,7 +284,7 @@ if(!class_exists('SystemLogger')):
 
             $type       = "read";
 
-            $returnData = ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            $returnData = ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
 
             if( !empty( $returnData ) ):
                 return(  $returnData );
@@ -306,7 +306,7 @@ if(!class_exists('SystemLogger')):
 
             $type       = "read";
 
-            $returnData = ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            $returnData = ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
 
             if( !empty( $returnData ) ):
                 return(  $returnData );
@@ -328,7 +328,7 @@ if(!class_exists('SystemLogger')):
 
             $type       = "read";
 
-            $returnData = ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            $returnData = ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
 
             if( !empty( $returnData ) ):
                 return(  $returnData );
@@ -350,7 +350,7 @@ if(!class_exists('SystemLogger')):
 
             $type       = "read";
 
-            $returnData = ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            $returnData = ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
 
             if( !empty( $returnData ) ):
                 return(  $returnData );
@@ -372,7 +372,7 @@ if(!class_exists('SystemLogger')):
 
             $type       = "read";
 
-            $returnData = ( new service\Service( $type ) )->dbAction( $sql, $data, $format );
+            $returnData = ( new service\Service( $type, "litening" ) )->dbAction( $sql, $data, $format );
 
             if( !empty( $returnData ) ):
                 return(  $returnData );

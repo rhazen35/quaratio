@@ -68,6 +68,10 @@ if(!class_exists('KeyValidator')):
 
             'excel' => array(
                 'excelResponseData'
+            ),
+
+            'xmlModel' => array(
+                'report'
             )
 
         );

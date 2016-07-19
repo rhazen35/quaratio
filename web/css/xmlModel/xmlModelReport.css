@@ -1,0 +1,80 @@
+.modelReport
+{
+    width:75%;
+    height:auto;
+    margin: 0 auto;
+    margin-top:2em;
+    margin-bottom:2em;
+    padding: 0;
+    border:1px solid #1896CC;
+}
+
+.modelReport-Title
+{
+    width:100%;
+    height:auto;
+    margin: 0 auto;
+    margin-top:0.5em;
+    padding-top:1em;
+    padding-bottom:1em;
+    font-size:120%;
+    text-align:center;
+    border-bottom:1px solid #1896CC;
+}
+
+.modelReport-Conclusion
+{
+    clear:both;
+    margin: 0 auto;
+    padding:1em;
+    text-align: center;
+    font-size:90%;
+    overflow:hidden;
+}
+
+.modelReport-isXML
+{
+    clear:both;
+    margin: 0 auto;
+    padding:1em;
+    padding-top:0.5em;
+    text-align: center;
+    overflow:hidden;
+}
+
+.modelReport-Conclusion-title,
+.modelReport-isXML-title
+{
+    float:left;
+    font-size:100%;
+    font-weight:bold;
+}
+
+.modelReport-Conclusion img,
+.modelReport-isXML img
+{
+    float:left;
+    width:20px;
+    height:20px;
+}
+
+.modelReport-Conclusion-success,
+.modelReport-Conclusion-nosuccess,
+.modelReport-isXML-success,
+.modelReport-isXML-nosuccess
+{
+    float:left;
+    line-height:20px;
+    margin-left:0.5em;
+    font-size:90%;
+}
+
+.modelReport-Conclusion-success
+{
+
+}
+
+.modelReport-Conclusion-nosuccess
+{
+
+}

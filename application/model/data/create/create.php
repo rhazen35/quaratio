@@ -21,11 +21,13 @@ if(!class_exists( "DbCreate" )):
         /**
          * DbCreate constructor.
          * @param $sql
+         * @param $database
          */
 
-        public function __construct( $sql )
+        public function __construct( $sql, $database )
         {
-            $this->sql = $sql;
+            $this->sql     = $sql;
+            $this->database = $database;
         }
 
         /**
@@ -36,7 +38,7 @@ if(!class_exists( "DbCreate" )):
         public function  dbInsert( $data, $format )
 
         {
-            $mysqli     = ( new database\Database("") )->dbConnect();
+            $mysqli     = ( new database\Database( $this->database ) )->dbConnect();
 
             $stmt       = $mysqli->prepare( $this->sql );
 
@@ -46,7 +48,7 @@ if(!class_exists( "DbCreate" )):
                 $format = str_replace( '%', '', $format );
                 
                 array_unshift( $data, $format );
-                call_user_func_array( array( $stmt, 'bind_param' ), ( new database\Database("") )->referenceValues( $data ) );
+                call_user_func_array( array( $stmt, 'bind_param' ), ( new database\Database( $this->database ) )->referenceValues( $data ) );
 
             endif;
 

@@ -1,0 +1,55 @@
+<?php
+
+namespace web\tmp\xmlModel\xmlModelReport;
+
+$data    = unserialize( CMS_GET_DATA );
+$allowed = ['report'];
+
+if( !empty( $data ) ):
+    foreach( $data as $key => $value ):
+        if( in_array( $key, $allowed ) ) ${$key} = $value;
+    endforeach;
+endif;
+
+if( !empty( $report ) ):
+    $report = unserialize( $report );
+else:
+    echo 'Er is iets mis gegaan met het laden van het rapport.';
+endif;
+
+var_dump($report);
+
+?>
+
+<div class="modelReport">
+    <div class="modelReport-Title">XMI Rapport - Enterprise Architect Model</div>
+    <?php
+        if( !empty( $report['file_exists'] ) && $report['file_exists'] === true ): ?>
+        <div class="">Het model bestaat al!</div>
+    <?php else: ?>
+    <div class="modelReport-Conclusion">
+        <?php if( $report['validation_success'] === true ): ?>
+            <div class=""><img src="./images/icons/checkgreen_icon.png"></div>
+            <div class="modelReport-Conclusion-success">
+                Validate is geslaagd!
+            </div>
+        <?php else: ?>
+            <div class=""><img src="./images/icons/red_cross_icon.png"></div>
+            <div class="modelReport-Conclusion-nosuccess">Validate is niet geslaagd.</div>
+        <?php endif; ?>
+    </div>
+    <div class="modelReport-isXML">
+        <?php if( $report['isXML'] === "valid" ): ?>
+            <div class=""><img src="./images/icons/checkgreen_icon.png"></div>
+            <div class="modelReport-isXML-success">Het geuploade model is een XMI file.</div>
+        <?php else: ?>
+            <div class=""><img src="./images/icons/red_cross_icon.png"></div>
+            <div class="modelReport-isXML-nosuccess">Het geuploade model is geen XMI file!</div>
+        <?php endif; ?>
+    </div>
+    <div class="modelReport-Extension">
+
+    </div>
+    <?php endif; ?>
+</div>
+

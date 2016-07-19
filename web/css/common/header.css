@@ -16,3 +16,8 @@ header
     padding:1em;
     font-size:125%;
 }
+
+.header-Logo span
+{
+    font-size:80%;
+}

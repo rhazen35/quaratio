@@ -41,7 +41,6 @@ define( "CMS_GET_DATA", $data );
 // Create variables from data
 
 $data    = unserialize( CMS_GET_DATA );
-
 $allowed = ['requestType', 'requestAttribute', 'requestDirectory', 'systemInfo', 'systemLogs'];
 
 if( !empty( $data ) ):
