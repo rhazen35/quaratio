@@ -31,7 +31,7 @@ if( !class_exists( "IOXMLValidator" ) ):
         {
 
             $parseReport = array();
-            $parseReport['validation_success'] = "false";
+            $parseReport['validation_success'] = false;
 
             /**
              * Check if the file is a xml
@@ -42,81 +42,83 @@ if( !class_exists( "IOXMLValidator" ) ):
 
                 $parseReport['isXML'] = $isXML;
 
-            /**
-             * Check if a root is available and if only one root is available
-             */
-            $parsedClasses    = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
-            $parsedConnectors = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseConnectors();
+                /**
+                 * Check if a root is available and if only one root is available
+                 */
+                $parsedClasses    = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
+                $parsedConnectors = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseConnectors();
 
-            $roots            = array();
-            $trueRoots        = array();
-            $totalClasses     = count( $parsedClasses );
+                $roots            = array();
+                $trueRoots        = array();
+                $totalClasses     = count( $parsedClasses );
 
-            if( $totalClasses < 1 ):
-                $parseReport['classes'] = "noClasses";
-            elseif( $totalClasses === 1 ):
-                $parseReport['classes'] = "oneClass";
-            elseif( $totalClasses > 1 ):
-                $parseReport['classes'] = "manyClasses";
-            endif;
-
-            foreach( $parsedClasses as $parsedClass ):
-                if( !empty( $parsedClass['Root'] ) ):
-                    $roots[] = $parsedClass['Root'];
+                if( $totalClasses < 1 ):
+                    $parseReport['classes'] = "noClasses";
+                elseif( $totalClasses === 1 ):
+                    $parseReport['classes'] = "oneClass";
+                elseif( $totalClasses > 1 ):
+                    $parseReport['classes'] = "manyClasses";
                 endif;
-            endforeach;
 
-            $totalRoots = count( $roots );
+                foreach( $parsedClasses as $parsedClass ):
+                    if( !empty( $parsedClass['Root'] ) ):
+                        $roots[] = $parsedClass['Root'];
+                    endif;
+                endforeach;
 
-            for( $i = 0; $i < $totalRoots; $i++ ):
-                if( $roots[$i] === "true" ):
-                    $trueRoots[] = $i;
-                endif;
-            endfor;
+                $totalRoots = count( $roots );
 
-            $totalTrueRoots = count( $trueRoots );
+                for( $i = 0; $i < $totalRoots; $i++ ):
+                    if( $roots[$i] === "true" ):
+                        $trueRoots[] = $i;
+                    endif;
+                endfor;
 
-            if( $totalTrueRoots < 1 ):
-                $parseReport['validateRoot'] = "noRoot";
-            elseif( $totalTrueRoots > 1 ):
-                $parseReport['validateRoot'] = "manyRoot";
-            else:
-                $parseReport['validateRoot'] = "valid";
-            endif;
+                $totalTrueRoots = count( $trueRoots );
 
-            /**
-             * Check for the extension version
-             */
-            $parsedExtensionInfo = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseModelExtensionInfo();
-            $extensionVersion    = $parsedExtensionInfo['model']['extender_info']['extenderID'];
-            $xmi_version         = $parsedExtensionInfo['model']['xmi_version'];
-
-            if( !empty( $xmi_version ) ):
-                $parseReport['xmi_version'] = $xmi_version;
-            else:
-                $parseReport['xmi_version'] = "noVersion";
-            endif;
-
-            if( !empty( $extensionVersion ) ):
-
-                if( $extensionVersion === "6.5" ):
-                    $parseReport['extensionVersion'] = $extensionVersion;
+                if( $totalTrueRoots < 1 ):
+                    $parseReport['validateRoot'] = "noRoot";
+                elseif( $totalTrueRoots > 1 ):
+                    $parseReport['validateRoot'] = "manyRoot";
                 else:
-                    $parseReport['extensionVersion'] = "different";
+                    $parseReport['validateRoot'] = "valid";
                 endif;
 
-            else:
-                $parseReport['extensionVersion'] = "invalid";
-            endif;
+                /**
+                 * Check for the extension version
+                 */
+                $parsedExtensionInfo = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseModelExtensionInfo();
+                $extensionVersion    = $parsedExtensionInfo['model']['extender_info']['extenderID'];
+                $xmi_version         = $parsedExtensionInfo['model']['xmi_version'];
 
-            /**
-             * Check if all necessary items have been validated
-             */
-            $parseReport['validation_success'] = true;
+                if( !empty( $xmi_version ) ):
+                    $parseReport['xmi_version'] = $xmi_version;
+                else:
+                    $parseReport['xmi_version'] = "noVersion";
+                endif;
+
+                if( !empty( $extensionVersion ) ):
+
+                    if( $extensionVersion === "6.5" ):
+                        $parseReport['extensionVersion'] = $extensionVersion;
+                    else:
+                        $parseReport['extensionVersion'] = "different";
+                    endif;
+
+                else:
+                    $parseReport['extensionVersion'] = "invalid";
+                endif;
+
+                /**
+                 * Check if all necessary items have been validated
+                 */
+                if( !empty( $xmi_version ) ):
+                    $parseReport['validation_success'] = true;
+                endif;
 
             elseif( $isXML === "invalid" ):
 
-                $parseReport['isXML'] = $isXML;
+                $parseReport['isXML']            = $isXML;
 
             endif;
 

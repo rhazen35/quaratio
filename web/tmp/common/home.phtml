@@ -11,12 +11,6 @@ namespace web\tmp\common\home;
 
 use \application\controller;
 
-if( $_SERVER['REQUEST_METHOD'] === "POST" ):
-
-    ( new controller\Controller( "handler", "xmlModelUpload", "xmlModelUpload" ) )->request();
-
-endif;
-
 ?>
 
 <div class="home">
@@ -37,5 +31,18 @@ endif;
             </div>
         </form>
     </div>
+
+<?php
+
+if( $_SERVER['REQUEST_METHOD'] === "POST" ):
+
+    ?> <div class="modelUpload"><div class="modelUpload-error"> <?php
+    ( new controller\Controller( "handler", "xmlModelUpload", "xmlModelUpload" ) )->request();
+    ?> </div></div> <?php
+
+endif;
+
+?>
+
 </div>
 

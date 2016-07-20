@@ -48,3 +48,15 @@
     margin-left:0.5em;
     font-size:90%;
 }
+
+.modelReport-message
+{
+    font-size:90%;
+    padding:1em;
+}
+
+.modelUpload-error
+{
+    color: firebrick;
+    font-size: 90%;
+}

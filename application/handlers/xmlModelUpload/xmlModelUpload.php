@@ -86,7 +86,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
 
         else:
 
-            echo 'The file you uploaded can not be processed, please use another file.';
+            echo 'Er kon geen file gedetecteerd worden, kies het juiste bestand.';
 
         endif;
 
