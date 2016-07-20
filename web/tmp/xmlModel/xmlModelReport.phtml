@@ -31,111 +31,27 @@ var_dump($report);
 
     <div class="modelReport-Title">XMI Rapport - Enterprise Architect Model</div>
 
-    <?php if( !empty( $report['file_exists'] ) && $report['file_exists'] === true ): ?>
-
-        <div class="">Het model bestaat al!</div>
-
-    <?php else: ?>
-
-        <div class="modelReport-item">
-            <?php if( $report['validation_success'] === true ): ?>
-                <div class=""><img src="./images/icons/checkgreen_icon.png"></div>
-                <div class="modelReport-item-success">
-                    Validate is geslaagd!
-                </div>
-            <?php else: ?>
-                <div class=""><img src="./images/icons/red_cross_icon.png"></div>
-                <div class="modelReport-item-nosuccess">Validate is niet geslaagd.</div>
-            <?php endif; ?>
+    <?php
+        if( !empty( $report['file_exists'] ) && $report['file_exists'] === true ):
+            echo '<div class="">Het model bestaat al!</div>';
+        else:
+    ?>
+        <div class="modelReport-container">
+            <div class="modelReport-item">
+                <img src="./images/icons/list_icon.png">
+                <div class="modelReport-item-name">Onderdeel</div>
+                <div class="modelReport-item-value">Waarde</div>
+                <div class="modelReport-item-message">Bericht</div>
+                <div class="modelReport-item-type">Type</div>
+            </div>
+            <div class="modelReport-item">
+                <img src="./images/icons/<?= ( $report['xmiVersion']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <div class="modelReport-item-name"><?= $report['xmiVersion']['name']; ?></div>
+                <div class="modelReport-item-value"><?= $report['xmiVersion']['value']; ?></div>
+                <div class="modelReport-item-message"><?= $report['xmiVersion']['message']; ?></div>
+                <div class="modelReport-item-type"><?= $report['xmiVersion']['type']; ?></div>
+            </div>
         </div>
-
-        <?php if( $report['validation_success'] === false ): ?>
-            <div class="modelReport-message">
-                <p>
-                    De validatie is niet geslaagd.
-                    <br><br>
-                    <a href="<?= LITENING_SELF; ?>?data=<?= $urlData; ?>">Terug naar uploaden</a>
-                </p>
-            </div>
-        <?php elseif( $report['validation_success'] === true ): ?>
-            <div class="modelReport-message">
-                <p>
-                    Mocht u problemen ondervinden bij het uploaden neemt u dan contact op met de klantenservice.
-                    <br><br>
-                    <a href="<?= LITENING_SELF; ?>?data=<?= $urlData; ?>">Terug naar uploaden</a>
-                    <a href="<?= LITENING_SELF; ?>?data=<?= $urlData; ?>">Bekijk de preview</a>
-                </p>
-            </div>
-        <?php endif; ?>
-
-        <div class="modelReport-item">
-            <?php if( $report['isXML'] === "valid" ): ?>
-                <div class=""><img src="./images/icons/checkgreen_icon.png"></div>
-                <div class="modelReport-item-success">Het geuploade model is een XMI file.</div>
-            <?php else: ?>
-                <div class=""><img src="./images/icons/red_cross_icon.png"></div>
-                <div class="modelReport-item-nosuccess">Het geuploade model is geen XMI file!</div>
-            <?php endif; ?>
-        </div>
-
-        <?php if( $report['isXML'] === "valid" ): ?>
-            <div class="modelReport-item">
-                <?php if( $report['xmi_version'] !== "noVersion" ): ?>
-                    <div class=""><img src="./images/icons/checkgreen_icon.png"></div>
-                    <div class="modelReport-item-success">Er is een XMI versie aanwezig. ( versie: <?= $report['xmi_version']; ?> )</div>
-                <?php else: ?>
-                    <div class=""><img src="./images/icons/red_cross_icon.png"></div>
-                    <div class="modelReport-item-nosuccess">Geen XMI versie aanwezig.</div>
-                <?php endif; ?>
-            </div>
-
-            <div class="modelReport-item">
-                <?php if( $report['extensionVersion'] !== "invalid" ): ?>
-                    <div class=""><img src="./images/icons/checkgreen_icon.png"></div>
-                    <div class="modelReport-item-success">De extensie heeft de juiste versie. ( versie: <?= $report['extensionVersion']; ?> )</div>
-                <?php else: ?>
-                    <div class=""><img src="./images/icons/red_cross_icon.png"></div>
-                    <div class="modelReport-item-nosuccess">De extensie heeft niet de juiste versie.</div>
-                <?php endif; ?>
-            </div>
-
-            <div class="modelReport-item">
-                <?php if( $report['classes'] === "manyClasses" ): ?>
-                    <div class=""><img src="./images/icons/checkgreen_icon.png"></div>
-                    <div class="modelReport-item-success">Er zijn meerdere classes aanwezig.</div>
-                <?php elseif( $report['classes'] === "oneClass" ): ?>
-                    <div class=""><img src="./images/icons/red_cross_icon.png"></div>
-                    <div class="modelReport-item-nosuccess">Er is maar 1 klas aanwezig!</div>
-                <?php else: ?>
-                    <div class=""><img src="./images/icons/red_cross_icon.png"></div>
-                    <div class="modelReport-item-nosuccess">Er zijn geen classes aanwezig!</div>
-                <?php endif; ?>
-            </div>
-
-            <div class="modelReport-item">
-                <?php if( $report['validateRoot'] === "valid" ): ?>
-                    <div class=""><img src="./images/icons/checkgreen_icon.png"></div>
-                    <div class="modelReport-item-success">Er is een root class aanwezig.</div>
-                <?php elseif( $report['validateRoot'] === "manyRoot" ): ?>
-                    <div class=""><img src="./images/icons/red_cross_icon.png"></div>
-                    <div class="modelReport-item-nosuccess">Er zijn meerdere roots, 1 root is toegestaan.</div>
-                <?php else: ?>
-                    <div class=""><img src="./images/icons/red_cross_icon.png"></div>
-                    <div class="modelReport-item-nosuccess">Er is geen root aanwezig.</div>
-                <?php endif; ?>
-            </div>
-
-        <?php else: ?>
-            <div class="modelReport-message">
-                <p>
-                    Alleen bestanden met een .xmi extensie zijn toegestaan.<br>
-                    Mocht u problemen ondervinden bij het uploaden neemt u dan contact op met de klantenservice.
-                    <br><br>
-                    <a href="<?= LITENING_SELF; ?>?data=<?= $urlData; ?>">Terug naar uploaden</a>
-                </p>
-            </div>
-        <?php endif; ?>
-
     <?php endif; ?>
 
 </div>

@@ -44,7 +44,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
             /**
              * Hash and save the file if validation was succesfull
              */
-            if( $report['validation_success'] === true ):
+            if( $report['validation']['valid'] === true ):
 
 
                 if( !hash_equals( $newFile, $matchHash ) ):

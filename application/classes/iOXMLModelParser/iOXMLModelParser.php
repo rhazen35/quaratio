@@ -60,7 +60,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
             foreach ( $elements as $element ):
 
                 /** @var  $namespaces */
-                $namespaces = $element->getNameSpaces( true );
+                $namespaces   = $element->getNameSpaces( true );
                 $xmiNamespace = $namespaces['xmi'];
 
                 /** Class name */

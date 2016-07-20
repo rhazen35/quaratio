@@ -10,9 +10,9 @@ namespace application\classes\iOXMLModelUpload;
 
 use \application\controller;
 use \application\model\service;
-use application\classes\iOXMLValidator;
+use application\classes\iOXMLEAValidator;
 
-( new controller\Controller( "class", "iOXMLValidator", "iOXMLValidator" ) )->request();
+( new controller\Controller( "class", "iOXMLEAValidator", "iOXMLEAValidator" ) )->request();
 
 if( !class_exists( "IOXMLModelUpload" ) ):
 
@@ -53,7 +53,7 @@ if( !class_exists( "IOXMLModelUpload" ) ):
         private function newModel()
         {
 
-            $validateXMLFile    = ( new iOXMLValidator\IOXMLValidator( $this->xmlFile ) )->validate();
+            $validateXMLFile    = ( new iOXMLEAValidator\IOXMLEAValidator( $this->xmlFile ) )->validate();
 
             return( $validateXMLFile );
 

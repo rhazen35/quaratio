@@ -22,15 +22,57 @@
     border-bottom:1px solid #1896CC;
 }
 
+.modelReport-container
+{
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    width:98%;
+    height:auto;
+    margin: 1% auto;
+}
+
 .modelReport-item
 {
     clear:both;
+    width:100%;
     margin: 0 auto;
-    padding-top:1em;
-    padding-left:1em;
     text-align: center;
     font-size:90%;
+    border:1px solid #CCCCCC;
     overflow:hidden;
+}
+
+.modelReport-item-name,
+.modelReport-item-value,
+.modelReport-item-message,
+.modelReport-item-type,
+.modelReport-item img
+{
+    float:left;
+    line-height:20px;
+    padding:0.25em;
+    font-size:90%;
+    border-right:1px solid #CCCCCC;
+}
+.modelReport-item-name
+{
+    width:30%;
+}
+
+.modelReport-item-value
+{
+    width:10%;
+}
+
+.modelReport-item-message
+{
+    width:40%;
+}
+
+.modelReport-item-type
+{
+    width:10%;
 }
 
 .modelReport-item img
@@ -38,15 +80,6 @@
     float:left;
     width:20px;
     height:20px;
-}
-
-.modelReport-item-success,
-.modelReport-item-nosuccess
-{
-    float:left;
-    line-height:20px;
-    margin-left:0.5em;
-    font-size:90%;
 }
 
 .modelReport-message

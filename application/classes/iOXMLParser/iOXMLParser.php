@@ -40,9 +40,9 @@ if( !empty( "IOXMLParser" ) ):
             $xml = @simplexml_load_file( $this->xmlFile );
 
             if ( $xml === false ):
-                return( "invalid" );
+                return( false );
             else:
-                return( "valid" );
+                return( true );
             endif;
 
         }
