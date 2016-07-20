@@ -1,6 +1,7 @@
 .modelReport
 {
     width:75%;
+    min-width: 800px;
     height:auto;
     margin: 0 auto;
     margin-top:2em;
@@ -41,6 +42,25 @@
     font-size:90%;
     border:1px solid #CCCCCC;
     overflow:hidden;
+}
+
+.modelReport-totalValidation
+{
+    width:100%;
+    height:auto;
+    margin: 0 auto;
+    padding:0.25em;
+    color:#FFFFFF;
+}
+
+.totalValidationGreen
+{
+    background-color: #006600;
+}
+
+.modelReport-grayBack
+{
+    background-color:#707070;
 }
 
 .modelReport-item-name,

@@ -38,11 +38,23 @@ var_dump($report);
     ?>
         <div class="modelReport-container">
             <div class="modelReport-item">
+                <div class="modelReport-totalValidation <?= ( $report['validation']['valid'] === true ? "totalValidationGreen" : "totalValidationRed" ) ?>">
+                    <?= $report['validation']['message']; ?>
+                </div>
+            </div>
+            <div class="modelReport-item modelReport-grayBack">
                 <img src="./images/icons/list_icon.png">
-                <div class="modelReport-item-name">Onderdeel</div>
-                <div class="modelReport-item-value">Waarde</div>
-                <div class="modelReport-item-message">Bericht</div>
+                <div class="modelReport-item-name">Check</div>
+                <div class="modelReport-item-value">Info</div>
+                <div class="modelReport-item-message">Message</div>
                 <div class="modelReport-item-type">Type</div>
+            </div>
+            <div class="modelReport-item">
+                <img src="./images/icons/<?= ( $report['isXML']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <div class="modelReport-item-name"><?= $report['isXML']['name']; ?></div>
+                <div class="modelReport-item-value"><?= $report['isXML']['value']; ?></div>
+                <div class="modelReport-item-message"><?= $report['isXML']['message']; ?></div>
+                <div class="modelReport-item-type"><?= $report['isXML']['type']; ?></div>
             </div>
             <div class="modelReport-item">
                 <img src="./images/icons/<?= ( $report['xmiVersion']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
@@ -50,6 +62,34 @@ var_dump($report);
                 <div class="modelReport-item-value"><?= $report['xmiVersion']['value']; ?></div>
                 <div class="modelReport-item-message"><?= $report['xmiVersion']['message']; ?></div>
                 <div class="modelReport-item-type"><?= $report['xmiVersion']['type']; ?></div>
+            </div>
+            <div class="modelReport-item">
+                <img src="./images/icons/<?= ( $report['extensionVersion']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <div class="modelReport-item-name"><?= $report['extensionVersion']['name']; ?></div>
+                <div class="modelReport-item-value"><?= $report['extensionVersion']['value']; ?></div>
+                <div class="modelReport-item-message"><?= $report['extensionVersion']['message']; ?></div>
+                <div class="modelReport-item-type"><?= $report['extensionVersion']['type']; ?></div>
+            </div>
+            <div class="modelReport-item">
+                <img src="./images/icons/<?= ( $report['totalClasses']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <div class="modelReport-item-name"><?= $report['totalClasses']['name']; ?></div>
+                <div class="modelReport-item-value"><?= $report['totalClasses']['value']; ?></div>
+                <div class="modelReport-item-message"><?= $report['totalClasses']['message']; ?></div>
+                <div class="modelReport-item-type"><?= $report['totalClasses']['type']; ?></div>
+            </div>
+            <div class="modelReport-item">
+                <img src="./images/icons/<?= ( $report['lastModified']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <div class="modelReport-item-name"><?= $report['lastModified']['name']; ?></div>
+                <div class="modelReport-item-value"><?= $report['lastModified']['value']; ?></div>
+                <div class="modelReport-item-message"><?= $report['lastModified']['message']; ?></div>
+                <div class="modelReport-item-type"><?= $report['lastModified']['type']; ?></div>
+            </div>
+            <div class="modelReport-item">
+                <img src="./images/icons/<?= ( $report['totalRoots']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <div class="modelReport-item-name"><?= $report['totalRoots']['name']; ?></div>
+                <div class="modelReport-item-value"><?= $report['totalRoots']['value']; ?></div>
+                <div class="modelReport-item-message"><?= $report['totalRoots']['message']; ?></div>
+                <div class="modelReport-item-type"><?= $report['totalRoots']['type']; ?></div>
             </div>
         </div>
     <?php endif; ?>

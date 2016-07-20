@@ -65,6 +65,11 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
                 /** Class name */
                 $className = ( new xmlController\XmlController( $element, "getNodeAttribute", "name" ) )->request();
+                $classArray[$className]['name'] = $className;
+
+                $project   = $element->children()->project;
+                $modified  = ( new xmlController\XmlController( $project, "getNodeAttribute", "modified" ) )->request();
+                $classArray[$className]['modified'] = $modified;
 
                 /**
                  * Get the element properties to access the isRoot value
@@ -170,6 +175,10 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     /** @var  $operationName */
                     $operationName  = (string) $operations->operation[$i]->attributes()->name;
 
+                    /** Define the operations array and add the operation name */
+                    $classArray[$className]['operations']['operation'.($i+1)] = array();
+                    $classArray[$className]['operations']['operation'.($i+1)]['name'] = $operationName;
+
                     /**
                      * idref, position, type, abstract, documentation
                      */
@@ -179,17 +188,15 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     $abstract       = (string) $operations->operation[$i]->type->attributes()->isAbstract;
                     $documentation  = (string) $operations->operation[$i]->documentation->attributes()->value;
 
-                    /** Define the operations array */
-                    $classArray[$className]['operations'][$operationName] = array();
-
                     /**
                      * Add idref, position, type, abstract and documentation to the operations array.
                      */
-                    $classArray[$className]['operations'][$operationName]['idref']          = $idref;
-                    $classArray[$className]['operations'][$operationName]['position']       = $position;
-                    $classArray[$className]['operations'][$operationName]['type']           = $type;
-                    $classArray[$className]['operations'][$operationName]['abstract']       = $abstract;
-                    $classArray[$className]['operations'][$operationName]['documentation']  = $documentation;
+                    $classArray[$className]['operations']['operation'.($i+1)]['className']      = $className;
+                    $classArray[$className]['operations']['operation'.($i+1)]['idref']          = $idref;
+                    $classArray[$className]['operations']['operation'.($i+1)]['position']       = $position;
+                    $classArray[$className]['operations']['operation'.($i+1)]['type']           = $type;
+                    $classArray[$className]['operations']['operation'.($i+1)]['abstract']       = $abstract;
+                    $classArray[$className]['operations']['operation'.($i+1)]['documentation']  = $documentation;
 
                     /**
                      * Behaviour
@@ -212,9 +219,9 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
                         /** Add the file, sheet and cells to the excel array */
                         for ($k = 0; $k < $totalFiles; $k++):
-                            $classArray[$className]['operations'][$operationName]['behaviour']['excel'.($k+1)]['file']  = (string) $xml->excel[$k]->file;
-                            $classArray[$className]['operations'][$operationName]['behaviour']['excel'.($k+1)]['tab']   = (string) $xml->excel[$k]->tab;
-                            $classArray[$className]['operations'][$operationName]['behaviour']['excel'.($k+1)]['cells'] = (string) $xml->excel[$k]->cells;
+                            $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['file']  = (string) $xml->excel[$k]->file;
+                            $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['tab']   = (string) $xml->excel[$k]->tab;
+                            $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['cells'] = (string) $xml->excel[$k]->cells;
                         endfor;
 
                     endif;
@@ -237,9 +244,9 @@ if( !class_exists( "IOXMLModelParser" ) ):
                             if( !empty( $tagValue ) ):
                                 list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
 
-                                $classArray[$className]['operations'][$operationName]['tags'][$tagName]['file'] = trim($file);
-                                $classArray[$className]['operations'][$operationName]['tags'][$tagName]['tab']  = trim($tab);
-                                $classArray[$className]['operations'][$operationName]['tags'][$tagName]['cell'] = trim($cell);
+                                $classArray[$className]['operation'.($i+1)][$operationName]['tags'][$tagName]['file'] = trim($file);
+                                $classArray[$className]['operation'.($i+1)][$operationName]['tags'][$tagName]['tab']  = trim($tab);
+                                $classArray[$className]['operation'.($i+1)][$operationName]['tags'][$tagName]['cell'] = trim($cell);
 
                             endif;
 
