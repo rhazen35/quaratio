@@ -73,6 +73,7 @@
     line-height:20px;
     padding:0.25em;
     font-size:90%;
+    text-align: left;
     border-right:1px solid #CCCCCC;
 }
 .modelReport-item-name

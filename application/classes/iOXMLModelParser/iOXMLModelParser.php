@@ -227,26 +227,28 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     endif;
 
                     /**
-                     * Tags for excel address
+                     * Operation tags for file, tab and cell
                      */
-                    $tags = $operations->operation[$i]->tags->tag;
+                    $tags = $operations->operation[$i]->tags->children();
                     $totalTags = count($tags);
 
                     if( !empty( $tags ) && $tags !== 0 ):
 
                         for($l = 0; $l < $totalTags; $l++):
 
-                            if( !empty( $operations->operation[$l]->tags->tag[$l] ) ):
-                                $tagName  = (string) $operations->operation[$l]->tags->tag[$l]->attributes()->name;
-                                $tagValue = (string) $operations->operation[$i]->tags->tag[$l]->attributes()->value;
+                            if( !empty( $tags ) ):
+                                $tagName  = (string) $tags->tag[$l]->attributes()->name;
+                                $tagValue = (string) $tags->tag[$l]->attributes()->value;
                             endif;
 
                             if( !empty( $tagValue ) ):
                                 list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
 
-                                $classArray[$className]['operation'.($i+1)][$operationName]['tags'][$tagName]['file'] = trim($file);
-                                $classArray[$className]['operation'.($i+1)][$operationName]['tags'][$tagName]['tab']  = trim($tab);
-                                $classArray[$className]['operation'.($i+1)][$operationName]['tags'][$tagName]['cell'] = trim($cell);
+                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['operation'] = trim($operationName);
+                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['name'] = trim($tagName);
+                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['file'] = trim($file);
+                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['tab']  = trim($tab);
+                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['cell'] = trim($cell);
 
                             endif;
 
@@ -282,29 +284,29 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     /**
                      * Tags for excel address
                      */
-                    $tags = $attributes->attribute[$i]->tags->tag;
-                    $totalTags = count($tags);
-
-                    if( !empty( $totalTags ) ):
-
-                        for($l = 0; $l < $totalTags; $l++):
-
-                            $tagName  = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->name;
-                            $tagValue = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->value;
-
-                            if( !empty( $tagValue ) ):
-
-                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
-
-                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['file'] = trim($file);
-                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['tab']  = trim($tab);
-                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['cell'] = trim($cell);
-
-                            endif;
-
-                        endfor;
-
-                    endif;
+//                    $tags = $attributes->attribute[$i]->tags->tag;
+//                    $totalTags = count($tags);
+//
+//                    if( !empty( $totalTags ) ):
+//
+//                        for($l = 0; $l < $totalTags; $l++):
+//
+//                            $tagName  = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->name;
+//                            $tagValue = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->value;
+//
+//                            if( !empty( $tagValue ) ):
+//
+//                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+//
+//                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['file'] = trim($file);
+//                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['tab']  = trim($tab);
+//                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['cell'] = trim($cell);
+//
+//                            endif;
+//
+//                        endfor;
+//
+//                    endif;
 
                 endfor;
 
@@ -420,11 +422,13 @@ if( !class_exists( "IOXMLModelParser" ) ):
                 $modelType      = (string) $source->children()->model->attributes()->type;
                 $modelEALocalId = (string) $source->children()->model->attributes()->ea_localid;
                 $multiplicity   = (string) $source->children()->type->attributes()->multiplicity;
+                $aggregation    = (string) $source->children()->type->attributes()->aggregation;
 
                 $connectorArray['connectors']['connector'.($i+1)]['source']['model']['name']         = $modelName;
                 $connectorArray['connectors']['connector'.($i+1)]['source']['model']['type']         = $modelType;
                 $connectorArray['connectors']['connector'.($i+1)]['source']['model']['ea_localid']   = $modelEALocalId;
                 $connectorArray['connectors']['connector'.($i+1)]['source']['model']['multiplicity'] = $multiplicity;
+                $connectorArray['connectors']['connector'.($i+1)]['source']['model']['aggregation']  = $aggregation;
 
                 /**
                  * Get the connector target and add it as an array to the connectors array

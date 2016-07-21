@@ -50,11 +50,19 @@ if( !class_exists( "IOXMLEAValidator" ) ):
             $parseReport['isXML']['valid']     = ( $isXML === true ? true : false );
             $parseReport['isXML']['message']   = ( $isXML === true ? "yes" : "no" );
 
+            /**
+             * Only continue validation when the file is an XML
+             */
             if( $isXML === true ):
 
+                /**
+                 * Parse the classes and count them
+                 * Check if at least one class can be found
+                 */
                 $parsedClasses    = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
-                $parsedConnectors = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseConnectors();
                 $totalClasses     = count( $parsedClasses );
+
+                //var_dump($parsedClasses);
 
                 $parseReport['totalClasses']              = array();
                 $parseReport['totalClasses']['name']      = ( $totalClasses === 1 ? "Class" : "Classes" );
@@ -70,7 +78,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                 $parseReport['totalClasses']['message']   = ( $totalClasses !== 0 ? $totalClasses.' classes found.' : "No classes found.");
 
                 /**
-                 * Check if a root is available and if only one root is available
+                 * Collect data from the parsed classes
                  */
                 $roots            = array();
                 $trueRoots        = array();
@@ -104,48 +112,109 @@ if( !class_exists( "IOXMLEAValidator" ) ):
 
                     endforeach;
 
-                    $noDocumentation = array();
+                    /**
+                     * Get all operations without from the parsed classes
+                     */
+                    $operationsArray = array();
 
                     if( !empty( $operations ) ):
 
                         $i = 0;
                         foreach( $operations as $operation ):
-                            $noDocumentation[$i] = $operation;
+                            $operationsArray[$i] = $operation;
                             $i++;
                         endforeach;
 
                         $j = 0;
-                        foreach($noDocumentation as $operations):
+                        $k = 0;
+                        $l = 0;
+                        $m = 0;
+                        foreach($operationsArray as $operations):
 
                             foreach( $operations as $operation ):
 
-
+                                /**
+                                 * Add all operations without documentation to the parse report
+                                 */
                                 if( $operation['documentation'] === "" ):
 
-                                    //var_dump($operation);
+                                    $parseReport['operations']['documentation']['operation'.($j+1)]              = array();
+                                    $parseReport['operations']['documentation']['operation'.($j+1)]['name']      = ( "Operation documentation" );
 
-                                    $parseReport['operations']['operation'.($j+1)]              = array();
-                                    $parseReport['operations']['operation'.($j+1)]['name']      = ( "Operation documentation" );
+                                    $parseReport['operations']['documentation']['operation'.($j+1)]['type']      = "info";
 
-                                    $parseReport['operations']['operation'.($j+1)]['type']       = "info";
-
-                                    $parseReport['operations']['operation'.($j+1)]['value']     = "empty";
-                                    $parseReport['operations']['operation'.($j+1)]['valid']     = false;
-                                    $parseReport['operations']['operation'.($j+1)]['message']   = "Operation: " .$operation['name'].", Class: ".$operation['className'];
+                                    $parseReport['operations']['documentation']['operation'.($j+1)]['value']     = "empty";
+                                    $parseReport['operations']['documentation']['operation'.($j+1)]['valid']     = false;
+                                    $parseReport['operations']['documentation']['operation'.($j+1)]['message']   = "Operation: " .$operation['name'].", Class: ".$operation['className'];
 
                                     $j++;
 
                                 endif;
 
-                            endforeach;
+                                if( !empty( $operation['tags'] ) ):
 
+                                    foreach($operation['tags'] as $tag):
+
+                                        if( empty( $tag['file'] ) ):
+
+                                            $parseReport['operations']['file']['operation'.($k+1)]              = array();
+                                            $parseReport['operations']['file']['operation'.($k+1)]['name']      = "Operation file";
+                                            $parseReport['operations']['file']['operation'.($k+1)]['tagName']   = $tag['name'];
+
+                                            $parseReport['operations']['file']['operation'.($k+1)]['type']       = "info";
+
+                                            $parseReport['operations']['file']['operation'.($k+1)]['value']     = "empty";
+                                            $parseReport['operations']['file']['operation'.($k+1)]['valid']     = false;
+                                            $parseReport['operations']['file']['operation'.($k+1)]['message']   = "Operation: " .$operation['name'].", Class: ".$operation['className'];
+
+                                            $k++;
+
+                                        endif;
+
+                                        if( empty( $tag['tab'] ) ):
+
+                                            $parseReport['operations']['tab']['operation'.($l+1)]              = array();
+                                            $parseReport['operations']['tab']['operation'.($l+1)]['name']      = "Operation tab";
+                                            $parseReport['operations']['tab']['operation'.($l+1)]['tagName']   = $tag['name'];
+
+                                            $parseReport['operations']['tab']['operation'.($l+1)]['type']       = "info";
+
+                                            $parseReport['operations']['tab']['operation'.($l+1)]['value']     = "empty";
+                                            $parseReport['operations']['tab']['operation'.($l+1)]['valid']     = false;
+                                            $parseReport['operations']['tab']['operation'.($l+1)]['message']   = "Operation: " .$operation['name'].", Class: ".$operation['className'];
+
+                                            $l++;
+
+                                        endif;
+
+                                        if( empty( $tag['cell'] ) ):
+
+                                            $parseReport['operations']['cell']['operation'.($m+1)]              = array();
+                                            $parseReport['operations']['cell']['operation'.($m+1)]['name']      = "Operation cell";
+                                            $parseReport['operations']['cell']['operation'.($m+1)]['tagName']   = $tag['name'];
+
+                                            $parseReport['operations']['cell']['operation'.($m+1)]['type']       = "info";
+
+                                            $parseReport['operations']['cell']['operation'.($m+1)]['value']     = "empty";
+                                            $parseReport['operations']['cell']['operation'.($m+1)]['valid']     = false;
+                                            $parseReport['operations']['cell']['operation'.($m+1)]['message']   = "Operation: " .$operation['name'].", Class: ".$operation['className'];
+
+                                            $m++;
+
+                                        endif;
+
+                                    endforeach;
+
+                                endif;
+
+                            endforeach;
 
                         endforeach;
 
                     endif;
 
                     /**
-                     * Get the last modified date
+                     * Get the last modified date and add it to the report array
                      */
                     $maxDate           = max(array_map('strtotime', $modifiedDates));
                     $maxDate           = date('Y-m-j H:i:s', $maxDate);
@@ -169,6 +238,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                     $parseReport['lastModified']['valid']     = true;
                     $parseReport['lastModified']['message']   = "Class name: ".$modifiedClassName;
 
+                    /**
+                     * Get all true roots and add them to the true roots array
+                     */
                     $totalRoots = count( $roots );
 
                     if( $totalRoots !== 0 ):
@@ -179,6 +251,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                         endfor;
                     endif;
 
+                    /**
+                     * Count all true roots and determine if there is only one, also add it to the report array
+                     */
                     $totalTrueRoots = count( $trueRoots );
 
                     $parseReport['totalRoots']              = array();
@@ -197,7 +272,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                 endif;
 
                 /**
-                 * Check for the xmi version
+                 * Check for the xmi version and add it to the report array
                  */
                 $parsedExtensionInfo = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseModelExtensionInfo();
                 $extensionVersion    = $parsedExtensionInfo['model']['extender_info']['extenderID'];
@@ -219,7 +294,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                 $parseReport['xmiVersion']['message']   = ( !empty( $xmi_version ) ? ( $xmi_version === "2.1" ? "Version found" : "Version found but other then 2.1" ) : "No version found" );
 
                 /**
-                 * Check for the extension version
+                 * Check for the extension version and add it to the report array
                  */
                 $parseReport['extensionVersion']              = array();
                 $parseReport['extensionVersion']['name']      = "EA extension version";
@@ -239,7 +314,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
             endif;
 
             /**
-             * Check if all necessary items have been validated and conclude the total validation.
+             * Check if all necessary items have been validated and conclude the total validation, also add it to the report array.
              */
             $parseReport['validation']              = array();
             $parseReport['validation']['name']      = "Validation";
