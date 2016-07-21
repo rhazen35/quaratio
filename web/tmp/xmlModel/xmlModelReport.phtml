@@ -42,6 +42,7 @@ var_dump($report);
                     <?= $report['validation']['message']; ?>
                 </div>
             </div>
+
             <div class="modelReport-item modelReport-grayBack">
                 <img src="./images/icons/list_icon.png">
                 <div class="modelReport-item-name">Check</div>
@@ -49,49 +50,94 @@ var_dump($report);
                 <div class="modelReport-item-message">Message</div>
                 <div class="modelReport-item-type">Type</div>
             </div>
+
             <div class="modelReport-item">
-                <img src="./images/icons/<?= ( $report['isXML']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <?php $type = $report['isXML']['type']; ?>
+                <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
                 <div class="modelReport-item-name"><?= $report['isXML']['name']; ?></div>
                 <div class="modelReport-item-value"><?= $report['isXML']['value']; ?></div>
                 <div class="modelReport-item-message"><?= $report['isXML']['message']; ?></div>
                 <div class="modelReport-item-type"><?= $report['isXML']['type']; ?></div>
             </div>
+
+            <?php if( isset( $report['xmiVersion'] ) ): ?>
             <div class="modelReport-item">
-                <img src="./images/icons/<?= ( $report['xmiVersion']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <?php $type = $report['xmiVersion']['type']; ?>
+                <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
                 <div class="modelReport-item-name"><?= $report['xmiVersion']['name']; ?></div>
                 <div class="modelReport-item-value"><?= $report['xmiVersion']['value']; ?></div>
                 <div class="modelReport-item-message"><?= $report['xmiVersion']['message']; ?></div>
                 <div class="modelReport-item-type"><?= $report['xmiVersion']['type']; ?></div>
             </div>
+            <?php endif; ?>
+
+            <?php if( isset( $report['extensionVersion'] ) ): ?>
             <div class="modelReport-item">
-                <img src="./images/icons/<?= ( $report['extensionVersion']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <?php $type = $report['extensionVersion']['type']; ?>
+                <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
                 <div class="modelReport-item-name"><?= $report['extensionVersion']['name']; ?></div>
                 <div class="modelReport-item-value"><?= $report['extensionVersion']['value']; ?></div>
                 <div class="modelReport-item-message"><?= $report['extensionVersion']['message']; ?></div>
                 <div class="modelReport-item-type"><?= $report['extensionVersion']['type']; ?></div>
             </div>
+            <?php endif; ?>
+
+            <?php if( isset( $report['totalClasses'] ) ): ?>
             <div class="modelReport-item">
-                <img src="./images/icons/<?= ( $report['totalClasses']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <?php $type = $report['totalClasses']['type']; ?>
+                <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
                 <div class="modelReport-item-name"><?= $report['totalClasses']['name']; ?></div>
                 <div class="modelReport-item-value"><?= $report['totalClasses']['value']; ?></div>
                 <div class="modelReport-item-message"><?= $report['totalClasses']['message']; ?></div>
                 <div class="modelReport-item-type"><?= $report['totalClasses']['type']; ?></div>
             </div>
+            <?php endif; ?>
+
+            <?php if( isset( $report['lastModified'] ) ): ?>
             <div class="modelReport-item">
-                <img src="./images/icons/<?= ( $report['lastModified']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <?php $type = $report['lastModified']['type']; ?>
+                <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
                 <div class="modelReport-item-name"><?= $report['lastModified']['name']; ?></div>
                 <div class="modelReport-item-value"><?= $report['lastModified']['value']; ?></div>
                 <div class="modelReport-item-message"><?= $report['lastModified']['message']; ?></div>
                 <div class="modelReport-item-type"><?= $report['lastModified']['type']; ?></div>
             </div>
+            <?php endif; ?>
+
+            <?php if( isset( $report['totalRoots'] ) ): ?>
             <div class="modelReport-item">
-                <img src="./images/icons/<?= ( $report['totalRoots']['valid'] === true ? "checkgreen_icon.png" : "red_cross_icon.png" ); ?>">
+                <?php $type = $report['totalRoots']['type']; ?>
+                <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
                 <div class="modelReport-item-name"><?= $report['totalRoots']['name']; ?></div>
                 <div class="modelReport-item-value"><?= $report['totalRoots']['value']; ?></div>
                 <div class="modelReport-item-message"><?= $report['totalRoots']['message']; ?></div>
                 <div class="modelReport-item-type"><?= $report['totalRoots']['type']; ?></div>
             </div>
+            <?php endif; ?>
+
+            <?php
+
+                $totalOperations = count( $report['operations'] );
+
+                for( $i = 0; $i < $totalOperations; $i++ ):
+
+                    ?>
+                    <div class="modelReport-item">
+                        <?php $type = $report['operations']['operation'.($i+1)]['type']; ?>
+                        <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
+                    <div class="modelReport-item-name"><?= $report['operations']['operation'.($i+1)]['name']; ?></div>
+                    <div class="modelReport-item-value"><?= $report['operations']['operation'.($i+1)]['value']; ?></div>
+                    <div class="modelReport-item-message"><?= $report['operations']['operation'.($i+1)]['message']; ?></div>
+                    <div class="modelReport-item-type"><?= $report['operations']['operation'.($i+1)]['type']; ?></div>
+                    </div>
+                    <?php
+
+                endfor;
+
+            ?>
+
         </div>
+
     <?php endif; ?>
 
 </div>

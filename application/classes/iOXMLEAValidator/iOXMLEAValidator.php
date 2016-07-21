@@ -106,22 +106,43 @@ if( !class_exists( "IOXMLEAValidator" ) ):
 
                     $noDocumentation = array();
 
-                    $i = 0;
-                    foreach( $operations as $operation ):
+                    if( !empty( $operations ) ):
 
-                        $totalOperations = count($operation);
-                        for($j = 0; $j < $totalOperations; $j++):
+                        $i = 0;
+                        foreach( $operations as $operation ):
+                            $noDocumentation[$i] = $operation;
+                            $i++;
+                        endforeach;
 
-                            $noDocumentation[$j] = $operation;
+                        $j = 0;
+                        foreach($noDocumentation as $operations):
 
-                        endfor;
+                            foreach( $operations as $operation ):
 
-                        $i++;
-                    endforeach;
 
-                    echo '<pre>';
-                    print_r($operations);
+                                if( $operation['documentation'] === "" ):
 
+                                    //var_dump($operation);
+
+                                    $parseReport['operations']['operation'.($j+1)]              = array();
+                                    $parseReport['operations']['operation'.($j+1)]['name']      = ( "Operation documentation" );
+
+                                    $parseReport['operations']['operation'.($j+1)]['type']       = "info";
+
+                                    $parseReport['operations']['operation'.($j+1)]['value']     = "empty";
+                                    $parseReport['operations']['operation'.($j+1)]['valid']     = false;
+                                    $parseReport['operations']['operation'.($j+1)]['message']   = "Operation: " .$operation['name'].", Class: ".$operation['className'];
+
+                                    $j++;
+
+                                endif;
+
+                            endforeach;
+
+
+                        endforeach;
+
+                    endif;
 
                     /**
                      * Get the last modified date
@@ -215,17 +236,17 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                 $parseReport['extensionVersion']['valid']     = ( !empty( $extensionVersion ) && $extensionVersion === "6.5" ? true : false );
                 $parseReport['extensionVersion']['message']   = ( !empty( $extensionVersion ) ? ( $extensionVersion === "6.5" ? "Version found" : "Version found but other then 6.5" ) : "No version found" );
 
-                /**
-                 * Check if all necessary items have been validated and conclude the total validation.
-                 */
-                $parseReport['validation']              = array();
-                $parseReport['validation']['name']      = "Validation";
-                $parseReport['validation']['type']      = "severe";
-                $parseReport['validation']['value']     = true;
-                $parseReport['validation']['valid']     = false;
-                $parseReport['validation']['message']   = "Validation successful";
-
             endif;
+
+            /**
+             * Check if all necessary items have been validated and conclude the total validation.
+             */
+            $parseReport['validation']              = array();
+            $parseReport['validation']['name']      = "Validation";
+            $parseReport['validation']['type']      = "severe";
+            $parseReport['validation']['value']     = true;
+            $parseReport['validation']['valid']     = false;
+            $parseReport['validation']['message']   = "Validation successful";
 
             return( $parseReport );
 
