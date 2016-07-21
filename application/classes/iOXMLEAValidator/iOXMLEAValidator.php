@@ -13,7 +13,6 @@ use application\classes\iOXMLModelParser;
 use \application\classes\iOXMLParser;
 
 ( new controller\Controller( "class", "iOXMLModelParser", "iOXMLModelParser" ) )->request();
-//
 
 if( !class_exists( "IOXMLEAValidator" ) ):
 
@@ -21,6 +20,8 @@ if( !class_exists( "IOXMLEAValidator" ) ):
     {
 
         protected $xmlFile;
+        protected $matchExcelFormat = '/^[A-Za-z]+[0-9]+(\:)?(?(1)[A-Za-z]+[0-9]+|[0-9]?)$/';
+
 
         public function __construct( $xmlFile )
         {
@@ -62,7 +63,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                 $parsedClasses    = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
                 $totalClasses     = count( $parsedClasses );
 
-                //var_dump($parsedClasses);
+                var_dump($parsedClasses);
 
                 $parseReport['totalClasses']              = array();
                 $parseReport['totalClasses']['name']      = ( $totalClasses === 1 ? "Class" : "Classes" );
@@ -129,6 +130,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                         $k = 0;
                         $l = 0;
                         $m = 0;
+                        $n = 0;
                         foreach($operationsArray as $operations):
 
                             foreach( $operations as $operation ):
@@ -200,6 +202,24 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                                             $parseReport['operations']['cell']['operation'.($m+1)]['message']   = "Operation: " .$operation['name'].", Class: ".$operation['className'];
 
                                             $m++;
+
+                                        elseif( !empty( $tag['cell'] && $tag['name'] !== "QR-Volgorde" ) ):
+
+                                                if( !preg_match( $this->matchExcelFormat , $tag['cell']) ):
+
+                                                    $parseReport['operations']['cell']['operation'.($n+1)]              = array();
+                                                    $parseReport['operations']['cell']['operation'.($n+1)]['name']      = "Operation cell format";
+                                                    $parseReport['operations']['cell']['operation'.($n+1)]['tagName']   = $tag['name'];
+
+                                                    $parseReport['operations']['cell']['operation'.($n+1)]['type']       = "info";
+
+                                                    $parseReport['operations']['cell']['operation'.($n+1)]['value']     = "invalid";
+                                                    $parseReport['operations']['cell']['operation'.($n+1)]['valid']     = false;
+                                                    $parseReport['operations']['cell']['operation'.($n+1)]['message']   = "Operation: " .$operation['name'].", Class: ".$operation['className'];
+
+                                                    $n++;
+
+                                                endif;
 
                                         endif;
 

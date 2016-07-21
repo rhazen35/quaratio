@@ -281,6 +281,10 @@ if( !class_exists( "IOXMLModelParser" ) ):
                     $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
                     $classArray[$className]['fields'][$inputName]['data_type'] = $inputFieldDataType;
 
+                    /** Input field initial value */
+                    $inputInitialValue = (string) $attributes->attribute[$i]->initial->attributes()->body;
+                    $classArray[$className]['fields'][$inputName]['initialValue'] = $inputInitialValue;
+
                     /**
                      * Tags for excel address
                      */
