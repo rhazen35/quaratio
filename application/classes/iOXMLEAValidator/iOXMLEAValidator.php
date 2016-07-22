@@ -47,9 +47,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                 $parseReport['isXML']['type']  = "severe";
             endif;
 
-            $parseReport['isXML']['value']     = $isXML;
+            $parseReport['isXML']['value']     = ( $isXML === true ? 1 : 0 );
             $parseReport['isXML']['valid']     = ( $isXML === true ? true : false );
-            $parseReport['isXML']['message']   = ( $isXML === true ? "yes" : "no" );
+            $parseReport['isXML']['message']   = ( $isXML === true ? "File is an XML" : "File is not an XML" );
 
             /**
              * Only continue validation when the file is an XML
@@ -63,7 +63,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                 $parsedClasses    = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
                 $totalClasses     = count( $parsedClasses );
 
-                var_dump($parsedClasses);
+                //var_dump($parsedClasses);
 
                 $parseReport['totalClasses']              = array();
                 $parseReport['totalClasses']['name']      = ( $totalClasses === 1 ? "Class" : "Classes" );
@@ -309,7 +309,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                     $parseReport['xmiVersion']['type']  = "valid";
                 endif;
 
-                $parseReport['xmiVersion']['value']     = ( !empty( $xmi_version ) ? $xmi_version : "leeg" );
+                $parseReport['xmiVersion']['value']     = ( !empty( $xmi_version ) ? $xmi_version : "empty" );
                 $parseReport['xmiVersion']['valid']     = ( !empty( $xmi_version ) && $xmi_version === "2.1" ? true : false );
                 $parseReport['xmiVersion']['message']   = ( !empty( $xmi_version ) ? ( $xmi_version === "2.1" ? "Version found" : "Version found but other then 2.1" ) : "No version found" );
 
@@ -336,12 +336,28 @@ if( !class_exists( "IOXMLEAValidator" ) ):
             /**
              * Check if all necessary items have been validated and conclude the total validation, also add it to the report array.
              */
+
             $parseReport['validation']              = array();
             $parseReport['validation']['name']      = "Validation";
             $parseReport['validation']['type']      = "severe";
-            $parseReport['validation']['value']     = true;
-            $parseReport['validation']['valid']     = false;
-            $parseReport['validation']['message']   = "Validation successful";
+
+            if( $isXML === false || $parseReport['xmiVersion']['valid'] === false):
+                $validationValue = false;
+                $validationValid = false;
+                $validationMessage = "Validation failed";
+            else:
+
+                if( $isXML === true ):
+                    $validationValue = true;
+                    $validationValid = true;
+                    $validationMessage = "Validation successful";
+                endif;
+
+            endif;
+
+            $parseReport['validation']['value']     = $validationValue;
+            $parseReport['validation']['valid']     = $validationValid;
+            $parseReport['validation']['message']   = $validationMessage;
 
             return( $parseReport );
 
