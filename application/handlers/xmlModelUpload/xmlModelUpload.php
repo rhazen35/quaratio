@@ -65,7 +65,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
                     /**
                      * Save the model in the database
                      */
-                    ( new iOXMLModelUpload\IOXMLModelUpload( "saveModel", $newFile, $uploadedAt ) )->request();
+                    //( new iOXMLModelUpload\IOXMLModelUpload( "saveModel", $newFile, $uploadedAt ) )->request();
 
                 else:
 
@@ -75,11 +75,12 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
 
             endif;
 
+            $_SESSION['xmlValidatorReport'] = serialize($report);
+
             $requestType      = "template";
             $requestAttribute = "xmlModelReport";
             $requestDirectory = "xmlModel";
-            $report           = serialize( $report );
-            $urlData          = array( "requestType" => $requestType, "requestAttribute" => $requestAttribute, "requestDirectory" => $requestDirectory, "report" => $report );
+            $urlData          = array( "requestType" => $requestType, "requestAttribute" => $requestAttribute, "requestDirectory" => $requestDirectory );
             $urlData          = base64_encode( json_encode( $urlData ) );
 
             header("Location: ".LITENING_SELF."?data=".$urlData."");

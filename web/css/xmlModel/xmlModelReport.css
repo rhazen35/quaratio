@@ -19,7 +19,6 @@
     padding-bottom:0.5em;
     font-size:120%;
     text-align:center;
-    border-bottom:1px solid #1896CC;
 }
 
 .modelReport-exists
@@ -46,10 +45,14 @@
 .modelReport-item
 {
     clear:both;
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
     width:100%;
     margin: 0 auto;
     text-align: center;
     font-size:90%;
+    border: 1px solid #CCCCCC;
     overflow:hidden;
 }
 
@@ -60,11 +63,27 @@
     margin-bottom:1em;
     padding:1em;
     color:#000000;
+    text-align: center;
+}
+
+.modelReport-totalErrorTypes
+{
+    display:flex;
+    flex-flow:flex-start;
+    justify-content: space-between;
+}
+
+.modelReport-totalErrorType
+{
+    padding:1em;
+    padding-top:1.5em;
+    font-size:80%;
 }
 
 .totalValidationGreen
 {
     background-color: #7BCC70;
+    color:#FFFFFF;
 }
 
 .totalValidationRed
@@ -75,23 +94,34 @@
 
 .modelReport-grayBack
 {
-    padding-top:1em;
-    padding-bottom:1em;
-    background-color:#D1D1D1;
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+    font-size:105%;
+    background-color:#999999;
 }
 
 .modelReport-item-name,
 .modelReport-item-value,
 .modelReport-item-message,
-.modelReport-item-type,
 .modelReport-item-img
 {
-    float:left;
     line-height:20px;
     padding:0.25em;
     font-size:90%;
     text-align: left;
-    border-right:1px solid #CCCCCC;
+}
+
+.modelReport-item-img
+{
+    width:8%;
+}
+
+.modelReport-item-img img
+{
+    float:left;
+    width:17px;
+    height:17px;
+    padding-top:0.25em;
 }
 
 .modelReport-item-info
@@ -102,14 +132,18 @@
     padding:0.25em;
     font-size:90%;
     text-align:left;
-    border-top: 1px solid #CCCCCC;
-    border-bottom: 1px solid #CCCCCC;
+}
+
+.modelReport-item-info span
+{
+    padding:0.15em;
+    background-color: yellow;
 }
 
 .modelReport-item-info img
 {
     float:left;
-    width:20px;
+    width:15px;
     height:15px;
     padding-left:1.5em;
     padding-right:0.5em;
@@ -123,24 +157,19 @@
 
 .modelReport-item-value
 {
-    width:10%;
+    width:14%;
 }
 
 .modelReport-item-message
 {
-    width:40%;
+    width:53%;
 }
 
 .modelReport-item-type
 {
-    width:10%;
-}
-
-.modelReport-item-img img
-{
     float:left;
-    width:15px;
-    height:15px;
+    line-height:15px;
+    padding-top:0.25em;
 }
 
 .modelUpload-error

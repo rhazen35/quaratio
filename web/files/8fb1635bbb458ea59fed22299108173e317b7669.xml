@@ -31,9 +31,9 @@
 		<thecustomprofile:enum base_EnumerationLiteral="EAID_1CC7B8DB_AB99_47ee_8345_4061E43D0050"/>
 		<thecustomprofile:enum base_EnumerationLiteral="EAID_B13CFA55_96D8_4a79_ACDC_39DBEBBAC097"/>
 	</uml:Model>
-	<xmi:Extension extenderID="6.5">
+	<xmi:Extension extender="Enterprise Architect">
 		<elements>
-			<element xmi:idref="EAPK_ECEA1EA6_CF63_4bec_A0E6_63C72B113E8B" xmi:type="uml:Package" name="Persoon" scope="public">
+			<element xmi:idref="EAPK_ECEA1EA6_CF63_4bec_A0E6_63C72B113E8B" xmi:type="uml:Package" name="Package" scope="public">
 				<model package2="EAID_ECEA1EA6_CF63_4bec_A0E6_63C72B113E8B" package="EAPK_EC376B47_674C_458f_A1FF_17BDAAECA584" tpos="6" ea_localid="5" ea_eleType="package"/>
 				<properties isSpecification="false" sType="Package" nType="0" scope="public"/>
 				<project author="bvdbu" phase="1.0" created="2016-07-05 14:07:43" modified="2016-07-05 15:19:07" complexity="1" status="Proposed"/>
@@ -104,7 +104,7 @@
 					</attribute>
 				</attributes>
 			</element>
-			<element xmi:idref="EAID_F6A85C6A_28C9_4240_BC8F_2498726D360A" xmi:type="uml:Class" name="Bedrag" scope="public">
+			<element xmi:idref="EAID_F6A85C6A_28C9_4240_BC8F_2498726D360A" xmi:type="uml:DataType" name="Datum" scope="public">
 				<model package="EAPK_ECEA1EA6_CF63_4bec_A0E6_63C72B113E8B" tpos="0" ea_localid="29" ea_eleType="element"/>
 				<properties isSpecification="false" sType="DataType" nType="0" scope="public" isRoot="false" isLeaf="false" isAbstract="false"/>
 				<project author="bvdbu" version="1.0" phase="1.0" created="2016-07-05 14:16:39" modified="2016-07-05 15:19:55" complexity="1" status="Proposed"/>

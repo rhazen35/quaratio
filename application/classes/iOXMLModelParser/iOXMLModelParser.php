@@ -50,6 +50,8 @@ if( !class_exists( "IOXMLModelParser" ) ):
             $elementPath    = "//xmi:Extension/elements/element"; // Path for elements in the extension
             $elements       = ( new xmlController\XmlController( $xmlObject, "getNode", $elementPath ) )->request(); // Get the elements
 
+            $uniqueElements = array();
+
             /**
              * Collect the required model information
              *
@@ -57,285 +59,310 @@ if( !class_exists( "IOXMLModelParser" ) ):
              * - Required data has standards which are expressed in the QuaRatio XML Standards(QXS) for Sparx Enterprice UML Modelling.
              */
 
-            foreach ( $elements as $element ):
+            if( !empty( $elements ) ):
 
-                /** @var  $namespaces */
-                $namespaces   = $element->getNameSpaces( true );
-                $xmiNamespace = $namespaces['xmi'];
+                $classArray['duplicateNames'] = 0;
 
-                /** Class name */
-                $className = ( new xmlController\XmlController( $element, "getNodeAttribute", "name" ) )->request();
-                $classArray[$className]['name'] = $className;
+                foreach ( $elements as $element ):
 
-                $project   = $element->children()->project;
-                $modified  = ( new xmlController\XmlController( $project, "getNodeAttribute", "modified" ) )->request();
-                $classArray[$className]['modified'] = $modified;
+                    /** @var  $namespaces */
+                    $namespaces   = $element->getNameSpaces( true );
+                    $xmiNamespace = $namespaces['xmi'];
 
-                /**
-                 * Get the element properties to access the isRoot value
-                 */
-                $properties = $element->children()->properties;
+                    /** Class name */
+                    $className = ( new xmlController\XmlController( $element, "getNodeAttribute", "name" ) )->request();
 
-                foreach ( $properties as $property ):
 
-                    /**
-                     * Get the isRoot, this class will be shown first.
-                     * The root also defines the base which the template generator will request
-                     */
-                    $isRoot = ( new xmlController\XmlController( $property, "getNodeAttribute", "isRoot" ) )->request();
+                    if( !in_array( $className, $uniqueElements ) ):
 
-                    /**
-                     * Detailed class information
-                     */
+                        $uniqueElements[] = ( in_array( $className, $uniqueElements ) ? "" : $className );
+                        $classArray[$className]['name'] = $className;
 
-                    if ($isRoot === "true"):
-                        $classArray[$className]['Root'] = "true";
-                    else:
-                        $classArray[$className]['Root'] = "false";
-                    endif;
+                        $project   = $element->children()->project;
+                        $modified  = ( new xmlController\XmlController( $project, "getNodeAttribute", "modified" ) )->request();
+                        $classArray[$className]['modified'] = $modified;
 
-                    /**
-                     * Get the model node and add to the model node array
-                     */
+                        /**
+                         * Get the element properties to access the isRoot value
+                         */
+                        $properties = $element->children()->properties;
 
-                    $modelNode = $element->children()->model;
-                    $classArray[$className]['package']  = ( new xmlController\XmlController( $modelNode, "getNodeAttribute", "package" ) )->request();
-                    $classArray[$className]['package2'] = ( new xmlController\XmlController( $modelNode, "getNodeAttribute", "package2" ) )->request();
+                        foreach ( $properties as $property ):
 
-                    /** @var  $abstract */
-                    $abstract = ( new xmlController\XmlController( $property, "getNodeAttribute", "isAbstract" ) )->request();
+                            /**
+                             * Get the isRoot, this class will be shown first.
+                             * The root also defines the base which the template generator will request
+                             */
+                            $isRoot = ( new xmlController\XmlController( $property, "getNodeAttribute", "isRoot" ) )->request();
 
-                    /**
-                     * Get the namespace attributes from the class
-                     *
-                     * @var  $type
-                     * @var  $idref
-                     */
-                    $type         = (string) $element->attributes( $xmiNamespace )->type;
-                    $idref        = (string) $element->attributes( $xmiNamespace )->idref;
+                            /**
+                             * Detailed class information
+                             */
 
-                    /** Namespaced type and idref to class array*/
-                    $classArray[$className]['type']  = $type;
-                    $classArray[$className]['idref'] = $idref;
+                            if ($isRoot === "true"):
+                                $classArray[$className]['Root'] = "true";
+                            else:
+                                $classArray[$className]['Root'] = "false";
+                            endif;
 
-                    /**
-                     * Non-namespaced attributes
-                     * Scope, documentation and abstract to class array
-                     */
-                    $classArray[$className]['scope']         = ( new xmlController\XmlController( $element, "getNodeAttribute", "scope" ) )->request();
-                    $classArray[$className]['documentation'] = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
-                    $classArray[$className]['abstract']      = $abstract;
+                            /**
+                             * Get the model node and add to the model node array
+                             */
 
-                    /** Tags for excel file, sheet and cell */
-                    $tags = $element->tags->tag;
-                    $totalTags = count($tags);
+                            $modelNode = $element->children()->model;
+                            $classArray[$className]['package']  = ( new xmlController\XmlController( $modelNode, "getNodeAttribute", "package" ) )->request();
+                            $classArray[$className]['package2'] = ( new xmlController\XmlController( $modelNode, "getNodeAttribute", "package2" ) )->request();
 
-                    if( !empty( $totalTags ) ):
+                            /** @var  $abstract */
+                            $abstract = ( new xmlController\XmlController( $property, "getNodeAttribute", "isAbstract" ) )->request();
 
-                        for($l = 0; $l < $totalTags; $l++):
+                            /**
+                             * Get the namespace attributes from the class
+                             *
+                             * @var  $type
+                             * @var  $idref
+                             */
+                            $type         = (string) $element->attributes( $xmiNamespace )->type;
+                            $idref        = (string) $element->attributes( $xmiNamespace )->idref;
 
-                            $tagName  = (string) $element->tags->tag[$l]->attributes()->name;
-                            $tagValue = (string) $element->tags->tag[$l]->attributes()->value;
+                            /** Namespaced type and idref to class array*/
+                            $classArray[$className]['type']  = $type;
+                            $classArray[$className]['idref'] = $idref;
 
-                            if( !empty( $tagValue ) ):
-                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+                            /**
+                             * Non-namespaced attributes
+                             * Scope, documentation and abstract to class array
+                             */
+                            $classArray[$className]['scope']         = ( new xmlController\XmlController( $element, "getNodeAttribute", "scope" ) )->request();
+                            $classArray[$className]['documentation'] = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
+                            $classArray[$className]['abstract']      = $abstract;
 
-                                $classArray[$className]['tags'][$tagName]['file'] = trim($file);
-                                $classArray[$className]['tags'][$tagName]['tab']  = trim($tab);
-                                $classArray[$className]['tags'][$tagName]['cell'] = trim($cell);
+                            /** Tags for excel file, sheet and cell */
+                            $tags = $element->tags->tag;
+                            $totalTags = count($tags);
+
+                            if( !empty( $totalTags ) ):
+
+                                for($l = 0; $l < $totalTags; $l++):
+
+                                    $tagName  = (string) $element->tags->tag[$l]->attributes()->name;
+                                    $tagValue = (string) $element->tags->tag[$l]->attributes()->value;
+
+                                    if( !empty( $tagValue ) ):
+                                        list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+
+                                        $classArray[$className]['tags'][$tagName]['file'] = trim($file);
+                                        $classArray[$className]['tags'][$tagName]['tab']  = trim($tab);
+                                        $classArray[$className]['tags'][$tagName]['cell'] = trim($cell);
+
+                                    endif;
+
+                                endfor;
+
+                            endif;
+
+
+                        endforeach;
+
+                        /**
+                         * Get the operations of the class.
+                         *
+                         * Operations are calculator calculations.
+                         * The input data will be added to match the collected excel cells
+                         *
+                         * @var  $operations
+                         * @var  $totalOperations
+                         */
+
+                        $operations      = $element->children()->operations;
+                        $totalOperations = count( $operations->operation );
+
+                        /**
+                         * Create an array with the operation name and add it to the operations array
+                         */
+
+                        for ($i = 0; $i < $totalOperations; $i++):
+
+                            /** @var  $operationName */
+                            $operationName  = (string) $operations->operation[$i]->attributes()->name;
+
+                            /** Define the operations array and add the operation name */
+                            $classArray[$className]['operations']['operation'.($i+1)] = array();
+                            $classArray[$className]['operations']['operation'.($i+1)]['name'] = $operationName;
+
+                            /**
+                             * idref, position, type, abstract, documentation
+                             */
+                            $idref          = (string) $operations->operation[$i]->attributes( $xmiNamespace )->idref;
+                            $position       = (string) $operations->operation[$i]->properties->attributes()->position;
+                            $type           = (string) $operations->operation[$i]->type->attributes()->type;
+                            $abstract       = (string) $operations->operation[$i]->type->attributes()->isAbstract;
+                            $documentation  = (string) $operations->operation[$i]->documentation->attributes()->value;
+
+                            /**
+                             * Add idref, position, type, abstract and documentation to the operations array.
+                             */
+                            $classArray[$className]['operations']['operation'.($i+1)]['className']      = $className;
+                            $classArray[$className]['operations']['operation'.($i+1)]['idref']          = $idref;
+                            $classArray[$className]['operations']['operation'.($i+1)]['position']       = $position;
+                            $classArray[$className]['operations']['operation'.($i+1)]['type']           = $type;
+                            $classArray[$className]['operations']['operation'.($i+1)]['abstract']       = $abstract;
+                            $classArray[$className]['operations']['operation'.($i+1)]['documentation']  = $documentation;
+
+                            /**
+                             * Behaviour
+                             *
+                             * Defines the behaviour of the I/O procedure to target the calculator
+                             *
+                             * Current procedure is PHPExcel using excel sheets as the calculator service
+                             */
+
+                            /** Get the value string */
+                            $behaviour      =  (string) $operations->operation[$i]->behaviour->attributes()->value;
+                            /** Convert string to xml */
+                            $behaviour      = "<?xml version='1.0' encoding='UTF-8'?><element>".$behaviour."</element>";
+                            /** @var Load the string in a simple xml object */
+                            $xml = simplexml_load_string($behaviour);
+                            /** Count the total excel files */
+                            $totalFiles = count($xml->excel);
+
+                            if(!empty($totalFiles)):
+
+                                /** Add the file, sheet and cells to the excel array */
+                                for ($k = 0; $k < $totalFiles; $k++):
+                                    $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['file']  = (string) $xml->excel[$k]->file;
+                                    $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['tab']   = (string) $xml->excel[$k]->tab;
+                                    $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['cells'] = (string) $xml->excel[$k]->cells;
+                                endfor;
+
+                            endif;
+
+                            /**
+                             * Operation tags for file, tab and cell
+                             */
+                            $tags = $operations->operation[$i]->tags->children();
+                            $totalTags = count($tags);
+
+                            if( !empty( $tags ) && $tags !== 0 ):
+
+                                for($l = 0; $l < $totalTags; $l++):
+
+                                    if( !empty( $tags ) ):
+                                        $tagName  = (string) $tags->tag[$l]->attributes()->name;
+                                        $tagValue = (string) $tags->tag[$l]->attributes()->value;
+                                    endif;
+
+                                    if( !empty( $tagValue ) ):
+                                        list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+
+                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['operation'] = trim($operationName);
+                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['name'] = trim($tagName);
+                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['file'] = trim($file);
+                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['tab']  = trim($tab);
+                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['cell'] = trim($cell);
+
+                                    endif;
+
+                                endfor;
 
                             endif;
 
                         endfor;
 
-                    endif;
+                        /**
+                         * Input fields and enumeration/data type fields
+                         *
+                         * - Data types of fields can be found under their own class in the xml model
+                         */
+                        $attributes      = $element->children()->attributes;
+                        $totalAttributes = count( $attributes->attribute );
 
+                        /** Loop trough the attributes of the class */
+                        for ($i = 0; $i < $totalAttributes; $i++):
+
+                            /** Input field names /enumeration/data type names */
+                            $inputName = (string) $attributes->attribute[$i]->attributes()->name;
+                            $classArray[$className]['fields'][$inputName] = array();
+
+                            /** Input field input name */
+                            $classArray[$className]['fields'][$inputName]['input_name'] = $inputName;
+
+                            /** Input class input name */
+                            $classArray[$className]['fields'][$inputName]['class_name'] = $className;
+
+                            /** Input field documentation */
+                            $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
+                            $classArray[$className]['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
+
+                            /** Input field data type */
+                            $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
+                            $classArray[$className]['fields'][$inputName]['data_type'] = $inputFieldDataType;
+
+                            /** Input field initial value */
+                            $inputInitialValue = (string) $attributes->attribute[$i]->initial->attributes()->body;
+                            $classArray[$className]['fields'][$inputName]['initialValue'] = $inputInitialValue;
+
+                            /**
+                             * Tags for excel address
+                             */
+        //                    $tags = $attributes->attribute[$i]->tags->tag;
+        //                    $totalTags = count($tags);
+        //
+        //                    if( !empty( $totalTags ) ):
+        //
+        //                        for($l = 0; $l < $totalTags; $l++):
+        //
+        //                            $tagName  = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->name;
+        //                            $tagValue = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->value;
+        //
+        //                            if( !empty( $tagValue ) ):
+        //
+        //                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+        //
+        //                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['file'] = trim($file);
+        //                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['tab']  = trim($tab);
+        //                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['cell'] = trim($cell);
+        //
+        //                            endif;
+        //
+        //                        endfor;
+        //
+        //                    endif;
+
+                        endfor;
+
+                        $links      = $element->children()->links;
+                        $totalLinks = count( $links->Aggregation );
+
+                        $classArray[$className]['links'] = array();
+
+                        for($i = 0; $i < $totalLinks; $i++):
+
+                            $id     = (string) $links->Aggregation[$i]->attributes($xmiNamespace)->id;
+                            $end    = (string) $links->Aggregation[$i]->attributes()->end;
+                            $start  = (string) $links->Aggregation[$i]->attributes()->start;
+
+                            $classArray[$className]['links']['link'.($i+1)]['id']      = $id;
+                            $classArray[$className]['links']['link'.($i+1)]['end']     = $end;
+                            $classArray[$className]['links']['link'.($i+1)]['start']   = $start;
+
+                        endfor;
+
+                    else:
+
+                        $classArray['duplicateNames'] += 1;
+
+                    endif;
 
                 endforeach;
 
-                /**
-                 * Get the operations of the class.
-                 *
-                 * Operations are calculator calculations.
-                 * The input data will be added to match the collected excel cells
-                 *
-                 * @var  $operations
-                 * @var  $totalOperations
-                 */
-
-                $operations      = $element->children()->operations;
-                $totalOperations = count( $operations->operation );
-
-                /**
-                 * Create an array with the operation name and add it to the operations array
-                 */
-
-                for ($i = 0; $i < $totalOperations; $i++):
-
-                    /** @var  $operationName */
-                    $operationName  = (string) $operations->operation[$i]->attributes()->name;
-
-                    /** Define the operations array and add the operation name */
-                    $classArray[$className]['operations']['operation'.($i+1)] = array();
-                    $classArray[$className]['operations']['operation'.($i+1)]['name'] = $operationName;
-
-                    /**
-                     * idref, position, type, abstract, documentation
-                     */
-                    $idref          = (string) $operations->operation[$i]->attributes( $xmiNamespace )->idref;
-                    $position       = (string) $operations->operation[$i]->properties->attributes()->position;
-                    $type           = (string) $operations->operation[$i]->type->attributes()->type;
-                    $abstract       = (string) $operations->operation[$i]->type->attributes()->isAbstract;
-                    $documentation  = (string) $operations->operation[$i]->documentation->attributes()->value;
-
-                    /**
-                     * Add idref, position, type, abstract and documentation to the operations array.
-                     */
-                    $classArray[$className]['operations']['operation'.($i+1)]['className']      = $className;
-                    $classArray[$className]['operations']['operation'.($i+1)]['idref']          = $idref;
-                    $classArray[$className]['operations']['operation'.($i+1)]['position']       = $position;
-                    $classArray[$className]['operations']['operation'.($i+1)]['type']           = $type;
-                    $classArray[$className]['operations']['operation'.($i+1)]['abstract']       = $abstract;
-                    $classArray[$className]['operations']['operation'.($i+1)]['documentation']  = $documentation;
-
-                    /**
-                     * Behaviour
-                     *
-                     * Defines the behaviour of the I/O procedure to target the calculator
-                     *
-                     * Current procedure is PHPExcel using excel sheets as the calculator service
-                     */
-
-                    /** Get the value string */
-                    $behaviour      =  (string) $operations->operation[$i]->behaviour->attributes()->value;
-                    /** Convert string to xml */
-                    $behaviour      = "<?xml version='1.0' encoding='UTF-8'?><element>".$behaviour."</element>";
-                    /** @var Load the string in a simple xml object */
-                    $xml = simplexml_load_string($behaviour);
-                    /** Count the total excel files */
-                    $totalFiles = count($xml->excel);
-
-                    if(!empty($totalFiles)):
-
-                        /** Add the file, sheet and cells to the excel array */
-                        for ($k = 0; $k < $totalFiles; $k++):
-                            $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['file']  = (string) $xml->excel[$k]->file;
-                            $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['tab']   = (string) $xml->excel[$k]->tab;
-                            $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['cells'] = (string) $xml->excel[$k]->cells;
-                        endfor;
-
-                    endif;
-
-                    /**
-                     * Operation tags for file, tab and cell
-                     */
-                    $tags = $operations->operation[$i]->tags->children();
-                    $totalTags = count($tags);
-
-                    if( !empty( $tags ) && $tags !== 0 ):
-
-                        for($l = 0; $l < $totalTags; $l++):
-
-                            if( !empty( $tags ) ):
-                                $tagName  = (string) $tags->tag[$l]->attributes()->name;
-                                $tagValue = (string) $tags->tag[$l]->attributes()->value;
-                            endif;
-
-                            if( !empty( $tagValue ) ):
-                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
-
-                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['operation'] = trim($operationName);
-                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['name'] = trim($tagName);
-                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['file'] = trim($file);
-                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['tab']  = trim($tab);
-                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['cell'] = trim($cell);
-
-                            endif;
-
-                        endfor;
-
-                    endif;
-
-                endfor;
-
-                /**
-                 * Input fields and enumeration/data type fields
-                 *
-                 * - Data types of fields can be found under their own class in the xml model
-                 */
-                $attributes      = $element->children()->attributes;
-                $totalAttributes = count( $attributes->attribute );
-
-                /** Loop trough the attributes of the class */
-                for ($i = 0; $i < $totalAttributes; $i++):
-
-                    /** Input field names /enumeration/data type names */
-                    $inputName = (string) $attributes->attribute[$i]->attributes()->name;
-                    $classArray[$className]['fields'][$inputName] = array();
-
-                    /** Input field documentation */
-                    $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
-                    $classArray[$className]['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
-
-                    /** Input field data type */
-                    $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
-                    $classArray[$className]['fields'][$inputName]['data_type'] = $inputFieldDataType;
-
-                    /** Input field initial value */
-                    $inputInitialValue = (string) $attributes->attribute[$i]->initial->attributes()->body;
-                    $classArray[$className]['fields'][$inputName]['initialValue'] = $inputInitialValue;
-
-                    /**
-                     * Tags for excel address
-                     */
-//                    $tags = $attributes->attribute[$i]->tags->tag;
-//                    $totalTags = count($tags);
-//
-//                    if( !empty( $totalTags ) ):
-//
-//                        for($l = 0; $l < $totalTags; $l++):
-//
-//                            $tagName  = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->name;
-//                            $tagValue = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->value;
-//
-//                            if( !empty( $tagValue ) ):
-//
-//                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
-//
-//                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['file'] = trim($file);
-//                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['tab']  = trim($tab);
-//                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['cell'] = trim($cell);
-//
-//                            endif;
-//
-//                        endfor;
-//
-//                    endif;
-
-                endfor;
-
-                $links      = $element->children()->links;
-                $totalLinks = count( $links->Aggregation );
-
-                $classArray[$className]['links'] = array();
-
-                for($i = 0; $i < $totalLinks; $i++):
-
-                    $id     = (string) $links->Aggregation[$i]->attributes($xmiNamespace)->id;
-                    $end    = (string) $links->Aggregation[$i]->attributes()->end;
-                    $start  = (string) $links->Aggregation[$i]->attributes()->start;
-
-                    $classArray[$className]['links']['link'.($i+1)]['id']      = $id;
-                    $classArray[$className]['links']['link'.($i+1)]['end']     = $end;
-                    $classArray[$className]['links']['link'.($i+1)]['start']   = $start;
-
-                endfor;
-
-            endforeach;
+            endif;
 
             /**
              * Return the class array
              */
+
+            $classArray = ( !empty( $classArray ) ? $classArray : array() );
 
             return( $classArray );
 
@@ -347,7 +374,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
             /**
              * Set xml path, xml object and pass it trough the controller to get a specific node
              */
-            $xmiPath             = "//xmi:Extension[@extenderID]"; // Path for extender information
+            $xmiPath             = "//xmi:Extension"; // Path for extender information
             $xmlObject           = ( new xmlController\XmlController( $this->xmlFile, "fileToSimpleXmlObject", "" ) )->request(); // Convert model to simple xml object
             $extensionAttributes = ( new xmlController\XmlController( $xmlObject, "getNode", $xmiPath ) )->request(); // Get the extension attributes
 
@@ -383,7 +410,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
             endforeach;
 
             /** Return the model extension info array */
-            return($modelExtensionInfo);
+            return( $modelExtensionInfo );
 
         }
 

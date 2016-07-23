@@ -18,11 +18,20 @@ if( !class_exists( "IOXMLPrimitiveTypes" ) ):
 
         public function __construct( $dataType, $value )
         {
+            $this->dataType = $dataType;
+            $this->value    = $value;
+        }
+
+        public function validate()
+        {
 
             switch( $this->dataType ):
 
                 case"String":
-                    return(  is_string( $value ) );
+                    return( is_string( (string) $this->value ) );
+                    break;
+                case"Geslachten":
+
                     break;
 
             endswitch;

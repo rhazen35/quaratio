@@ -72,25 +72,32 @@
 					<memberEnd xmi:idref="EAID_src1566AA_67B9_4d95_BBD3_8B6D7D6E3081"/>
 					<ownedEnd xmi:type="uml:Property" xmi:id="EAID_src1566AA_67B9_4d95_BBD3_8B6D7D6E3081" association="EAID_A31566AA_67B9_4d95_BBD3_8B6D7D6E3081" aggregation="composite">
 						<type xmi:idref="EAID_A2F5A109_0E2E_4a99_97E1_6D9AF7930090"/>
-						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000017__67B9_4d95_BBD3_8B6D7D6E3081" value="1"/>
-						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000018__67B9_4d95_BBD3_8B6D7D6E3081" value="*"/>
+						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000019__67B9_4d95_BBD3_8B6D7D6E3081" value="1"/>
+						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000020__67B9_4d95_BBD3_8B6D7D6E3081" value="*"/>
 					</ownedEnd>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" xmi:id="EAID_2CF604C3_ED51_4c26_9128_88859ED29E42" name="Persoon">
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_3B130559_212B_4811_BA46_124509DBFAFD" name="Geboortedatum" visibility="private">
 						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000013_212B_4811_BA46_124509DBFAFD" value="1"/>
 						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000014_212B_4811_BA46_124509DBFAFD" value="1"/>
-						<defaultValue xmi:type="uml:LiteralString" xmi:id="EAID_LI000015_212B_4811_BA46_124509DBFAFD" value="gyu"/>
 						<type xmi:idref="EAJava_Date"/>
 					</ownedAttribute>
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_D1FF15B9_9BB8_4091_848A_8777BB1D5FA2" name="Geslacht" visibility="private">
 						<type xmi:idref="EAID_26DEA39C_CFC3_457c_B8B1_92B9D1229A0D"/>
 						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000015_9BB8_4091_848A_8777BB1D5FA2" value="1"/>
 						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000016_9BB8_4091_848A_8777BB1D5FA2" value="1"/>
-						<defaultValue xmi:type="uml:LiteralString" xmi:id="EAID_LI000017_9BB8_4091_848A_8777BB1D5FA2" value="paard"/>
+					</ownedAttribute>
+					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_3ABFFB07_C429_4945_8794_06A17256AFF6" name="Naam" visibility="private">
+						<type xmi:idref="EAID_6CB11486_230B_4eb4_8451_426BAAE21F8B"/>
+						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000017_C429_4945_8794_06A17256AFF6" value="1"/>
+						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000018_C429_4945_8794_06A17256AFF6" value="1"/>
+						<defaultValue xmi:type="uml:LiteralString" xmi:id="EAID_LI000019_C429_4945_8794_06A17256AFF6" value="Cees en Carla"/>
 					</ownedAttribute>
 					<ownedOperation xmi:id="EAID_726C976F_D647_40cd_9672_E55757662D54" name="AOW">
 						<ownedParameter xmi:id="EAID_RT000000_D647_40cd_9672_E55757662D54" name="return" direction="return" type="EAJava_double"/>
+					</ownedOperation>
+					<ownedOperation xmi:id="EAID_DE72033D_7FE7_47b1_BDAD_632913525D18" name="Leeftijd in gebroken jaren">
+						<ownedParameter xmi:id="EAID_RT000000_7FE7_47b1_BDAD_632913525D18" name="return" direction="return" type="EAJava_double"/>
 					</ownedOperation>
 					<ownedOperation xmi:id="EAID_4FF49EBA_FE79_4d8c_B771_F1FC1F10EF78" name="Uw Pensioen">
 						<ownedParameter xmi:id="EAID_RT000000_FE79_4d8c_B771_F1FC1F10EF78" name="return" type="EAID_6CB11486_230B_4eb4_8451_426BAAE21F8B" direction="return"/>
@@ -101,25 +108,25 @@
 					<memberEnd xmi:idref="EAID_srcC49492_EC07_4334_95BB_3E6DCB348948"/>
 					<ownedEnd xmi:type="uml:Property" xmi:id="EAID_srcC49492_EC07_4334_95BB_3E6DCB348948" association="EAID_ECC49492_EC07_4334_95BB_3E6DCB348948" aggregation="composite">
 						<type xmi:idref="EAID_8FF8D983_4963_4da0_9D24_6BBFFBCF3406"/>
-						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000019__EC07_4334_95BB_3E6DCB348948" value="1"/>
-						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000020__EC07_4334_95BB_3E6DCB348948" value="*"/>
+						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000021__EC07_4334_95BB_3E6DCB348948" value="1"/>
+						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000022__EC07_4334_95BB_3E6DCB348948" value="*"/>
 					</ownedEnd>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" xmi:id="EAID_8FF8D983_4963_4da0_9D24_6BBFFBCF3406" name="Uitgaven">
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_05BBB8A5_F61A_42c2_A751_5A806617B1AD" name="Bedrag" visibility="private">
 						<type xmi:idref="EAID_78899BCE_8291_4534_AC0C_79D77295A318"/>
-						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000021_F61A_42c2_A751_5A806617B1AD" value="1"/>
-						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000022_F61A_42c2_A751_5A806617B1AD" value="1"/>
+						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000023_F61A_42c2_A751_5A806617B1AD" value="1"/>
+						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000024_F61A_42c2_A751_5A806617B1AD" value="1"/>
 					</ownedAttribute>
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_5F4247FB_65EA_4159_AA15_B4BDC829431F" name="Soort" visibility="private">
 						<type xmi:idref="EAID_6CB11486_230B_4eb4_8451_426BAAE21F8B"/>
-						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000023_65EA_4159_AA15_B4BDC829431F" value="1"/>
-						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000024_65EA_4159_AA15_B4BDC829431F" value="1"/>
+						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000025_65EA_4159_AA15_B4BDC829431F" value="1"/>
+						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000026_65EA_4159_AA15_B4BDC829431F" value="1"/>
 					</ownedAttribute>
 					<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_dstC49492_EC07_4334_95BB_3E6DCB348948" association="EAID_ECC49492_EC07_4334_95BB_3E6DCB348948">
 						<type xmi:idref="EAID_2CF604C3_ED51_4c26_9128_88859ED29E42"/>
-						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000025__EC07_4334_95BB_3E6DCB348948" value="1"/>
-						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000026__EC07_4334_95BB_3E6DCB348948" value="1"/>
+						<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000027__EC07_4334_95BB_3E6DCB348948" value="1"/>
+						<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000028__EC07_4334_95BB_3E6DCB348948" value="1"/>
 					</ownedAttribute>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Package" xmi:id="EAPK_6B672FA4_AAE8_49e9_BDC2_A809ADF79A6E" name="Package1"/>
@@ -141,9 +148,9 @@
 				<xrefs/>
 				<extendedProperties tagged="0"/>
 				<packageproperties version="EA uml2.1" owner="bvdbu" xmiver="Enterprise Architect XMI 2.1/UML 2.1"/>
-				<paths xmlpath="C:\Users\bvdbu\Dropbox\QuaRatio Development\Generator Development\Planner\Planner XMI2.4.2 w EAextensions.xml"/>
+				<paths xmlpath="C:\Users\bvdbu\Dropbox\QuaRatio Development\Generator Development\Planner\Planner XMI2.1 w EAextensions.xml"/>
 				<times created="2012-04-17 00:00:00" modified="2012-04-17 00:00:00" lastsavedate="2016-07-13 11:32:36"/>
-				<flags iscontrolled="TRUE" isprotected="FALSE" batchsave="0" batchload="0" usedtd="FALSE" logxml="FALSE" packageFlags="Recurse=1;isModel=1;"/>
+				<flags iscontrolled="TRUE" isprotected="FALSE" batchsave="0" batchload="0" usedtd="FALSE" logxml="TRUE" packageFlags="Recurse=1;isModel=1;"/>
 			</element>
 			<element xmi:idref="EAPK_C042F071_ED9F_430e_8CF7_BD6213E0A99B" xmi:type="uml:Package" name="Data Types" scope="public">
 				<model package2="EAID_C042F071_ED9F_430e_8CF7_BD6213E0A99B" package="EAPK_BCF6CD47_304C_4638_934A_692F0D1435DE" tpos="0" ea_localid="3" ea_eleType="package"/>
@@ -323,7 +330,7 @@
 				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 				<tags/>
 				<xrefs/>
-				<extendedProperties tagged="0" package_name="Data Types" ea_attsclassified="{5F4247FB-65EA-4159-AA15-B4BDC829431F}" ea_oprsclassified="{B678B97B-839F-474d-A7C3-097A51F64E95},{DB362414-3265-476e-ADA2-1ADC6F05BB46},{4FF49EBA-FE79-4d8c-B771-F1FC1F10EF78}"/>
+				<extendedProperties tagged="0" package_name="Data Types" ea_attsclassified="{3ABFFB07-C429-4945-8794-06A17256AFF6},{5F4247FB-65EA-4159-AA15-B4BDC829431F}" ea_oprsclassified="{B678B97B-839F-474d-A7C3-097A51F64E95},{DB362414-3265-476e-ADA2-1ADC6F05BB46},{4FF49EBA-FE79-4d8c-B771-F1FC1F10EF78}"/>
 			</element>
 			<element xmi:idref="EAPK_85FEF848_4DE8_4655_AD63_4DB8E218CEB1" xmi:type="uml:Package" name="Excel calcs" scope="public">
 				<model package2="EAID_85FEF848_4DE8_4655_AD63_4DB8E218CEB1" package="EAPK_BCF6CD47_304C_4638_934A_692F0D1435DE" tpos="0" ea_localid="15" ea_eleType="package"/>
@@ -474,15 +481,17 @@
 			<element xmi:idref="EAID_2CF604C3_ED51_4c26_9128_88859ED29E42" xmi:type="uml:Class" name="Persoon" scope="public">
 				<model package="EAPK_9A3E306B_DAE2_401b_BC64_40E1D04748C9" tpos="0" ea_localid="34" ea_eleType="element"/>
 				<properties documentation="Test of deze tekst in het documentation veld bij de Class terecht komt." isSpecification="false" sType="Class" nType="0" scope="public" isRoot="true" isLeaf="false" isAbstract="false" isActive="false"/>
-				<project author="bvdbu" version="1.0" phase="1.0" created="2016-07-08 10:11:38" modified="2016-07-16 12:02:52" complexity="1" status="Proposed"/>
+				<project author="bvdbu" version="1.0" phase="1.0" created="2016-07-08 10:11:38" modified="2016-07-18 16:59:31" complexity="1" status="Proposed"/>
 				<code product_name="Java" gentype="Java"/>
 				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
-				<tags/>
+				<tags>
+					<tag xmi:id="EAID_13A07239_87FE_4fe7_9B25_32CC52251ED7" name="QR-Volgorde" value="1" modelElement="EAID_2CF604C3_ED51_4c26_9128_88859ED29E42"/>
+				</tags>
 				<xrefs/>
 				<extendedProperties tagged="0" package_name="Structuur"/>
 				<attributes>
 					<attribute xmi:idref="EAID_3B130559_212B_4811_BA46_124509DBFAFD" name="Geboortedatum" scope="Private">
-						<initial body="gyu"/>
+						<initial/>
 						<documentation value="Uw geboortedatum hebben we nodig om een projectie van uw inkomen in de tijd te kunnen maken. "/>
 						<model ea_localid="23" ea_guid="{3B130559-212B-4811-BA46-124509DBFAFD}"/>
 						<properties type="Date" collection="false" duplicates="0" changeability="changeable"/>
@@ -494,14 +503,13 @@
 						<style/>
 						<styleex value="volatile=0;"/>
 						<tags>
-							<tag xmi:id="EAID_05CA4FA2_11F1_4fc1_B6C7_CE6C614AF433" name="Excel filename" value="simpel rekenmodel.xlsx"/>
-							<tag xmi:id="EAID_39F0FF6C_060D_4fb0_8662_92493B5A4F59" name="Tab" value="Input"/>
-							<tag xmi:id="EAID_F135B4A1_E2A4_44ce_97F1_C5AEA27116F5" name="Cell" value="B9"/>
+							<tag xmi:id="EAID_41076E2A_39F1_47ae_B54D_62BE3183B6B5" name="QR-Volgorde" value="1"/>
+							<tag xmi:id="EAID_62AF9583_7D46_48aa_AF5F_BB68FD7BDF85" name="QR-Excel input" value="  B4            , Input, simpel rekenmodel.xlsx"/>
 						</tags>
 						<xrefs/>
 					</attribute>
 					<attribute xmi:idref="EAID_D1FF15B9_9BB8_4091_848A_8777BB1D5FA2" name="Geslacht" scope="Private">
-						<initial body="paard"/>
+						<initial/>
 						<documentation value="Test of deze tekst in het documentation veld bij het Attribute terecht komt. "/>
 						<model ea_localid="4" ea_guid="{D1FF15B9-9BB8-4091-848A-8777BB1D5FA2}"/>
 						<properties type="Geslachten" derived="0" collection="false" duplicates="0" changeability="changeable"/>
@@ -513,9 +521,26 @@
 						<style/>
 						<styleex value="volatile=0;"/>
 						<tags>
-							<tag xmi:id="EAID_91AB9FEA_0E33_42e4_9648_0D8C5A77729A" name="Excel filename" value="simpel rekenmodel.xlsx"/>
-							<tag xmi:id="EAID_84D4B9CD_8779_4378_8551_0E04A956AACF" name="Tab" value="Output"/>
-							<tag xmi:id="EAID_BA6F7726_6EB9_4961_B99C_3BD0A8BDD2E3" name="Cell" value="B8"/>
+							<tag xmi:id="EAID_D11C8E36_D148_4f7e_B15E_A6EB20ACAF33" name="QR-Volgorde" value="2.1"/>
+							<tag xmi:id="EAID_DCCD55EA_82B5_4472_A2B8_AFE5B218EF32" name="QR-Excel input" value="   B5           , Input, simpel rekenmodel.xlsx"/>
+						</tags>
+						<xrefs/>
+					</attribute>
+					<attribute xmi:idref="EAID_3ABFFB07_C429_4945_8794_06A17256AFF6" name="Naam" scope="Private">
+						<initial body="123"/>
+						<documentation/>
+						<model ea_localid="30" ea_guid="{3ABFFB07-C429-4945-8794-06A17256AFF6}"/>
+						<properties type="String" collection="false" duplicates="0" changeability="changeable"/>
+						<coords ordered="0"/>
+						<containment containment="Not Specified" position="2"/>
+						<stereotype/>
+						<bounds lower="1" upper="1"/>
+						<options/>
+						<style/>
+						<styleex value="volatile=0;"/>
+						<tags>
+							<tag xmi:id="EAID_4049D157_6911_4fea_95CE_280D18051D00" name="QR-Volgorde" value="0.5"/>
+							<tag xmi:id="EAID_E10EF017_888D_4a6d_8A10_FFED1E65E7C8" name="QR-Excel input" value="   B3           , Input, simpel rekenmodel.xlsx"/>
 						</tags>
 						<xrefs/>
 					</attribute>
@@ -532,13 +557,38 @@
 						<styleex value="ShowBeh=0;"/>
 						<documentation value="De eerste berekening. Het resultaat hiervan moet uit Excel komen. Er is nog geen Tagged Value of Stereotype gekoppeld. "/>
 						<tags>
-							<tag xmi:id="EAID_2CA5378D_F04F_4b87_BD1C_0E5E2012B17A" name="Excel filename" value="simpel rekenmodel.xlsx"/>
-							<tag xmi:id="EAID_C6212194_6ADF_4456_B0C2_323FE05A5884" name="Cell" value="C10"/>
-							<tag xmi:id="EAID_E20E6813_A27D_4c7a_BB4C_243E02A58F3C" name="Tab" value="Output"/>
+							<tag xmi:id="EAID_03157E6A_D981_4be7_A3AA_4C91E3B63D94" name="QR-Excel output" value="      B8        , Output, simpel rekenmodel.xlsx"/>
+							<tag xmi:id="EAID_29925FDD_ABAD_4608_B964_F25F2223474D" name="QR-Volgorde" value="3"/>
 						</tags>
 						<parameters>
 							<parameter xmi:idref="EAID_RETURNID_D647_40cd_9672_E55757662D54" visibility="public">
 								<properties pos="0" type="double" const="false" ea_guid="{RETURNID-D647-40cd-9672-E55757662D54}"/>
+								<style/>
+								<styleex/>
+								<documentation/>
+								<tags/>
+								<xrefs/>
+							</parameter>
+						</parameters>
+						<xrefs/>
+					</operation>
+					<operation xmi:idref="EAID_DE72033D_7FE7_47b1_BDAD_632913525D18" name="Leeftijd in gebroken jaren" scope="Public">
+						<properties position="2"/>
+						<stereotype/>
+						<model ea_guid="{DE72033D-7FE7-47b1-BDAD-632913525D18}" ea_localid="6"/>
+						<type type="double" const="false" static="false" isAbstract="false" synchronised="0" concurrency="Sequential" pure="0" isQuery="false"/>
+						<behaviour/>
+						<code/>
+						<style/>
+						<styleex/>
+						<documentation/>
+						<tags>
+							<tag xmi:id="EAID_A1D83E94_C1E8_4ec6_8C1E_61310EC4DCBC" name="QR-Volgorde" value="3"/>
+							<tag xmi:id="EAID_D40DAE98_8E25_4613_A450_18A5FF31A383" name="QR-Excel input" value="        B6      , Input, simpel rekenmodel.xlsx"/>
+						</tags>
+						<parameters>
+							<parameter xmi:idref="EAID_RETURNID_7FE7_47b1_BDAD_632913525D18" visibility="public">
+								<properties pos="0" type="double" const="false" ea_guid="{RETURNID-7FE7-47b1-BDAD-632913525D18}"/>
 								<style/>
 								<styleex/>
 								<documentation/>
@@ -559,10 +609,8 @@
 						<styleex value="ShowBeh=1;"/>
 						<documentation value="Iedereen heeft het erover: uw pensioen. Het zou niet voldoende zijn.. Maar is dat ook zo? &#xA;Wij denken dat uw pensioen prima in orde is en dat u zich nergens zorgen om hoeft te maken. &#xA;&#xA;In deze planner beginnen we met een simpele berekening om aan te tonen dat uw pensioen straks prima in orde is. &#xA;Pas als blijkt dat uw pensioen toch te laag is, praten we pas over mogelijkheden voor later. &#xA;&#xA;"/>
 						<tags>
-							<tag xmi:id="EAID_191032D6_A184_46f9_B2D4_CE74811A0934" name="Cell" value="C3"/>
-							<tag xmi:id="EAID_3996459D_B633_49a1_B2C6_2525B638D8AF" name="Excel filename" value="simpel rekenmodel.xlsx"/>
-							<tag xmi:id="EAID_488BC643_6C03_4ceb_8664_DEB8B963FBE9" name="Volgorde" value="1"/>
-							<tag xmi:id="EAID_FD779A91_37CA_4210_86DA_40176827C015" name="Tab" value="Output"/>
+							<tag xmi:id="EAID_6E283FDB_E6CE_46f1_87C3_D169AAD2F9E0" name="QR-Excel output" value="      c16       , Output, simpel rekenmodel.xlsx"/>
+							<tag xmi:id="EAID_978EB8E6_E678_48c9_8B00_F22376995CBA" name="QR-Volgorde" value="4"/>
 						</tags>
 						<parameters>
 							<parameter xmi:idref="EAID_RETURNID_FE79_4d8c_B771_F1FC1F10EF78" visibility="public">
@@ -582,7 +630,7 @@
 					<Aggregation xmi:id="EAID_ECC49492_EC07_4334_95BB_3E6DCB348948" start="EAID_8FF8D983_4963_4da0_9D24_6BBFFBCF3406" end="EAID_2CF604C3_ED51_4c26_9128_88859ED29E42"/>
 				</links>
 			</element>
-			<element xmi:idref="EAID_8FF8D983_4963_4da0_9D24_6BBFFBCF3406" xmi:type="uml:Class" name="Persoon" scope="public">
+			<element xmi:idref="EAID_8FF8D983_4963_4da0_9D24_6BBFFBCF3406" xmi:type="uml:Class" name="Uitgaven" scope="public">
 				<model package="EAPK_9A3E306B_DAE2_401b_BC64_40E1D04748C9" tpos="0" ea_localid="44" ea_eleType="element"/>
 				<properties isSpecification="false" sType="Class" nType="0" scope="public" isRoot="false" isLeaf="false" isAbstract="false" isActive="false"/>
 				<project author="bvdbu" version="1.0" phase="1.0" created="2016-07-08 15:49:34" modified="2016-07-08 15:53:15" complexity="1" status="Proposed"/>
@@ -627,7 +675,7 @@
 					<Aggregation xmi:id="EAID_ECC49492_EC07_4334_95BB_3E6DCB348948" start="EAID_8FF8D983_4963_4da0_9D24_6BBFFBCF3406" end="EAID_2CF604C3_ED51_4c26_9128_88859ED29E42"/>
 				</links>
 			</element>
-			<element xmi:idref="EAPK_6B672FA4_AAE8_49e9_BDC2_A809ADF79A6E" xmi:type="uml:Package" name="Package1" scope="public">
+			<element xmi:idref="EAPK_6B672FA4_AAE8_49e9_BDC2_A809ADF79A6E" xmi:type="uml:Package" name="Persoon" scope="public">
 				<model package2="EAID_6B672FA4_AAE8_49e9_BDC2_A809ADF79A6E" package="EAPK_9A3E306B_DAE2_401b_BC64_40E1D04748C9" tpos="0" ea_localid="14" ea_eleType="package"/>
 				<properties isSpecification="false" sType="Package" nType="0" scope="public"/>
 				<project author="bvdbu" version="1.0" phase="1.0" created="2016-07-08 16:18:06" modified="2016-07-08 16:18:06" complexity="1" status="Proposed"/>
@@ -732,27 +780,16 @@
 				<packageImport xmi:id="mmref01">
 					<importedPackage href="http://www.omg.org/spec/UML/20090901"/>
 				</packageImport>
-				<packagedElement xmi:type="uml:Stereotype" xmi:id="Volgorde" name="Volgorde">
-					<ownedAttribute xmi:type="uml:Property" xmi:id="Volgorde-base_Operation" name="base_Operation" association="Operation_Volgorde">
+				<packagedElement xmi:type="uml:Stereotype" xmi:id="QR-Excel output" name="QR-Excel output">
+					<ownedAttribute xmi:type="uml:Property" xmi:id="QR-Excel output-base_Operation" name="base_Operation" association="Operation_QR-Excel output">
 						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#Operation"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" xmi:id="Volgorde-Volgorde" name="Volgorde">
+					<ownedAttribute xmi:type="uml:Property" xmi:id="QR-Excel output-QR-Excel output" name="QR-Excel output">
 						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#String"/>
 					</ownedAttribute>
 				</packagedElement>
-				<packagedElement xmi:type="uml:Extension" xmi:id="Operation_Volgorde" name="A_Operation_Volgorde" memberEnd="extension_Volgorde Volgorde-base_Operation">
-					<ownedEnd xmi:id="extension_Volgorde" name="extension_Volgorde" type="Volgorde" isComposite="true" lower="0" upper="1" memberEnd="extension_Volgorde Volgorde-base_Operation"/>
-				</packagedElement>
-				<packagedElement xmi:type="uml:Stereotype" xmi:id="Cell" name="Cell">
-					<ownedAttribute xmi:type="uml:Property" xmi:id="Cell-base_Property" name="base_Property" association="Property_Cell">
-						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#Property"/>
-					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" xmi:id="Cell-Cell" name="Cell">
-						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#String"/>
-					</ownedAttribute>
-				</packagedElement>
-				<packagedElement xmi:type="uml:Extension" xmi:id="Property_Cell" name="A_Property_Cell" memberEnd="extension_Cell Cell-base_Property">
-					<ownedEnd xmi:id="extension_Cell" name="extension_Cell" type="Cell" isComposite="true" lower="0" upper="1" memberEnd="extension_Cell Cell-base_Property"/>
+				<packagedElement xmi:type="uml:Extension" xmi:id="Operation_QR-Excel output" name="A_Operation_QR-Excel output" memberEnd="extension_QR-Excel output QR-Excel output-base_Operation">
+					<ownedEnd xmi:id="extension_QR-Excel output" name="extension_QR-Excel output" type="QR-Excel output" isComposite="true" lower="0" upper="1" memberEnd="extension_QR-Excel output QR-Excel output-base_Operation"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Stereotype" xmi:id="enum" name="enum">
 					<ownedAttribute xmi:type="uml:Property" xmi:id="enum-base_EnumerationLiteral" name="base_EnumerationLiteral" association="EnumerationLiteral_enum">
@@ -762,27 +799,27 @@
 				<packagedElement xmi:type="uml:Extension" xmi:id="EnumerationLiteral_enum" name="A_EnumerationLiteral_enum" memberEnd="extension_enum enum-base_EnumerationLiteral">
 					<ownedEnd xmi:id="extension_enum" name="extension_enum" type="enum" isComposite="true" lower="0" upper="1" memberEnd="extension_enum enum-base_EnumerationLiteral"/>
 				</packagedElement>
-				<packagedElement xmi:type="uml:Stereotype" xmi:id="Excel filename" name="Excel filename">
-					<ownedAttribute xmi:type="uml:Property" xmi:id="Excel filename-base_Property" name="base_Property" association="Property_Excel filename">
+				<packagedElement xmi:type="uml:Stereotype" xmi:id="QR-Excel input" name="QR-Excel input">
+					<ownedAttribute xmi:type="uml:Property" xmi:id="QR-Excel input-base_Property" name="base_Property" association="Property_QR-Excel input">
 						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#Property"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" xmi:id="Excel filename-Excel filename" name="Excel filename">
+					<ownedAttribute xmi:type="uml:Property" xmi:id="QR-Excel input-QR-Excel input" name="QR-Excel input">
 						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#String"/>
 					</ownedAttribute>
 				</packagedElement>
-				<packagedElement xmi:type="uml:Extension" xmi:id="Property_Excel filename" name="A_Property_Excel filename" memberEnd="extension_Excel filename Excel filename-base_Property">
-					<ownedEnd xmi:id="extension_Excel filename" name="extension_Excel filename" type="Excel filename" isComposite="true" lower="0" upper="1" memberEnd="extension_Excel filename Excel filename-base_Property"/>
+				<packagedElement xmi:type="uml:Extension" xmi:id="Property_QR-Excel input" name="A_Property_QR-Excel input" memberEnd="extension_QR-Excel input QR-Excel input-base_Property">
+					<ownedEnd xmi:id="extension_QR-Excel input" name="extension_QR-Excel input" type="QR-Excel input" isComposite="true" lower="0" upper="1" memberEnd="extension_QR-Excel input QR-Excel input-base_Property"/>
 				</packagedElement>
-				<packagedElement xmi:type="uml:Stereotype" xmi:id="Tab" name="Tab">
-					<ownedAttribute xmi:type="uml:Property" xmi:id="Tab-base_Property" name="base_Property" association="Property_Tab">
-						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#Property"/>
+				<packagedElement xmi:type="uml:Stereotype" xmi:id="QR-Volgorde" name="QR-Volgorde">
+					<ownedAttribute xmi:type="uml:Property" xmi:id="QR-Volgorde-base_Class" name="base_Class" association="Class_QR-Volgorde">
+						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#Class"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" xmi:id="Tab-Tab" name="Tab">
+					<ownedAttribute xmi:type="uml:Property" xmi:id="QR-Volgorde-QR-Volgorde" name="QR-Volgorde">
 						<type href="http://www.omg.org/spec/UML/20090901/UML.xmi#String"/>
 					</ownedAttribute>
 				</packagedElement>
-				<packagedElement xmi:type="uml:Extension" xmi:id="Property_Tab" name="A_Property_Tab" memberEnd="extension_Tab Tab-base_Property">
-					<ownedEnd xmi:id="extension_Tab" name="extension_Tab" type="Tab" isComposite="true" lower="0" upper="1" memberEnd="extension_Tab Tab-base_Property"/>
+				<packagedElement xmi:type="uml:Extension" xmi:id="Class_QR-Volgorde" name="A_Class_QR-Volgorde" memberEnd="extension_QR-Volgorde QR-Volgorde-base_Class">
+					<ownedEnd xmi:id="extension_QR-Volgorde" name="extension_QR-Volgorde" type="QR-Volgorde" isComposite="true" lower="0" upper="1" memberEnd="extension_QR-Volgorde QR-Volgorde-base_Class"/>
 				</packagedElement>
 			</uml:Profile>
 		</profiles>
@@ -793,17 +830,17 @@
 	<thecustomprofile:enum base_EnumerationLiteral="EAID_3CA93444_1F66_419a_A0D7_377E24AD2013"/>
 	<thecustomprofile:enum base_EnumerationLiteral="EAID_F220EB4C_6D25_47e7_AD82_20F21AC591ED"/>
 	<thecustomprofile:enum base_EnumerationLiteral="EAID_57BE1AF5_3221_476b_AA42_23526153EEB4"/>
-	<thecustomprofile:Excel_filename base_Property="EAID_3B130559_212B_4811_BA46_124509DBFAFD" __EAStereoName="Excel filename" Excel_filename="simpel rekenmodel.xlsx"/>
-	<thecustomprofile:Tab base_Property="EAID_3B130559_212B_4811_BA46_124509DBFAFD" Tab="Input"/>
-	<thecustomprofile:Cell base_Property="EAID_3B130559_212B_4811_BA46_124509DBFAFD" Cell="B9"/>
-	<thecustomprofile:Excel_filename base_Property="EAID_D1FF15B9_9BB8_4091_848A_8777BB1D5FA2" __EAStereoName="Excel filename" Excel_filename="simpel rekenmodel.xlsx"/>
-	<thecustomprofile:Tab base_Property="EAID_D1FF15B9_9BB8_4091_848A_8777BB1D5FA2" Tab="Output"/>
-	<thecustomprofile:Cell base_Property="EAID_D1FF15B9_9BB8_4091_848A_8777BB1D5FA2" Cell="B8"/>
-	<thecustomprofile:Excel_filename base_Operation="EAID_726C976F_D647_40cd_9672_E55757662D54" __EAStereoName="Excel filename" Excel_filename="simpel rekenmodel.xlsx"/>
-	<thecustomprofile:Tab base_Operation="EAID_726C976F_D647_40cd_9672_E55757662D54" Tab="Output"/>
-	<thecustomprofile:Cell base_Operation="EAID_726C976F_D647_40cd_9672_E55757662D54" Cell="C10"/>
-	<thecustomprofile:Excel_filename base_Operation="EAID_4FF49EBA_FE79_4d8c_B771_F1FC1F10EF78" __EAStereoName="Excel filename" Excel_filename="simpel rekenmodel.xlsx"/>
-	<thecustomprofile:Volgorde base_Operation="EAID_4FF49EBA_FE79_4d8c_B771_F1FC1F10EF78" Volgorde="1"/>
-	<thecustomprofile:Tab base_Operation="EAID_4FF49EBA_FE79_4d8c_B771_F1FC1F10EF78" Tab="Output"/>
-	<thecustomprofile:Cell base_Operation="EAID_4FF49EBA_FE79_4d8c_B771_F1FC1F10EF78" Cell="C3"/>
+	<thecustomprofile:QR-Volgorde base_Class="EAID_2CF604C3_ED51_4c26_9128_88859ED29E42" QR-Volgorde="1"/>
+	<thecustomprofile:QR-Excel_input base_Property="EAID_3B130559_212B_4811_BA46_124509DBFAFD" __EAStereoName="QR-Excel input" QR-Excel_input="  B4            , Input, simpel rekenmodel.xlsx"/>
+	<thecustomprofile:QR-Volgorde base_Property="EAID_3B130559_212B_4811_BA46_124509DBFAFD" QR-Volgorde="1"/>
+	<thecustomprofile:QR-Excel_input base_Property="EAID_D1FF15B9_9BB8_4091_848A_8777BB1D5FA2" __EAStereoName="QR-Excel input" QR-Excel_input="   B5           , Input, simpel rekenmodel.xlsx"/>
+	<thecustomprofile:QR-Volgorde base_Property="EAID_D1FF15B9_9BB8_4091_848A_8777BB1D5FA2" QR-Volgorde="2.1"/>
+	<thecustomprofile:QR-Excel_input base_Property="EAID_3ABFFB07_C429_4945_8794_06A17256AFF6" __EAStereoName="QR-Excel input" QR-Excel_input="   B3           , Input, simpel rekenmodel.xlsx"/>
+	<thecustomprofile:QR-Volgorde base_Property="EAID_3ABFFB07_C429_4945_8794_06A17256AFF6" QR-Volgorde="0.5"/>
+	<thecustomprofile:QR-Volgorde base_Operation="EAID_726C976F_D647_40cd_9672_E55757662D54" QR-Volgorde="3"/>
+	<thecustomprofile:QR-Excel_output base_Operation="EAID_726C976F_D647_40cd_9672_E55757662D54" __EAStereoName="QR-Excel output" QR-Excel_output="      B8        , Output, simpel rekenmodel.xlsx"/>
+	<thecustomprofile:QR-Excel_input base_Operation="EAID_DE72033D_7FE7_47b1_BDAD_632913525D18" __EAStereoName="QR-Excel input" QR-Excel_input="        B6      , Input, simpel rekenmodel.xlsx"/>
+	<thecustomprofile:QR-Volgorde base_Operation="EAID_DE72033D_7FE7_47b1_BDAD_632913525D18" QR-Volgorde="3"/>
+	<thecustomprofile:QR-Volgorde base_Operation="EAID_4FF49EBA_FE79_4d8c_B771_F1FC1F10EF78" QR-Volgorde="4"/>
+	<thecustomprofile:QR-Excel_output base_Operation="EAID_4FF49EBA_FE79_4d8c_B771_F1FC1F10EF78" __EAStereoName="QR-Excel output" QR-Excel_output="      c16       , Output, simpel rekenmodel.xlsx"/>
 </xmi:XMI>
