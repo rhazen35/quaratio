@@ -1,7 +1,7 @@
 .modelReport
 {
     width:75%;
-    min-width: 960px;
+    min-width: 1000px;
     height:auto;
     margin: 0 auto;
     margin-top:2em;
@@ -79,7 +79,7 @@
 {
     clear:both;
     float:left;
-    width:790px;
+    width:830px;
     margin-left:1em;
     overflow:hidden;
 }
@@ -131,7 +131,7 @@
 
 .modelReportWarningError
 {
-    width:162px;
+    width:165px;
 }
 
 .modelReport-totalErrorType img,
