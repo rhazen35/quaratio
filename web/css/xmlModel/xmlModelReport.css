@@ -129,6 +129,11 @@
     margin-left:1.5em;
 }
 
+.modelReportWarningError
+{
+    width:160px;
+}
+
 .modelReport-totalErrorType img,
 .modelReport-totalErrorType-Valid img
 {

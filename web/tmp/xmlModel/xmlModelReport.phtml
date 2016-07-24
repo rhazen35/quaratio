@@ -98,7 +98,7 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
                         </div>
                     </div>
 
-                    <div class="modelReport-totalErrorType">
+                    <div class="modelReport-totalErrorType modelReportWarningError">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
                             <img src="./images/icons/warning_icon.png"> Warnings ( <strong><?= $report['totalErrorTypes']['warning']; ?></strong> )
                             <?php if( isset( $_SESSION['xmlModelErrorWarning'] ) && $_SESSION['xmlModelErrorWarning'] === "hide" ): ?>
