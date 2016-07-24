@@ -1,0 +1,135 @@
+.modelUpload
+{
+    width:100%;
+    margin: 0 auto;
+    margin-top:2em;
+    font-size:100%;
+}
+
+.modelUpload-Title
+{
+    width:100%;
+    margin: 0 auto;
+    font-size:100%;
+}
+
+.modelUpload-project
+{
+    width:40%;
+    margin: 2em auto ;
+    padding:2em;
+    padding:2em;
+    font-size:100%;
+    text-align:left;
+    background-color:lightskyblue;
+}
+
+.modelUpload-form
+{
+    width:40%;
+    margin: 2em auto;
+    padding:2em;
+    font-size:100%;
+    text-align:left;
+    background-color:#9acb9a;
+}
+
+.modelUpload-Header
+{
+    margin-top:2em;
+    font-size:80%;
+}
+
+.modelUpload-Header ul
+{
+    list-style: decimal outside none;
+}
+
+.modelUpload-Header ul li
+{
+    list-style-position: inside;
+}
+
+.modelUpload-Footer
+{
+    margin-top: 1em;
+    font-size:80%;
+}
+
+.modelUpload-Upload
+{
+    margin-top:1em;
+}
+
+.modelUpload-error
+{
+    color: firebrick;
+    font-size: 90%;
+    text-align:center;
+}
+
+.effect2:before, .effect2:after
+{
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: 15px;
+    left: 10px;
+    width: 50%;
+    top: 80%;
+    max-width:300px;
+    background: #777;
+    box-shadow: 0 15px 10px #909090;
+    transform: rotate(-3deg);
+}
+
+.effect2
+{
+    position: relative;
+}
+
+.effect2:after
+{
+    transform: rotate(3deg);
+    right: 10px;
+    left: auto;
+}
+
+.effect3
+{
+    position: relative;
+}
+.effect3:before
+{
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: 15px;
+    left: 10px;
+    width: 50%;
+    top: 80%;
+    max-width:400px;
+    background: #777;
+    box-shadow: 0 15px 15px #777;
+    transform: rotate(-3deg);
+}
+
+.effect4
+{
+    position: relative;
+}
+.effect4:after
+{
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: 15px;
+    right: 10px;
+    left: auto;
+    width: 50%;
+    top: 80%;
+    max-width:400px;
+    background: #777;
+    box-shadow: 0 15px 15px #777;
+    transform: rotate(3deg);
+}

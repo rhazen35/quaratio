@@ -50,82 +50,83 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
                 </div>
 
                 <div class="modelReport-totalErrorTypes">
-                        <div class="modelReport-totalErrorType">
-                            <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                                <img src="./images/icons/severe_icon.png"> Severe ( <?= $report['totalErrorTypes']['severe']; ?> )
-                                <?php if( isset( $_SESSION['xmlModelErrorSevere'] ) && $_SESSION['xmlModelErrorSevere'] === "hide" ): ?>
-                                        <input type="hidden" name="type" value="severe">
-                                        <input type="hidden" name="display" value="show">
-                                        <input type="submit" name="submitTypeVisibility" value="show">
-                                <?php else: ?>
-                                        <input type="hidden" name="type" value="severe">
-                                        <input type="hidden" name="display" value="hide">
-                                        <input type="submit" name="submitTypeVisibility" value="hide">
-                                <?php endif; ?>
-                            </form>
-                        </div>
 
-                        <div class="modelReport-totalErrorType">
-                            <div class="modelReport-totalErrorType-box">
-                                <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                                    <img src="./images/icons/red_cross_icon.png">Errors ( <?= $report['totalErrorTypes']['error']; ?> )
-                                    <?php if( isset( $_SESSION['xmlModelErrorError'] ) && $_SESSION['xmlModelErrorError'] === "hide" ): ?>
-                                        <input type="hidden" name="type" value="error">
-                                        <input type="hidden" name="display" value="show">
-                                        <input type="submit" name="submitTypeVisibility" value="show">
-                                    <?php else: ?>
-                                        <input type="hidden" name="type" value="error">
-                                        <input type="hidden" name="display" value="hide">
-                                        <input type="submit" name="submitTypeVisibility" value="hide">
-                                    <?php endif; ?>
-                                </form>
-                            </div>
-                        </div>
+                    <div class="modelReport-totalErrorType">
+                        <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                            <img src="./images/icons/checkgreen_icon.png"> Valid ( <?= $report['totalErrorTypes']['valid']; ?> )
+                            <?php if( isset( $_SESSION['xmlModelErrorValid'] ) && $_SESSION['xmlModelErrorValid'] === "hide" ): ?>
+                                <input type="hidden" name="type" value="valid">
+                                <input type="hidden" name="display" value="show">
+                                <input type="submit" name="submitTypeVisibility" value="show">
+                            <?php else: ?>
+                                <input type="hidden" name="type" value="valid">
+                                <input type="hidden" name="display" value="hide">
+                                <input type="submit" name="submitTypeVisibility" value="hide">
+                            <?php endif; ?>
+                        </form>
+                    </div>
 
-                        <div class="modelReport-totalErrorType">
+                    <div class="modelReport-totalErrorType">
+                        <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                            <img src="./images/icons/severe_icon.png"> Severe ( <?= $report['totalErrorTypes']['severe']; ?> )
+                            <?php if( isset( $_SESSION['xmlModelErrorSevere'] ) && $_SESSION['xmlModelErrorSevere'] === "hide" ): ?>
+                                    <input type="hidden" name="type" value="severe">
+                                    <input type="hidden" name="display" value="show">
+                                    <input type="submit" name="submitTypeVisibility" value="show">
+                            <?php else: ?>
+                                    <input type="hidden" name="type" value="severe">
+                                    <input type="hidden" name="display" value="hide">
+                                    <input type="submit" name="submitTypeVisibility" value="hide">
+                            <?php endif; ?>
+                        </form>
+                    </div>
+
+                    <div class="modelReport-totalErrorType">
+                        <div class="modelReport-totalErrorType-box">
                             <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                                <img src="./images/icons/warning_icon.png"> Warnings ( <?= $report['totalErrorTypes']['warning']; ?> )
-                                <?php if( isset( $_SESSION['xmlModelErrorWarning'] ) && $_SESSION['xmlModelErrorWarning'] === "hide" ): ?>
-                                    <input type="hidden" name="type" value="warning">
+                                <img src="./images/icons/red_cross_icon.png">Errors ( <?= $report['totalErrorTypes']['error']; ?> )
+                                <?php if( isset( $_SESSION['xmlModelErrorError'] ) && $_SESSION['xmlModelErrorError'] === "hide" ): ?>
+                                    <input type="hidden" name="type" value="error">
                                     <input type="hidden" name="display" value="show">
                                     <input type="submit" name="submitTypeVisibility" value="show">
                                 <?php else: ?>
-                                    <input type="hidden" name="type" value="warning">
+                                    <input type="hidden" name="type" value="error">
                                     <input type="hidden" name="display" value="hide">
                                     <input type="submit" name="submitTypeVisibility" value="hide">
                                 <?php endif; ?>
                             </form>
                         </div>
+                    </div>
 
-                        <div class="modelReport-totalErrorType modelReportInfoError">
-                            <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                                <img src="./images/icons/info_icon_blue.png"> Info ( <?= $report['totalErrorTypes']['info']; ?> )
-                                <?php if( isset( $_SESSION['xmlModelErrorInfo'] ) && $_SESSION['xmlModelErrorInfo'] === "hide" ): ?>
-                                    <input type="hidden" name="type" value="info">
-                                    <input type="hidden" name="display" value="show">
-                                    <input type="submit" name="submitTypeVisibility" value="show">
-                                <?php else: ?>
-                                    <input type="hidden" name="type" value="info">
-                                    <input type="hidden" name="display" value="hide">
-                                    <input type="submit" name="submitTypeVisibility" value="hide">
-                                <?php endif; ?>
-                            </form>
-                        </div>
+                    <div class="modelReport-totalErrorType">
+                        <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                            <img src="./images/icons/warning_icon.png"> Warnings ( <?= $report['totalErrorTypes']['warning']; ?> )
+                            <?php if( isset( $_SESSION['xmlModelErrorWarning'] ) && $_SESSION['xmlModelErrorWarning'] === "hide" ): ?>
+                                <input type="hidden" name="type" value="warning">
+                                <input type="hidden" name="display" value="show">
+                                <input type="submit" name="submitTypeVisibility" value="show">
+                            <?php else: ?>
+                                <input type="hidden" name="type" value="warning">
+                                <input type="hidden" name="display" value="hide">
+                                <input type="submit" name="submitTypeVisibility" value="hide">
+                            <?php endif; ?>
+                        </form>
+                    </div>
 
-                        <div class="modelReport-totalErrorType">
-                            <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                                <img src="./images/icons/checkgreen_icon.png"> Valid ( <?= $report['totalErrorTypes']['valid']; ?> )
-                                <?php if( isset( $_SESSION['xmlModelErrorValid'] ) && $_SESSION['xmlModelErrorValid'] === "hide" ): ?>
-                                    <input type="hidden" name="type" value="valid">
-                                    <input type="hidden" name="display" value="show">
-                                    <input type="submit" name="submitTypeVisibility" value="show">
-                                <?php else: ?>
-                                    <input type="hidden" name="type" value="valid">
-                                    <input type="hidden" name="display" value="hide">
-                                    <input type="submit" name="submitTypeVisibility" value="hide">
-                                <?php endif; ?>
-                            </form>
-                        </div>
+                    <div class="modelReport-totalErrorType modelReportInfoError">
+                        <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                            <img src="./images/icons/info_icon_blue.png"> Info ( <?= $report['totalErrorTypes']['info']; ?> )
+                            <?php if( isset( $_SESSION['xmlModelErrorInfo'] ) && $_SESSION['xmlModelErrorInfo'] === "hide" ): ?>
+                                <input type="hidden" name="type" value="info">
+                                <input type="hidden" name="display" value="show">
+                                <input type="submit" name="submitTypeVisibility" value="show">
+                            <?php else: ?>
+                                <input type="hidden" name="type" value="info">
+                                <input type="hidden" name="display" value="hide">
+                                <input type="submit" name="submitTypeVisibility" value="hide">
+                            <?php endif; ?>
+                        </form>
+                    </div>
 
                 </div>
 
@@ -154,51 +155,60 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
             /**
              * Show all report items, excluding the validation array.
              */
+                if( !empty( $report ) ):
 
-                foreach( $report as $key => $v ):
+                    echo '<div class="modelReport-Header">Model and extension</div>';
 
-                    if( !empty( $report[$key]['type'] ) && $key !== "validation" ):
+                    foreach( $report as $key => $v ):
 
-                        $sessionType = ( isset( $_SESSION['xmlModelError'.( ucfirst( $report[$key]['type'] ) )] ) ? $_SESSION['xmlModelError'.( ucfirst( $report[$key]['type'] ) )] : "");
-                        if( !empty( $sessionType && $sessionType === "hide" ) ):
+                        if( !empty( $report[$key]['type'] ) && $key !== "validation" ):
 
-                        else:
+                            $sessionType = ( isset( $_SESSION['xmlModelError'.( ucfirst( $report[$key]['type'] ) )] ) ? $_SESSION['xmlModelError'.( ucfirst( $report[$key]['type'] ) )] : "");
+                            if( !empty( $sessionType && $sessionType === "hide" ) ):
 
-                            ?>
+                            else:
 
-                            <div class="modelReport-item">
-                                <?php $type = $report[$key]['type']; ?>
-                                <div class="modelReport-item-img">
-                                    <img src="./images/icons/<?= ( $type === "warning" ? "warning_icon.png" : ( $type === "info" ? "info_icon_blue.png" : ( $type === "severe" ? "severe_icon.png" : ( $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ) ) ); ?>">
-                                    <div class="modelReport-item-type"> <?= $report[$key]['type']; ?></div>
-                                </div>
-                                <div class="modelReport-item-name"><?= $report[$key]['name']; ?></div>
-                                <div class="modelReport-item-value"><?= $report[$key]['value']; ?></div>
-                                <div class="modelReport-item-message"><?= $report[$key]['message']; ?></div>
-                            </div>
+                                ?>
 
-                            <?php if( $report[$key]['valid'] === false ): ?>
                                 <div class="modelReport-item">
-                                    <div class="modelReport-item-img"></div>
-                                    <div class="modelReport-item-info">
-                                        <img src="./images/icons/arrow_right_up.png"><span><?= $report[$key]['info']; ?></span>
+                                    <?php $type = $report[$key]['type']; ?>
+                                    <div class="modelReport-item-img">
+                                        <img src="./images/icons/<?= ( $type === "warning" ? "warning_icon.png" : ( $type === "info" ? "info_icon_blue.png" : ( $type === "severe" ? "severe_icon.png" : ( $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ) ) ); ?>">
+                                        <div class="modelReport-item-type"> <?= $report[$key]['type']; ?></div>
                                     </div>
+                                    <div class="modelReport-item-name"><?= $report[$key]['name']; ?></div>
+                                    <div class="modelReport-item-value"><?= $report[$key]['value']; ?></div>
+                                    <div class="modelReport-item-message"><?= $report[$key]['message']; ?></div>
                                 </div>
-                                <?php
+
+                                <?php if( $report[$key]['valid'] === false ): ?>
+                                    <div class="modelReport-item">
+                                        <div class="modelReport-item-img"></div>
+                                        <div class="modelReport-item-info">
+                                            <img src="./images/icons/arrow_right_up.png">
+                                            <div class="<?= ( $type === "warning" ? "modelReport-warning" : ( $type === "info" ? "modelReport-info" : ( $type === "severe" ? "modelReport-severe" : ( $type === "error" ? "modelReport-error" : "" ) ) ) ) ?>">
+                                                <?= $report[$key]['info']; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+
+                                endif;
 
                             endif;
 
                         endif;
 
-                    endif;
+                    endforeach;
 
-                endforeach;
-
+                endif;
                 /**
                  * Fields errors.
                  * Initial value, data type, attribute documentation.
                  */
                 if( !empty( $report['initialValueType'] ) ):
+
+                    echo '<div class="modelReport-Header">Attributes</div>';
 
                     foreach( $report['initialValueType'] as $initialValueType => $value ):
 
@@ -231,7 +241,9 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
                                                 <div class="modelReport-item-img"></div>
                                                 <div class="modelReport-item-info">
                                                     <img src="./images/icons/arrow_right_up.png">
-                                                    <span><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['info']; ?></span>
+                                                    <div class="<?= ( $type === "warning" ? "modelReport-warning" : ( $type === "info" ? "modelReport-info" : ( $type === "severe" ? "modelReport-severe" : ( $type === "error" ? "modelReport-error" : "" ) ) ) ) ?>">
+                                                        <?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['info']; ?>
+                                                    </div>
                                                 </div>
                                             </div>
                                         <?php endif; ?>
@@ -254,6 +266,8 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
                  * Documentation, tags, file, tab, cell, order.
                  */
                 if( !empty( $report['operations'] ) ):
+
+                    echo '<div class="modelReport-Header">Operations</div>';
 
                     foreach( $report['operations'] as $operation => $value ):
 
@@ -284,7 +298,9 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
                                             <div class="modelReport-item-img"></div>
                                             <div class="modelReport-item-info">
                                                 <img src="./images/icons/arrow_right_up.png">
-                                                <span><?= $report['operations'][$operation]['operation'.($i+1)]['info']; ?></span>
+                                                <div class="<?= ( $type === "warning" ? "modelReport-warning" : ( $type === "info" ? "modelReport-info" : ( $type === "severe" ? "modelReport-severe" : ( $type === "error" ? "modelReport-error" : "" ) ) ) ) ?>">
+                                                    <?= $report['operations'][$operation]['operation'.($i+1)]['info']; ?>
+                                                </div>
                                             </div>
                                         </div>
                                     <?php

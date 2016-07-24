@@ -6,53 +6,13 @@
 
 .homeTitle
 {
-    width:100%;
+    width:50%;
     height:auto;
+    margin: 0 auto;
     margin-top:2em;
+    padding-bottom:1em;
     font-weight:bold;
     font-size:120%;
     text-align:center;
-}
-
-.homeTitle-sub
-{
-    width:60%;
-    margin: 0 auto;
-    margin-top:0.5em;
-    padding-bottom:1em;
-    font-size:100%;
-    text-align:center;
     border-bottom:1px solid #CCCCCC;
-}
-
-.modelUpload-Title
-{
-    width:60%;
-    margin: 0 auto;
-    margin-top:2em;
-    font-size:100%;
-}
-
-.modelUpload
-{
-    width:60%;
-    margin: 0 auto;
-    margin-top:2em;
-    font-size:100%;
-}
-
-.modelUpload-Header
-{
-    font-size:80%;
-}
-
-.modelUpload-Footer
-{
-    margin-top: 1em;
-    font-size:80%;
-}
-
-.modelUpload-Upload
-{
-    margin-top:1em;
 }

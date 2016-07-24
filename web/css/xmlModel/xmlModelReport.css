@@ -42,6 +42,14 @@
     margin: 1em auto;
 }
 
+.modelReport-Header
+{
+    width:100%;
+    padding:0.5em;
+    font-size:90%;
+    border-bottom:1px solid #707070;
+}
+
 .modelReport-item
 {
     clear:both;
@@ -78,10 +86,19 @@
 {
     position:absolute;
     width:150px;
-    top: 5em;
-    right:1em;
+    height:1em;
+    top: 3.5em;
+    left:1%;
     padding-top:1.5em;
+}
+
+.modelReport-goBack a
+{
+    padding:0.5em;
     font-size:80%;
+    color:#FFFFFF;
+    text-decoration: none;
+    background-color: #707070;
 }
 
 .modelReport-totalErrorType
@@ -133,7 +150,7 @@
 
 .totalValidationGreen
 {
-    background-color: #7BCC70;
+    background-color: #00cc00;
     color:#FFFFFF;
 }
 
@@ -181,10 +198,28 @@
     text-align:left;
 }
 
-.modelReport-item-info span
+.modelReport-severe
 {
-    padding:0.15em;
-    background-color: yellow;
+    color:#FFFFFF;
+    background-color: #e60000;
+}
+
+.modelReport-error
+{
+    color:#FFFFFF;
+    background-color: #ff1a1a;
+}
+
+.modelReport-warning
+{
+    color:#000000;
+    background-color: gold;
+}
+
+.modelReport-info
+{
+    color:#000000;
+    background-color: lightskyblue;
 }
 
 .modelReport-item-info img
@@ -218,10 +253,4 @@
     line-height:15px;
     padding-top:0.25em;
     padding-left:0.25em;
-}
-
-.modelUpload-error
-{
-    color: firebrick;
-    font-size: 90%;
 }
