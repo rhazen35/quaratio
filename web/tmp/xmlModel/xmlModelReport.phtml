@@ -2,89 +2,147 @@
 
 namespace web\tmp\xmlModel\xmlModelReport;
 
-$data    = unserialize( CMS_GET_DATA );
-$allowed = ['hideValidatorType'];
+use \application\controller;
 
-if( !empty( $data ) ):
-    foreach( $data as $key => $value ):
-        if( in_array( $key, $allowed ) ) ${$key} = $value;
-    endforeach;
+/**
+ * Handle error controls when posting
+ */
+if( $_SERVER['REQUEST_METHOD'] === "POST" ):
+    ( new controller\Controller( "handler", "xmlModelErrorControl", "xmlModel" ) )->request();
+    exit();
 endif;
-
-$hideValidatorType = ( !empty( $hideValidatorType ) ? $hideValidatorType : "" );
 
 /**
  * Get the report session and unserialize it
  */
 $report = unserialize( $_SESSION['xmlValidatorReport'] );
 
+/**
+ * Check if the report has a file exists flag, if so validation failed.
+ */
 if( isset( $report['file_exists'] ) && $report['file_exists'] === true ):
     $fileExists = true;
     $validationMessage = "Validation failed";
 endif;
 
-$requestTypeHide      = "template";
-$requestAttributeHide = "xmlModelReport";
-$requestDirectoryHide = "xmlModel";
-$hideValidatorWarning = "warning";
-$urlDataHide = array( "requestType" => $requestTypeHide, "requestAttribute" => $requestAttributeHide, "requestDirectory" => $requestDirectoryHide, "hideValidatorType" => $hideValidatorWarning );
-$urlDataHide = base64_encode( json_encode( $urlDataHide ) );
-
-$requestTypeShow      = "template";
-$requestAttributeShow = "xmlModelReport";
-$requestDirectoryShow = "xmlModel";
-$urlDataShow = array( "requestType" => $requestTypeShow, "requestAttribute" => $requestAttributeShow, "requestDirectory" => $requestDirectoryShow );
-$urlDataShow = base64_encode( json_encode( $urlDataShow ) );
-
-$requestTypeUpload      = "template";
-$requestAttributeUpload = "home";
-$requestDirectoryUpload = "common";
-$urlDataUpload = array( "requestType" => $requestTypeUpload, "requestAttribute" => $requestAttributeUpload, "requestDirectory" => $requestDirectoryUpload );
+/**
+ * Set up data array's for back to upload and PRG-pattern
+ */
+$urlDataUpload = array( "requestType" => "template", "requestAttribute" => "home", "requestDirectory" => "common");
+$urlDataPRG = array( "requestType" => "template", "requestAttribute" => "xmlModelReport", "requestDirectory" => "xmlModel");
 $urlDataUpload = base64_encode( json_encode( $urlDataUpload ) );
-
-//var_dump($report);
+$urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
 
 ?>
 
 <div class="modelReport">
 
+    <div class="modelReport-goBack">
+        <a href="<?= LITENING_SELF.'?data='.$urlDataUpload; ?>">terug naar uploaden</a>
+    </div>
+
     <div class="modelReport-Title">XML Report - Enterprise Architect Model</div>
 
         <div class="modelReport-container">
+
                 <div class="modelReport-totalValidation <?= ( $report['validation']['valid'] === true && isset( $fileExists) !== true ? "totalValidationGreen" : "totalValidationRed" ) ?>">
                     <?= ( isset( $fileExists ) && $fileExists === true ? $validationMessage : $report['validation']['message'] ); ?>
                 </div>
-                <div class="modelReport-totalErrorTypes">
-                    <div class="modelReport-totalErrorType">Severe ( <?= $report['totalErrorTypes']['severe']; ?> )</div>
-                    <div class="modelReport-totalErrorType">Errors ( <?= $report['totalErrorTypes']['error']; ?> )</div>
-                    <div class="modelReport-totalErrorType">
-                        Warnings ( <?= $report['totalErrorTypes']['warning']; ?> )
-                        <?php if( $hideValidatorType === "warning" ): ?>
-                            <a href="<?= LITENING_SELF."?data=".$urlDataShow; ?>">show</a>
-                        <?php else: ?>
-                            <a href="<?= LITENING_SELF."?data=".$urlDataHide; ?>">hide</a>
-                        <?php endif; ?>
-                    </div>
-                    <div class="modelReport-totalErrorType">Info ( <?= $report['totalErrorTypes']['info']; ?> )</div>
-                    <div class="modelReport-totalErrorType">Valid ( <?= $report['totalErrorTypes']['valid']; ?> )</div>
-                </div>
 
                 <div class="modelReport-totalErrorTypes">
-                    <div class="modelReport-totalErrorType"><a href="<?= LITENING_SELF.'?data='.$urlDataUpload; ?>">terug naar uploaden</a></div>
+                        <div class="modelReport-totalErrorType">
+                            <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                                <img src="./images/icons/severe_icon.png"> Severe ( <?= $report['totalErrorTypes']['severe']; ?> )
+                                <?php if( isset( $_SESSION['xmlModelErrorSevere'] ) && $_SESSION['xmlModelErrorSevere'] === "hide" ): ?>
+                                        <input type="hidden" name="type" value="severe">
+                                        <input type="hidden" name="display" value="show">
+                                        <input type="submit" name="submitTypeVisibility" value="show">
+                                <?php else: ?>
+                                        <input type="hidden" name="type" value="severe">
+                                        <input type="hidden" name="display" value="hide">
+                                        <input type="submit" name="submitTypeVisibility" value="hide">
+                                <?php endif; ?>
+                            </form>
+                        </div>
+
+                        <div class="modelReport-totalErrorType">
+                            <div class="modelReport-totalErrorType-box">
+                                <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                                    <img src="./images/icons/red_cross_icon.png">Errors ( <?= $report['totalErrorTypes']['error']; ?> )
+                                    <?php if( isset( $_SESSION['xmlModelErrorError'] ) && $_SESSION['xmlModelErrorError'] === "hide" ): ?>
+                                        <input type="hidden" name="type" value="error">
+                                        <input type="hidden" name="display" value="show">
+                                        <input type="submit" name="submitTypeVisibility" value="show">
+                                    <?php else: ?>
+                                        <input type="hidden" name="type" value="error">
+                                        <input type="hidden" name="display" value="hide">
+                                        <input type="submit" name="submitTypeVisibility" value="hide">
+                                    <?php endif; ?>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="modelReport-totalErrorType">
+                            <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                                <img src="./images/icons/warning_icon.png"> Warnings ( <?= $report['totalErrorTypes']['warning']; ?> )
+                                <?php if( isset( $_SESSION['xmlModelErrorWarning'] ) && $_SESSION['xmlModelErrorWarning'] === "hide" ): ?>
+                                    <input type="hidden" name="type" value="warning">
+                                    <input type="hidden" name="display" value="show">
+                                    <input type="submit" name="submitTypeVisibility" value="show">
+                                <?php else: ?>
+                                    <input type="hidden" name="type" value="warning">
+                                    <input type="hidden" name="display" value="hide">
+                                    <input type="submit" name="submitTypeVisibility" value="hide">
+                                <?php endif; ?>
+                            </form>
+                        </div>
+
+                        <div class="modelReport-totalErrorType modelReportInfoError">
+                            <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                                <img src="./images/icons/info_icon_blue.png"> Info ( <?= $report['totalErrorTypes']['info']; ?> )
+                                <?php if( isset( $_SESSION['xmlModelErrorInfo'] ) && $_SESSION['xmlModelErrorInfo'] === "hide" ): ?>
+                                    <input type="hidden" name="type" value="info">
+                                    <input type="hidden" name="display" value="show">
+                                    <input type="submit" name="submitTypeVisibility" value="show">
+                                <?php else: ?>
+                                    <input type="hidden" name="type" value="info">
+                                    <input type="hidden" name="display" value="hide">
+                                    <input type="submit" name="submitTypeVisibility" value="hide">
+                                <?php endif; ?>
+                            </form>
+                        </div>
+
+                        <div class="modelReport-totalErrorType">
+                            <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
+                                <img src="./images/icons/checkgreen_icon.png"> Valid ( <?= $report['totalErrorTypes']['valid']; ?> )
+                                <?php if( isset( $_SESSION['xmlModelErrorValid'] ) && $_SESSION['xmlModelErrorValid'] === "hide" ): ?>
+                                    <input type="hidden" name="type" value="valid">
+                                    <input type="hidden" name="display" value="show">
+                                    <input type="submit" name="submitTypeVisibility" value="show">
+                                <?php else: ?>
+                                    <input type="hidden" name="type" value="valid">
+                                    <input type="hidden" name="display" value="hide">
+                                    <input type="submit" name="submitTypeVisibility" value="hide">
+                                <?php endif; ?>
+                            </form>
+                        </div>
+
                 </div>
 
             <?php
-            if( !empty( $report['file_exists'] ) && $report['file_exists'] === true ):
-                echo '<div class="modelReport-exists">';
-                echo 'Het model bestaat al!';
-                echo '</div>';
-            else:
+            /**
+             * Check if the report has a file exists flag, if so display a message.
+             */
+                if( !empty( $report['file_exists'] ) && $report['file_exists'] === true ):
+                    echo '<div class="modelReport-exists">';
+                    echo 'Het model bestaat al!';
+                    echo '</div>';
+                else:
             ?>
 
             <div class="modelReport-item modelReport-grayBack">
                 <div class="modelReport-item-img">
-                    <img src="./images/icons/list_icon.png">
-                    <div class="modelReport-item-type"><small> - type</small></div>
+                    <div class="modelReport-item-type">Type</div>
                 </div>
                 <div class="modelReport-item-name">Subject</div>
                 <div class="modelReport-item-value">Information</div>
@@ -93,31 +151,42 @@ $urlDataUpload = base64_encode( json_encode( $urlDataUpload ) );
 
             <?php
 
+            /**
+             * Show all report items, excluding the validation array.
+             */
+
                 foreach( $report as $key => $v ):
 
                     if( !empty( $report[$key]['type'] ) && $key !== "validation" ):
 
-                        if( $report[$key]['type'] !== $hideValidatorType ):
+                        $sessionType = ( isset( $_SESSION['xmlModelError'.( ucfirst( $report[$key]['type'] ) )] ) ? $_SESSION['xmlModelError'.( ucfirst( $report[$key]['type'] ) )] : "");
+                        if( !empty( $sessionType && $sessionType === "hide" ) ):
+
+                        else:
 
                             ?>
 
                             <div class="modelReport-item">
                                 <?php $type = $report[$key]['type']; ?>
                                 <div class="modelReport-item-img">
-                                    <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
-                                    <div class="modelReport-item-type"> - <?= $report[$key]['type']; ?></div>
+                                    <img src="./images/icons/<?= ( $type === "warning" ? "warning_icon.png" : ( $type === "info" ? "info_icon_blue.png" : ( $type === "severe" ? "severe_icon.png" : ( $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ) ) ); ?>">
+                                    <div class="modelReport-item-type"> <?= $report[$key]['type']; ?></div>
                                 </div>
                                 <div class="modelReport-item-name"><?= $report[$key]['name']; ?></div>
                                 <div class="modelReport-item-value"><?= $report[$key]['value']; ?></div>
                                 <div class="modelReport-item-message"><?= $report[$key]['message']; ?></div>
+                            </div>
 
-                                <?php if( $report[$key]['valid'] === false ): ?>
-                                        <div class="modelReport-item-info">
-                                            <img src="./images/icons/arrow_right_up.png"><span><?= $report[$key]['info']; ?></span>
-                                        </div>
-                                <?php endif; ?>
+                            <?php if( $report[$key]['valid'] === false ): ?>
+                                <div class="modelReport-item">
+                                    <div class="modelReport-item-img"></div>
+                                    <div class="modelReport-item-info">
+                                        <img src="./images/icons/arrow_right_up.png"><span><?= $report[$key]['info']; ?></span>
+                                    </div>
+                                </div>
+                                <?php
 
-                            </div> <?php
+                            endif;
 
                         endif;
 
@@ -126,7 +195,8 @@ $urlDataUpload = base64_encode( json_encode( $urlDataUpload ) );
                 endforeach;
 
                 /**
-                 *
+                 * Fields errors.
+                 * Initial value, data type, attribute documentation.
                  */
                 if( !empty( $report['initialValueType'] ) ):
 
@@ -138,26 +208,34 @@ $urlDataUpload = base64_encode( json_encode( $urlDataUpload ) );
 
                             if( isset( $report['initialValueType'][$initialValueType]['type'.($i+1)] ) ):
 
-                                if( $report['initialValueType'][$initialValueType]['type'.($i+1)]['type'] !== $hideValidatorType ):
+                                $sessionType = ( isset( $_SESSION['xmlModelError'.( ucfirst( $report['initialValueType'][$initialValueType]['type'.($i+1)]['type'] ) )] ) ? $_SESSION['xmlModelError'.( ucfirst( $report['initialValueType'][$initialValueType]['type'.($i+1)]['type'] ) )] : "");
+
+                                if( !empty( $sessionType && $sessionType === "hide" ) ):
+
+                                else:
 
                                     ?>
-
-                                    <div class="modelReport-item">
-                                        <?php $type = $report['initialValueType'][$initialValueType]['type'.($i+1)]['type']; ?>
-                                        <div class="modelReport-item-img">
-                                            <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
-                                            <div class="modelReport-item-type"> - <?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['type']; ?></div>
+                                        <div class="modelReport-item">
+                                            <?php $type = $report['initialValueType'][$initialValueType]['type'.($i+1)]['type']; ?>
+                                            <div class="modelReport-item-img">
+                                                <img src="./images/icons/<?= ( $type === "warning" ? "warning_icon.png" : ( $type === "info" ? "info_icon_blue.png" : ( $type === "severe" ? "severe_icon.png" : ( $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ) ) ); ?>">
+                                                <div class="modelReport-item-type"> <?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['type']; ?></div>
+                                            </div>
+                                            <div class="modelReport-item-name"><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['name']; ?></div>
+                                            <div class="modelReport-item-value"><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['value']; ?></div>
+                                            <div class="modelReport-item-message"><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['message']; ?></div>
                                         </div>
-                                        <div class="modelReport-item-name"><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['name']; ?></div>
-                                        <div class="modelReport-item-value"><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['value']; ?></div>
-                                        <div class="modelReport-item-message"><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['message']; ?></div>
 
                                         <?php if( $report['initialValueType'][$initialValueType]['type'.($i+1)]['valid'] === false ): ?>
-                                            <div class="modelReport-item-info">
-                                                <img src="./images/icons/arrow_right_up.png"><span><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['info']; ?></span>
+                                            <div class="modelReport-item">
+                                                <div class="modelReport-item-img"></div>
+                                                <div class="modelReport-item-info">
+                                                    <img src="./images/icons/arrow_right_up.png">
+                                                    <span><?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['info']; ?></span>
+                                                </div>
                                             </div>
                                         <?php endif; ?>
-                                    </div>
+
                                     <?php
 
                                 endif;
@@ -172,7 +250,8 @@ $urlDataUpload = base64_encode( json_encode( $urlDataUpload ) );
 
 
                 /**
-                 * Operation validation
+                 * Operation errors.
+                 * Documentation, tags, file, tab, cell, order.
                  */
                 if( !empty( $report['operations'] ) ):
 
@@ -182,26 +261,35 @@ $urlDataUpload = base64_encode( json_encode( $urlDataUpload ) );
 
                         for( $i = 0; $i < $totalOperations; $i++ ):
 
-                            if( $report['operations'][$operation]['operation'.($i+1)]['type'] !== $hideValidatorType ):
+                            $sessionType = ( isset( $_SESSION['xmlModelError'.( ucfirst( $report['operations'][$operation]['operation'.($i+1)]['type'] ) )] ) ? $_SESSION['xmlModelError'.( ucfirst( $report['operations'][$operation]['operation'.($i+1)]['type'] ) )] : "");
+
+                            if( !empty( $sessionType && $sessionType === "hide" ) ):
+
+                            else:
 
                                 ?>
-                                <div class="modelReport-item">
-                                    <?php $type = $report['operations'][$operation]['operation'.($i+1)]['type']; ?>
-                                    <div class="modelReport-item-img">
-                                        <img src="./images/icons/<?= ( $type === "warning" || $type === "info" ? "warning_icon.png" : ( $type === "severe" || $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ); ?>">
-                                        <div class="modelReport-item-type"> - <?= $report['operations'][$operation]['operation'.($i+1)]['type']; ?></div>
+                                    <div class="modelReport-item">
+                                        <?php $type = $report['operations'][$operation]['operation'.($i+1)]['type']; ?>
+                                        <div class="modelReport-item-img">
+                                            <img src="./images/icons/<?= ( $type === "warning" ? "warning_icon.png" : ( $type === "info" ? "info_icon_blue.png" : ( $type === "severe" ? "severe_icon.png" : ( $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ) ) ); ?>">
+                                            <div class="modelReport-item-type"> <?= $report['operations'][$operation]['operation'.($i+1)]['type']; ?></div>
+                                        </div>
+                                        <div class="modelReport-item-name"><?= $report['operations'][$operation]['operation'.($i+1)]['name']; ?></div>
+                                        <div class="modelReport-item-value"><?= $report['operations'][$operation]['operation'.($i+1)]['value']; ?></div>
+                                        <div class="modelReport-item-message"><?= $report['operations'][$operation]['operation'.($i+1)]['message']; ?></div>
                                     </div>
-                                    <div class="modelReport-item-name"><?= $report['operations'][$operation]['operation'.($i+1)]['name']; ?></div>
-                                    <div class="modelReport-item-value"><?= $report['operations'][$operation]['operation'.($i+1)]['value']; ?></div>
-                                    <div class="modelReport-item-message"><?= $report['operations'][$operation]['operation'.($i+1)]['message']; ?></div>
 
                                     <?php if( $report['operations'][$operation]['operation'.($i+1)]['valid'] === false ): ?>
-                                    <div class="modelReport-item-info">
-                                        <img src="./images/icons/arrow_right_up.png"><span><?= $report['operations'][$operation]['operation'.($i+1)]['info']; ?></span>
-                                    </div>
-                                    <?php endif; ?>
-                                </div>
-                                <?php
+                                        <div class="modelReport-item">
+                                            <div class="modelReport-item-img"></div>
+                                            <div class="modelReport-item-info">
+                                                <img src="./images/icons/arrow_right_up.png">
+                                                <span><?= $report['operations'][$operation]['operation'.($i+1)]['info']; ?></span>
+                                            </div>
+                                        </div>
+                                    <?php
+
+                                endif;
 
                             endif;
 

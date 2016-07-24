@@ -1,7 +1,7 @@
 .modelReport
 {
     width:75%;
-    min-width: 800px;
+    min-width: 960px;
     height:auto;
     margin: 0 auto;
     margin-top:2em;
@@ -11,13 +11,13 @@
 
 .modelReport-Title
 {
-    width:100%;
+    width:98%;
     height:auto;
     margin: 0 auto;
     margin-top:0.5em;
-    padding-top:1em;
     padding-bottom:0.5em;
-    font-size:120%;
+    font-size:110%;
+    font-weight:bold;
     text-align:center;
 }
 
@@ -52,32 +52,83 @@
     margin: 0 auto;
     text-align: center;
     font-size:90%;
-    border: 1px solid #CCCCCC;
+    border-bottom: 1px solid #707070;
+    border-right: 1px solid #707070;
     overflow:hidden;
 }
 
 .modelReport-totalValidation
 {
-    width:25%;
-    height:auto;
-    margin-bottom:1em;
+    width:100px;
+    height:1em;
     padding:1em;
-    color:#000000;
+    font-size:90%;
     text-align: center;
 }
 
 .modelReport-totalErrorTypes
 {
-    display:flex;
-    flex-flow:flex-start;
-    justify-content: space-between;
+    clear:both;
+    float:left;
+    width:790px;
+    margin-left:1em;
+}
+
+.modelReport-goBack
+{
+    position:absolute;
+    width:150px;
+    top: 5em;
+    right:1em;
+    padding-top:1.5em;
+    font-size:80%;
 }
 
 .modelReport-totalErrorType
 {
-    padding:1em;
-    padding-top:1.5em;
-    font-size:80%;
+    float:left;
+    width:155px;
+    padding-top:1.25em;
+    font-size:70%;
+    text-align:left;
+}
+
+.modelReportInfoError
+{
+    margin-left:1em;
+}
+
+.modelReport-totalErrorType img
+{
+    float:left;
+    width:17px;
+    height:17px;
+    padding-right:0.25em;
+}
+
+.modelReport-totalErrorType input[type=submit]
+{
+    padding-right:0.25em;
+    font-size:95%;
+    letter-spacing: 0.1em;
+    border:none;
+    border:1px solid #404040;
+}
+
+.modelReport-totalErrorType input[type=submit]:hover
+{
+    cursor:pointer;
+    color:#FFFFFF;
+    background-color:#707070;
+}
+
+.modelReport-grayBack
+{
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+    font-size:100%;
+    color:#FFFFFF;
+    background-color:#707070;
 }
 
 .totalValidationGreen
@@ -92,14 +143,6 @@
     color:#FFFFFF;
 }
 
-.modelReport-grayBack
-{
-    padding-top:0.5em;
-    padding-bottom:0.5em;
-    font-size:105%;
-    background-color:#999999;
-}
-
 .modelReport-item-name,
 .modelReport-item-value,
 .modelReport-item-message,
@@ -107,13 +150,17 @@
 {
     line-height:20px;
     padding:0.25em;
-    font-size:90%;
+    font-size:80%;
     text-align: left;
+    border-left:1px solid #CCCCCC;
 }
 
 .modelReport-item-img
 {
     width:8%;
+    color:#FFFFFF;
+    background-color:#707070;
+    border:none;
 }
 
 .modelReport-item-img img
@@ -122,15 +169,15 @@
     width:17px;
     height:17px;
     padding-top:0.25em;
+    padding-left:0.25em;
 }
 
 .modelReport-item-info
 {
     float:left;
-    width:100%;
+    width:90%;
     line-height:20px;
-    padding:0.25em;
-    font-size:90%;
+    font-size:80%;
     text-align:left;
 }
 
@@ -152,7 +199,7 @@
 
 .modelReport-item-name
 {
-    width:20%;
+    width:21.5%;
 }
 
 .modelReport-item-value
@@ -170,6 +217,7 @@
     float:left;
     line-height:15px;
     padding-top:0.25em;
+    padding-left:0.25em;
 }
 
 .modelUpload-error

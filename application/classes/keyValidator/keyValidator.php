@@ -72,7 +72,8 @@ if(!class_exists('KeyValidator')):
 
             'xmlModel' => array(
                 'report',
-                'hideValidatorType'
+                'hideValidatorType',
+                'hideValidatorAction'
             )
 
         );

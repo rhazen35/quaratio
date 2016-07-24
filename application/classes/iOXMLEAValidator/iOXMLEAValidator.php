@@ -554,21 +554,17 @@ if( !class_exists( "IOXMLEAValidator" ) ):
             $parseReport['validation']['name']      = "Validation";
             $parseReport['validation']['type']      = "severe";
 
-            if( $isXML === false
-                || $parseReport['xmiVersion']['valid'] === false
-                || $parseReport['extension']['valid'] === false
-                || $parseReport['extensionVersion']['valid'] === false
-                || $parseReport['totalClasses']['valid'] === false
-                || $parsedClasses['duplicateNames'] > 0
-                || $operationCheck === false ):
+            if( !empty( $severe )
+                || !empty( $error )
+            ):
                 $validationValue = false;
                 $validationValid = false;
-                $validationMessage = "Validation failed";
+                $validationMessage = "Invalid XML";
             else:
 
                 $validationValue = true;
                 $validationValid = true;
-                $validationMessage = "Validation successful";
+                $validationMessage = "Valid XML";
 
             endif;
 
