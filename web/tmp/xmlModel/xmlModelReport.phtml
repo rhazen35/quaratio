@@ -51,9 +51,9 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
 
                 <div class="modelReport-totalErrorTypes">
 
-                    <div class="modelReport-totalErrorType">
+                    <div class="modelReport-totalErrorType-valid">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/checkgreen_icon.png"> Valid ( <?= $report['totalErrorTypes']['valid']; ?> )
+                            <img src="./images/icons/checkgreen_icon.png"> Valid ( <strong><?= $report['totalErrorTypes']['valid']; ?></strong> )
                             <?php if( isset( $_SESSION['xmlModelErrorValid'] ) && $_SESSION['xmlModelErrorValid'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="valid">
                                 <input type="hidden" name="display" value="show">
@@ -68,7 +68,7 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
 
                     <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/severe_icon.png"> Severe ( <?= $report['totalErrorTypes']['severe']; ?> )
+                            <img src="./images/icons/severe_icon.png"> Severe ( <strong><?= $report['totalErrorTypes']['severe']; ?></strong> )
                             <?php if( isset( $_SESSION['xmlModelErrorSevere'] ) && $_SESSION['xmlModelErrorSevere'] === "hide" ): ?>
                                     <input type="hidden" name="type" value="severe">
                                     <input type="hidden" name="display" value="show">
@@ -84,7 +84,7 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
                     <div class="modelReport-totalErrorType">
                         <div class="modelReport-totalErrorType-box">
                             <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                                <img src="./images/icons/red_cross_icon.png">Errors ( <?= $report['totalErrorTypes']['error']; ?> )
+                                <img src="./images/icons/red_cross_icon.png">Errors ( <strong><?= $report['totalErrorTypes']['error']; ?></strong> )
                                 <?php if( isset( $_SESSION['xmlModelErrorError'] ) && $_SESSION['xmlModelErrorError'] === "hide" ): ?>
                                     <input type="hidden" name="type" value="error">
                                     <input type="hidden" name="display" value="show">
@@ -100,7 +100,7 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
 
                     <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/warning_icon.png"> Warnings ( <?= $report['totalErrorTypes']['warning']; ?> )
+                            <img src="./images/icons/warning_icon.png"> Warnings ( <strong><?= $report['totalErrorTypes']['warning']; ?></strong> )
                             <?php if( isset( $_SESSION['xmlModelErrorWarning'] ) && $_SESSION['xmlModelErrorWarning'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="warning">
                                 <input type="hidden" name="display" value="show">
@@ -115,7 +115,7 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
 
                     <div class="modelReport-totalErrorType modelReportInfoError">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/info_icon_blue.png"> Info ( <?= $report['totalErrorTypes']['info']; ?> )
+                            <img src="./images/icons/info_icon_blue.png"> Info ( <strong><?= $report['totalErrorTypes']['info']; ?></strong> )
                             <?php if( isset( $_SESSION['xmlModelErrorInfo'] ) && $_SESSION['xmlModelErrorInfo'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="info">
                                 <input type="hidden" name="display" value="show">

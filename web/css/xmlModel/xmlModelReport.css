@@ -40,6 +40,7 @@
     width:98%;
     height:auto;
     margin: 1em auto;
+    overflow:hidden;
 }
 
 .modelReport-Header
@@ -80,6 +81,7 @@
     float:left;
     width:790px;
     margin-left:1em;
+    overflow:hidden;
 }
 
 .modelReport-goBack
@@ -101,21 +103,34 @@
     background-color: #707070;
 }
 
-.modelReport-totalErrorType
+.modelReport-totalErrorType,
+.modelReport-totalErrorType-Valid
 {
     float:left;
     width:155px;
     padding-top:1.25em;
-    font-size:70%;
+    font-size:75%;
     text-align:left;
+}
+
+.modelReport-totalErrorType-Valid
+{
+    width:145px;
+}
+
+.modelReport-totalErrorType strong
+{
+    font-family: "Tahoma";
+    font-size:90%;
 }
 
 .modelReportInfoError
 {
-    margin-left:1em;
+    margin-left:1.5em;
 }
 
-.modelReport-totalErrorType img
+.modelReport-totalErrorType img,
+.modelReport-totalErrorType-Valid img
 {
     float:left;
     width:17px;
@@ -123,7 +138,8 @@
     padding-right:0.25em;
 }
 
-.modelReport-totalErrorType input[type=submit]
+.modelReport-totalErrorType input[type=submit],
+.modelReport-totalErrorType-Valid input[type=submit]
 {
     padding-right:0.25em;
     font-size:95%;
@@ -132,7 +148,8 @@
     border:1px solid #404040;
 }
 
-.modelReport-totalErrorType input[type=submit]:hover
+.modelReport-totalErrorType input[type=submit]:hover,
+.modelReport-totalErrorType-Valid input[type=submit]:hover
 {
     cursor:pointer;
     color:#FFFFFF;
