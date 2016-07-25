@@ -94,7 +94,7 @@ if( !class_exists( "IOXMLModelUpload" ) ):
             $upload_date = $datetime->format('Y-m-d');
             $upload_time = $datetime->format('H:i:s');
             $userId      = !empty( $_SESSION['userId'] ) ? $_SESSION['userId'] : "";
-            $id = $output = "";
+            $id          = $output = "";
 
             $sql        = "CALL proc_newModel(?,?,?,?,?,?)";
             $data       = array(
@@ -107,12 +107,12 @@ if( !class_exists( "IOXMLModelUpload" ) ):
                                 );
             $format     = array("iisssi");
 
-            $type       = "create";
+            $type       = "createWithOutput";
             $database   = "quaratio";
 
-            $lastInsertedID = ( new service\Service( $type, $database ) )->dbAction( $sql, $data, $format );
+            $lastInsertedId = ( new service\Service( $type, $database ) )->dbAction( $sql, $data, $format );
 
-            return( $lastInsertedID );
+            return( $lastInsertedId );
 
         }
 

@@ -6,12 +6,12 @@
  * Time: 13:11
  */
 
-use \application\controller;
-use \application\classes\iOXMLModelParser;
-use application\classes\iOXMLEAModel;
+namespace web\tmp\xmlModel\preview;
 
-( new controller\Controller( "class", "iOXMLModelParser", "iOXMLModelParser" ) )->request();
-( new controller\Controller( "class", "iOXMLEAModel", "iOXMLEAModel" ) )->request();
+use \application\controller;
+use \application\classes\iOXMLEAScreenFactory;
+
+( new controller\Controller( "class", "iOXMLEAScreenFactory", "iOXMLEAScreenFactory" ) )->request();
 
 $data    = unserialize( CMS_GET_DATA );
 $allowed = ['xmlModelId'];
@@ -22,7 +22,14 @@ if( !empty( $data ) ):
     endforeach;
 endif;
 
-$modelData = ( new iOXMLEAModel\IOXMLEAModel( $xmlModelId ) )->getModel();
-$parsedClasses = ( new iOXMLModelParser\IOXMLModelParser( './files/'.$modelData['hash'].'.xml' ) )->parseXMLClasses();
+$xmlModel = ( isset( $xmlModelId ) ? $xmlModelId : "" );
 
-var_dump($parsedClasses);
+$orderedElements = ( new iOXMLEAScreenFactory\IOXMLEAScreenFactory( $xmlModel ) )->extractAndOrderElements();
+$totalElements   = count( $orderedElements );
+
+for( $i = 0; $i < $totalElements; $i++ ):
+
+    $form = ( new iOXMLEAScreenFactory\IOXMLEAScreenFactory( $orderedElements[$i] ) )->createForm();
+
+endfor;
+

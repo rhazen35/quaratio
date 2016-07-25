@@ -26,7 +26,7 @@ if(!class_exists( "DbCreate" )):
 
         public function __construct( $sql, $database )
         {
-            $this->sql     = $sql;
+            $this->sql      = $sql;
             $this->database = $database;
         }
 
@@ -53,23 +53,46 @@ if(!class_exists( "DbCreate" )):
             endif;
 
             $stmt->execute();
+            $stmt->close();
+            $mysqli->close();
+
+        }
+
+        public function  dbInsertOut( $data, $format )
+
+        {
+            $mysqli     = ( new database\Database( $this->database ) )->dbConnect();
+
+            $stmt       = $mysqli->prepare( $this->sql );
+
+            if( !empty( $format ) && !empty( $data ) ):
+
+                $format = implode( '', $format );
+                $format = str_replace( '%', '', $format );
+
+                array_unshift( $data, $format );
+                call_user_func_array( array( $stmt, 'bind_param' ), ( new database\Database( $this->database ) )->referenceValues( $data ) );
+
+            endif;
+
+            $stmt->execute();
+
+            $lastInsertedId = "";
 
             if( $stmt->bind_result( $id ) ):
 
                 while( $row = $stmt->fetch() ):
-                    $id = $id;
+
+                    $lastInsertedId = $id;
+
                 endwhile;
 
-                $stmt->close();
-                $mysqli->close();
-                return($id);
-
-            else:
-
-                $stmt->close();
-                $mysqli->close();
-
             endif;
+
+            $stmt->close();
+            $mysqli->close();
+
+            return( $lastInsertedId );
 
         }
     }

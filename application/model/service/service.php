@@ -50,15 +50,18 @@ if(!class_exists( "Service" )):
             switch($this->type):
 
                 case"create":
-                    $lastInsertedID = (new dbCreate\DbCreate( $sql, $this->database ))->dbInsert( $data, $format );
+                    ( new dbCreate\DbCreate( $sql, $this->database ) )->dbInsert( $data, $format );
+                    break;
+                case"createWithOutput":
+                    $lastInsertedID = ( new dbCreate\DbCreate( $sql, $this->database ) )->dbInsertOut( $data, $format );
                     return( $lastInsertedID );
                     break;
                 case"read":
-                    $returnData = (new dbRead\DbRead( $sql, $this->database ))->dbSelect( $data, $format );
+                    $returnData = ( new dbRead\DbRead( $sql, $this->database ) )->dbSelect( $data, $format );
                     return($returnData);
                     break;
                 case"update":
-                    (new dbUpdate\DbUpdate( $sql, $this->database ))->dbUpdate( $data, $format );
+                    ( new dbUpdate\DbUpdate( $sql, $this->database ) )->dbUpdate( $data, $format );
                     break;
                 case"delete":
 
