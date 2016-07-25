@@ -1,0 +1,28 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Ruben Hazenbosch
+ * Date: 25-Jul-16
+ * Time: 13:11
+ */
+
+use \application\controller;
+use \application\classes\iOXMLModelParser;
+use application\classes\iOXMLEAModel;
+
+( new controller\Controller( "class", "iOXMLModelParser", "iOXMLModelParser" ) )->request();
+( new controller\Controller( "class", "iOXMLEAModel", "iOXMLEAModel" ) )->request();
+
+$data    = unserialize( CMS_GET_DATA );
+$allowed = ['xmlModelId'];
+
+if( !empty( $data ) ):
+    foreach( $data as $key => $value ):
+        if( in_array( $key, $allowed ) ) ${$key} = $value;
+    endforeach;
+endif;
+
+$modelData = ( new iOXMLEAModel\IOXMLEAModel( $xmlModelId ) )->getModel();
+$parsedClasses = ( new iOXMLModelParser\IOXMLModelParser( './files/'.$modelData['hash'].'.xml' ) )->parseXMLClasses();
+
+var_dump($parsedClasses);

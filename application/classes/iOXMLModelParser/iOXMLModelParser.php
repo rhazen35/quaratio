@@ -50,17 +50,15 @@ if( !class_exists( "IOXMLModelParser" ) ):
             $elementPath    = "//xmi:Extension/elements/element"; // Path for elements in the extension
             $elements       = ( new xmlController\XmlController( $xmlObject, "getNode", $elementPath ) )->request(); // Get the elements
 
-            $uniqueElements = array();
-
             /**
              * Collect the required model information
              *
              * - Required data is specified in the model interface supplied by the modeller.
              * - Required data has standards which are expressed in the QuaRatio XML Standards(QXS) for Sparx Enterprice UML Modelling.
              */
-
             if( !empty( $elements ) ):
 
+                $uniqueElements               = array();
                 $classArray['duplicateNames'] = 0;
 
                 foreach ( $elements as $element ):
@@ -181,93 +179,83 @@ if( !class_exists( "IOXMLModelParser" ) ):
                          * Create an array with the operation name and add it to the operations array
                          */
 
-                        for ($i = 0; $i < $totalOperations; $i++):
+                        if( !empty( $operations ) ):
 
-                            /** @var  $operationName */
-                            $operationName  = (string) $operations->operation[$i]->attributes()->name;
+                            for ($i = 0; $i < $totalOperations; $i++):
 
-                            /** Define the operations array and add the operation name */
-                            $classArray[$className]['operations']['operation'.($i+1)] = array();
-                            $classArray[$className]['operations']['operation'.($i+1)]['name'] = $operationName;
+                                if( $operations->operation[$i]->attributes() ):
 
-                            /**
-                             * idref, position, type, abstract, documentation
-                             */
-                            $idref          = (string) $operations->operation[$i]->attributes( $xmiNamespace )->idref;
-                            $position       = (string) $operations->operation[$i]->properties->attributes()->position;
-                            $type           = (string) $operations->operation[$i]->type->attributes()->type;
-                            $abstract       = (string) $operations->operation[$i]->type->attributes()->isAbstract;
-                            $documentation  = (string) $operations->operation[$i]->documentation->attributes()->value;
+                                    /** @var  $operationName */
+                                    $operationName  = (string) $operations->operation[$i]->attributes()->name;
 
-                            /**
-                             * Add idref, position, type, abstract and documentation to the operations array.
-                             */
-                            $classArray[$className]['operations']['operation'.($i+1)]['className']      = $className;
-                            $classArray[$className]['operations']['operation'.($i+1)]['idref']          = $idref;
-                            $classArray[$className]['operations']['operation'.($i+1)]['position']       = $position;
-                            $classArray[$className]['operations']['operation'.($i+1)]['type']           = $type;
-                            $classArray[$className]['operations']['operation'.($i+1)]['abstract']       = $abstract;
-                            $classArray[$className]['operations']['operation'.($i+1)]['documentation']  = $documentation;
+                                    /** Define the operations array and add the operation name */
+                                    $classArray[$className]['operations']['operation'.($i+1)] = array();
+                                    $classArray[$className]['operations']['operation'.($i+1)]['name'] = $operationName;
 
-                            /**
-                             * Behaviour
-                             *
-                             * Defines the behaviour of the I/O procedure to target the calculator
-                             *
-                             * Current procedure is PHPExcel using excel sheets as the calculator service
-                             */
+                                    /**
+                                     * idref, position, type, abstract, documentation
+                                     */
+                                    $idref          = (string) $operations->operation[$i]->attributes( $xmiNamespace )->idref;
+                                    $position = $type = $abstract = $documentation = "";
 
-                            /** Get the value string */
-                            $behaviour      =  (string) $operations->operation[$i]->behaviour->attributes()->value;
-                            /** Convert string to xml */
-                            $behaviour      = "<?xml version='1.0' encoding='UTF-8'?><element>".$behaviour."</element>";
-                            /** @var Load the string in a simple xml object */
-                            $xml = simplexml_load_string($behaviour);
-                            /** Count the total excel files */
-                            $totalFiles = count($xml->excel);
-
-                            if(!empty($totalFiles)):
-
-                                /** Add the file, sheet and cells to the excel array */
-                                for ($k = 0; $k < $totalFiles; $k++):
-                                    $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['file']  = (string) $xml->excel[$k]->file;
-                                    $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['tab']   = (string) $xml->excel[$k]->tab;
-                                    $classArray[$className]['operations']['operation'.($i+1)]['behaviour']['excel'.($k+1)]['cells'] = (string) $xml->excel[$k]->cells;
-                                endfor;
-
-                            endif;
-
-                            /**
-                             * Operation tags for file, tab and cell
-                             */
-                            $tags = $operations->operation[$i]->tags->children();
-                            $totalTags = count($tags);
-
-                            if( !empty( $tags ) && $tags !== 0 ):
-
-                                for($l = 0; $l < $totalTags; $l++):
-
-                                    if( !empty( $tags ) ):
-                                        $tagName  = (string) $tags->tag[$l]->attributes()->name;
-                                        $tagValue = (string) $tags->tag[$l]->attributes()->value;
+                                    if( $operations->operation[$i]->properties ):
+                                        $position   = (string) $operations->operation[$i]->properties->attributes()->position;
                                     endif;
 
-                                    if( !empty( $tagValue ) ):
-                                        list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+                                    if( $operations->operation[$i]->type ):
+                                        $type       = (string) $operations->operation[$i]->type->attributes()->type;
+                                        $abstract   = (string) $operations->operation[$i]->type->attributes()->isAbstract;
+                                    endif;
 
-                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['operation'] = trim($operationName);
-                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['name'] = trim($tagName);
-                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['file'] = trim($file);
-                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['tab']  = trim($tab);
-                                        $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['cell'] = trim($cell);
+                                    if( $operations->operation[$i]->documentation ):
+                                        $documentation  = (string) $operations->operation[$i]->documentation->attributes()->value;
+                                    endif;
+
+                                    /**
+                                     * Add idref, position, type, abstract and documentation to the operations array.
+                                     */
+                                    $classArray[$className]['operations']['operation'.($i+1)]['className']      = $className;
+                                    $classArray[$className]['operations']['operation'.($i+1)]['idref']          = $idref;
+                                    $classArray[$className]['operations']['operation'.($i+1)]['position']       = $position;
+                                    $classArray[$className]['operations']['operation'.($i+1)]['type']           = $type;
+                                    $classArray[$className]['operations']['operation'.($i+1)]['abstract']       = $abstract;
+                                    $classArray[$className]['operations']['operation'.($i+1)]['documentation']  = $documentation;
+
+                                    /**
+                                     * Operation tags for file, tab and cell
+                                     */
+                                    $tags = $operations->operation[$i]->tags->children();
+                                    $totalTags = count($tags);
+
+                                    if( !empty( $tags ) && $tags !== 0 ):
+
+                                        for($l = 0; $l < $totalTags; $l++):
+
+                                            if( !empty( $tags ) ):
+                                                $tagName  = (string) $tags->tag[$l]->attributes()->name;
+                                                $tagValue = (string) $tags->tag[$l]->attributes()->value;
+                                            endif;
+
+                                            if( !empty( $tagValue ) ):
+                                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+
+                                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['operation'] = trim($operationName);
+                                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['name'] = trim($tagName);
+                                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['file'] = trim($file);
+                                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['tab']  = trim($tab);
+                                                $classArray[$className]['operations']['operation'.($i+1)]['tags'][$l]['cell'] = trim($cell);
+
+                                            endif;
+
+                                        endfor;
 
                                     endif;
 
-                                endfor;
+                                endif;
 
-                            endif;
+                            endfor;
 
-                        endfor;
+                        endif;
 
                         /**
                          * Input fields and enumeration/data type fields

@@ -511,38 +511,6 @@ if( !class_exists( "IOXMLEAValidator" ) ):
             /**
              * Check if all necessary items have been validated and conclude the total validation, also add it to the report array.
              */
-
-            $operationCheck = false;
-            if( !empty( $parseReport['operations'] ) ):
-
-                $i = 0;
-                foreach( $parseReport['operations'] as $key => $value ):
-
-                    if( isset( $parseReport['operations'][$key]['operation'.($i+1)] ) ):
-
-                        $operation = $parseReport['operations'][$key]['operation'.($i+1)];
-
-                        if( $operation['type'] === "error" ):
-
-                            $operationCheck = false;
-
-                        else:
-
-                            $operationCheck = true;
-
-                        endif;
-
-                    else:
-
-                        break;
-
-                    endif;
-
-                        $i++;
-                endforeach;
-
-            endif;
-
             $parseReport['totalErrorTypes']             = array();
             $parseReport['totalErrorTypes']['severe']   = $severe;
             $parseReport['totalErrorTypes']['error']    = $error;

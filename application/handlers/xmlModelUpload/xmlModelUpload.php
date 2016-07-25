@@ -46,16 +46,15 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
              */
             if( $report['validation']['valid'] === true ):
 
-
                 if( !hash_equals( $newFile, $matchHash ) ):
 
-                    if (!move_uploaded_file(
+                    if ( !move_uploaded_file(
                         $_FILES['xmlFile']['tmp_name'],
                         sprintf('./files/%s.%s',
                         sha1_file($_FILES['xmlFile']['tmp_name']),
                         $extension
                         )
-                    )):
+                    ) ):
 
                         throw new \RuntimeException('Failed to move uploaded file.');
 
@@ -65,8 +64,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
                     /**
                      * Save the model in the database
                      */
-                    //( new iOXMLModelUpload\IOXMLModelUpload( "saveModel", $newFile, $uploadedAt ) )->request();
-
+                     $lastInsertedID = ( new iOXMLModelUpload\IOXMLModelUpload( "saveModel", $newFile, $uploadedAt ) )->request();
                 else:
 
                     $report['file_exists'] = true;
@@ -80,10 +78,12 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
             $requestType      = "template";
             $requestAttribute = "xmlModelReport";
             $requestDirectory = "xmlModel";
-            $urlData          = array( "requestType" => $requestType, "requestAttribute" => $requestAttribute, "requestDirectory" => $requestDirectory );
+            $lastInsertedID   = ( isset( $lastInsertedID ) ? $lastInsertedID : "" );
+            $urlData          = array( "requestType" => $requestType, "requestAttribute" => $requestAttribute, "requestDirectory" => $requestDirectory, "xmlModelId" => $lastInsertedID );
             $urlData          = base64_encode( json_encode( $urlData ) );
 
             header("Location: ".LITENING_SELF."?data=".$urlData."");
+            exit();
 
         else:
 

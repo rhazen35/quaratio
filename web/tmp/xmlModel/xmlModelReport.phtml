@@ -5,6 +5,21 @@ namespace web\tmp\xmlModel\xmlModelReport;
 use \application\controller;
 
 /**
+ * Get the last inserted model id
+ * The model id is passed to the preview
+ */
+$data    = unserialize( CMS_GET_DATA );
+$allowed = ['xmlModelId'];
+
+if( !empty( $data ) ):
+    foreach( $data as $key => $value ):
+        if( in_array( $key, $allowed ) ) ${$key} = $value;
+    endforeach;
+endif;
+
+$xmlModelId = ( !empty( $xmlModelId ) ? $xmlModelId : "" );
+
+/**
  * Handle error controls when posting
  */
 if( $_SERVER['REQUEST_METHOD'] === "POST" ):
@@ -22,16 +37,18 @@ $report = unserialize( $_SESSION['xmlValidatorReport'] );
  */
 if( isset( $report['file_exists'] ) && $report['file_exists'] === true ):
     $fileExists = true;
-    $validationMessage = "Validation failed";
+    $validationMessage = "Model exists";
 endif;
 
 /**
  * Set up data array's for back to upload and PRG-pattern
  */
-$urlDataUpload = array( "requestType" => "template", "requestAttribute" => "home", "requestDirectory" => "common");
-$urlDataPRG = array( "requestType" => "template", "requestAttribute" => "xmlModelReport", "requestDirectory" => "xmlModel");
-$urlDataUpload = base64_encode( json_encode( $urlDataUpload ) );
-$urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
+$urlDataUpload  = array( "requestType" => "template", "requestAttribute" => "home", "requestDirectory" => "common" );
+$urlDataPRG     = array( "requestType" => "template", "requestAttribute" => "xmlModelReport", "requestDirectory" => "xmlModel" );
+$urlDataPreview = array( "requestType" => "template", "requestAttribute" => "preview", "requestDirectory" => "xmlModel", "xmlModelId" => $xmlModelId );
+$urlDataUpload  = base64_encode( json_encode( $urlDataUpload ) );
+$urlDataPRG     = base64_encode( json_encode( $urlDataPRG ) );
+$urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
 
 ?>
 
@@ -39,6 +56,8 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
 
     <div class="modelReport-goBack">
         <a href="<?= LITENING_SELF.'?data='.$urlDataUpload; ?>">terug naar uploaden</a>
+        <br><br><br>
+        <a href="<?= LITENING_SELF.'?data='.$urlDataPreview; ?>">Bekijk de preview</a>
     </div>
 
     <div class="modelReport-Title">XML Report - Enterprise Architect Model</div>
@@ -129,17 +148,6 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
                     </div>
 
                 </div>
-
-            <?php
-            /**
-             * Check if the report has a file exists flag, if so display a message.
-             */
-                if( !empty( $report['file_exists'] ) && $report['file_exists'] === true ):
-                    echo '<div class="modelReport-exists">';
-                    echo 'Het model bestaat al!';
-                    echo '</div>';
-                else:
-            ?>
 
             <div class="modelReport-item modelReport-grayBack">
                 <div class="modelReport-item-img">
@@ -318,8 +326,6 @@ $urlDataPRG = base64_encode( json_encode( $urlDataPRG ) );
             ?>
 
         </div>
-
-    <?php endif; ?>
 
 </div>
 

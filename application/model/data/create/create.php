@@ -52,10 +52,25 @@ if(!class_exists( "DbCreate" )):
 
             endif;
 
-           $stmt->execute();
-           $stmt->close();
+            $stmt->execute();
 
-           $mysqli->close();
+            if( $stmt->bind_result( $id ) ):
+
+                while( $row = $stmt->fetch() ):
+                    $id = $id;
+                endwhile;
+
+                $stmt->close();
+                $mysqli->close();
+                return($id);
+
+            else:
+
+                $stmt->close();
+                $mysqli->close();
+
+            endif;
+
         }
     }
 

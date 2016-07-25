@@ -50,7 +50,8 @@ if(!class_exists( "Service" )):
             switch($this->type):
 
                 case"create":
-                    (new dbCreate\DbCreate( $sql, $this->database ))->dbInsert( $data, $format );
+                    $lastInsertedID = (new dbCreate\DbCreate( $sql, $this->database ))->dbInsert( $data, $format );
+                    return( $lastInsertedID );
                     break;
                 case"read":
                     $returnData = (new dbRead\DbRead( $sql, $this->database ))->dbSelect( $data, $format );
