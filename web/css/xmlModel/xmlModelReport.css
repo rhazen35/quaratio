@@ -15,11 +15,12 @@
     width:98%;
     height:auto;
     margin: 0 auto;
-    margin-top:0.5em;
+    margin-top:1em;
     padding-bottom:0.5em;
     font-size:110%;
     font-weight:bold;
     text-align:center;
+    border-bottom:1px solid #CCCCCC;
 }
 
 .modelReport-FileName
@@ -58,7 +59,7 @@
 {
     width:98%;
     height:auto;
-    margin: 1em auto;
+    margin: 0.5em auto;
     overflow:hidden;
 }
 
@@ -120,8 +121,15 @@
 {
     width:auto;
     margin-right:1em;
-    padding-top:1.25em;
+    padding-top:1em;
     font-size:90%;
+}
+
+.modelReport-ErrorCount
+{
+    float:left;
+    line-height:20px;
+    font-weight:bold;
 }
 
 .modelReport-totalErrorType strong
@@ -137,26 +145,24 @@
     padding-right:0.25em;
 }
 
-.modelReport-totalErrorType input[type=submit]
+.modelReport-totalErrorType button[type=submit]
 {
     border:0;
     background: transparent;
 }
 
-.modelReport-totalErrorType input[type=submit]:hover
+.modelReport-totalErrorType button[type=submit]:hover
 {
     cursor:pointer;
-    color:#FFFFFF;
-    background-color:#707070;
 }
 
 .modelReport-goBack
 {
     position:absolute;
-    width:500px;
+    width:auto;
     height:1em;
-    top: 3.5em;
-    left:1%;
+    top: 2.75em;
+    right:0;
     padding-top:1.5em;
 }
 
@@ -178,12 +184,13 @@
     padding-bottom:0.5em;
     font-size:100%;
     color:#FFFFFF;
-    background-color:#707070;
+    background-color:#404040;
+
 }
 
 .totalValidationGreen
 {
-    background-color: #00cc00;
+    background-color: #19C210;
     color:#FFFFFF;
 }
 
@@ -203,13 +210,14 @@
     font-size:90%;
     text-align: left;
     border-left:1px solid #CCCCCC;
+
 }
 
 .modelReport-item-img
 {
     width:8%;
     color:#FFFFFF;
-    background-color:#707070;
+    background-color:#404040;
     border:none;
 }
 

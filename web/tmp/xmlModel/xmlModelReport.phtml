@@ -59,7 +59,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
         <a href="<?= LITENING_SELF.'?data='.$urlDataPreview; ?>">Bekijk de preview</a>
     </div>
 
-    <div class="modelReport-Title">XML Report - Enterprise Architect Model</div>
+    <div class="modelReport-Title">XML Validation Report - Enterprise Architect Model</div>
 
         <div class="modelReport-container">
 
@@ -70,7 +70,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                 <div class="modelReport-validationInfo">
                     <div class="modelReport-FileName"><strong>Validated file:</strong> <?= $report['originalFileName']; ?></div>
 
-                    <?php if( $_SESSION['xmlEAValidation_start'] !== 0 ): ?>
+                    <?php if( isset( $report['startTime'] ) && $report['startTime'] !== 0 ): ?>
                         <div class="modelReport-validationDuration">
                             <strong>Validation duration:</strong> <?= $report['startTime'].' seconds'; ?>
                         </div>
@@ -81,16 +81,21 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
 
                     <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/checkgreen_icon.png">(<strong><?= $report['totalErrorTypes']['valid']; ?></strong>)
+                            <img src="./images/icons/checkgreen_icon.png">
+                            <div class="modelReport-ErrorCount">
+                               - <?= $report['totalErrorTypes']['valid']; ?> -
+                            </div>
                             <?php if( isset( $_SESSION['xmlModelErrorValid'] ) && $_SESSION['xmlModelErrorValid'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="valid">
                                 <input type="hidden" name="display" value="show">
-                                <input type="submit" name="submitTypeVisibility" value="show">
+                                <button type="submit" name="submitTypeVisibility" value="show" title="Show">
+                                    <img src="images/icons/show_icon.png" alt="submit" title="Show" />
+                                </button>
                             <?php else: ?>
                                 <input type="hidden" name="type" value="valid">
                                 <input type="hidden" name="display" value="hide">
-                                <button type="submit" name="submitTypeVisibility" value="hide">
-                                    <img src="images/icons/hide_icon.png" width="90" height="50" alt="submit" />
+                                <button type="submit" name="submitTypeVisibility" value="hide" title="Hide">
+                                    <img src="images/icons/hide_icon.png" alt="submit" title="Hide" />
                                 </button>
                             <?php endif; ?>
                         </form>
@@ -98,15 +103,22 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
 
                     <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/severe_icon.png"><strong><?= $report['totalErrorTypes']['severe']; ?></strong>
+                            <img src="./images/icons/severe_icon.png">
+                            <div class="modelReport-ErrorCount">
+                                - <?= $report['totalErrorTypes']['severe']; ?> -
+                            </div>
                             <?php if( isset( $_SESSION['xmlModelErrorSevere'] ) && $_SESSION['xmlModelErrorSevere'] === "hide" ): ?>
                                     <input type="hidden" name="type" value="severe">
                                     <input type="hidden" name="display" value="show">
-                                    <input type="submit" name="submitTypeVisibility" value="show">
+                                <button type="submit" name="submitTypeVisibility" value="show" title="Show">
+                                    <img src="images/icons/show_icon.png" alt="submit" title="Show" />
+                                </button>
                             <?php else: ?>
                                     <input type="hidden" name="type" value="severe">
                                     <input type="hidden" name="display" value="hide">
-                                    <input type="submit" name="submitTypeVisibility" value="">
+                                    <button type="submit" name="submitTypeVisibility" value="hide" title="Hide">
+                                        <img src="images/icons/hide_icon.png" alt="submit" title="Hide" />
+                                    </button>
                             <?php endif; ?>
                         </form>
                     </div>
@@ -114,15 +126,22 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                     <div class="modelReport-totalErrorType">
                         <div class="modelReport-totalErrorType-box">
                             <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                                <img src="./images/icons/red_cross_icon.png"><strong><?= $report['totalErrorTypes']['error']; ?></strong>
+                                <img src="./images/icons/red_cross_icon.png">
+                                <div class="modelReport-ErrorCount">
+                                   -  <?= $report['totalErrorTypes']['error']; ?> -
+                                </div>
                                 <?php if( isset( $_SESSION['xmlModelErrorError'] ) && $_SESSION['xmlModelErrorError'] === "hide" ): ?>
                                     <input type="hidden" name="type" value="error">
                                     <input type="hidden" name="display" value="show">
-                                    <input type="submit" name="submitTypeVisibility" value="show">
+                                    <button type="submit" name="submitTypeVisibility" value="show" title="Show">
+                                        <img src="images/icons/show_icon.png" alt="submit" title="Show" />
+                                    </button>
                                 <?php else: ?>
                                     <input type="hidden" name="type" value="error">
                                     <input type="hidden" name="display" value="hide">
-                                    <input type="submit" name="submitTypeVisibility" value="hide">
+                                    <button type="submit" name="submitTypeVisibility" value="hide" title="Hide">
+                                        <img src="images/icons/hide_icon.png" alt="submit" title="Hide" />
+                                    </button>
                                 <?php endif; ?>
                             </form>
                         </div>
@@ -130,30 +149,44 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
 
                     <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/warning_icon.png"><strong><?= $report['totalErrorTypes']['warning']; ?></strong>
+                            <img src="./images/icons/warning_icon.png">
+                            <div class="modelReport-ErrorCount">
+                               - <?= $report['totalErrorTypes']['warning']; ?> -
+                            </div>
                             <?php if( isset( $_SESSION['xmlModelErrorWarning'] ) && $_SESSION['xmlModelErrorWarning'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="warning">
                                 <input type="hidden" name="display" value="show">
-                                <input type="submit" name="submitTypeVisibility" value="show">
+                                <button type="submit" name="submitTypeVisibility" value="show" title="Show">
+                                    <img src="images/icons/show_icon.png" alt="submit" title="Show" />
+                                </button>
                             <?php else: ?>
                                 <input type="hidden" name="type" value="warning">
                                 <input type="hidden" name="display" value="hide">
-                                <input type="submit" name="submitTypeVisibility" value="hide">
+                                <button type="submit" name="submitTypeVisibility" value="hide" title="Hide">
+                                    <img src="images/icons/hide_icon.png" alt="submit" title="Hide"/>
+                                </button>
                             <?php endif; ?>
                         </form>
                     </div>
 
                     <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/info_icon_blue.png"><strong><?= $report['totalErrorTypes']['info']; ?></strong>
+                            <img src="./images/icons/info_icon_blue.png">
+                            <div class="modelReport-ErrorCount">
+                                - <?= $report['totalErrorTypes']['info']; ?> -
+                            </div>
                             <?php if( isset( $_SESSION['xmlModelErrorInfo'] ) && $_SESSION['xmlModelErrorInfo'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="info">
                                 <input type="hidden" name="display" value="show">
-                                <input type="submit" name="submitTypeVisibility" value="show">
+                                <button type="submit" name="submitTypeVisibility" value="show" title="Show">
+                                    <img src="images/icons/show_icon.png" alt="submit" title="Show" />
+                                </button>
                             <?php else: ?>
                                 <input type="hidden" name="type" value="info">
                                 <input type="hidden" name="display" value="hide">
-                                <input type="submit" name="submitTypeVisibility" value="hide">
+                                <button type="submit" name="submitTypeVisibility" value="hide" title="Hide">
+                                    <img src="images/icons/hide_icon.png" alt="submit" title="Hide" />
+                                </button>
                             <?php endif; ?>
                         </form>
                     </div>
@@ -162,7 +195,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
 
             <div class="modelReport-item modelReport-grayBack">
                 <div class="modelReport-item-img">
-                    <div class="modelReport-item-type">Type</div>
+                    &nbsp;Type
                 </div>
                 <div class="modelReport-item-name">Subject</div>
                 <div class="modelReport-item-value">Information</div>
