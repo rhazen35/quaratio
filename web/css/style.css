@@ -13,6 +13,9 @@
 @import "xmlModel/xmlModelUpload.css";
 @import "xmlModel/xmlModelReport.css";
 
+@import "screenFactory/element.css";
+@import "screenFactory/form.css";
+
 /* Body & HTML */
 body {
     line-height: 1;

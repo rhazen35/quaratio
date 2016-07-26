@@ -56,7 +56,6 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
 
     <div class="modelReport-goBack">
         <a href="<?= LITENING_SELF.'?data='.$urlDataUpload; ?>">terug naar uploaden</a>
-        <br><br><br>
         <a href="<?= LITENING_SELF.'?data='.$urlDataPreview; ?>">Bekijk de preview</a>
     </div>
 
@@ -68,11 +67,21 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                     <?= ( isset( $fileExists ) && $fileExists === true ? $validationMessage : $report['validation']['message'] ); ?>
                 </div>
 
+                <div class="modelReport-validationInfo">
+                    <div class="modelReport-FileName"><strong>Validated file:</strong> <?= $report['originalFileName']; ?></div>
+
+                    <?php if( $_SESSION['xmlEAValidation_start'] !== 0 ): ?>
+                        <div class="modelReport-validationDuration">
+                            <strong>Validation duration:</strong> <?= $report['startTime'].' seconds'; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
                 <div class="modelReport-totalErrorTypes">
 
-                    <div class="modelReport-totalErrorType-valid">
+                    <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/checkgreen_icon.png"> Valid ( <strong><?= $report['totalErrorTypes']['valid']; ?></strong> )
+                            <img src="./images/icons/checkgreen_icon.png">(<strong><?= $report['totalErrorTypes']['valid']; ?></strong>)
                             <?php if( isset( $_SESSION['xmlModelErrorValid'] ) && $_SESSION['xmlModelErrorValid'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="valid">
                                 <input type="hidden" name="display" value="show">
@@ -80,14 +89,16 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                             <?php else: ?>
                                 <input type="hidden" name="type" value="valid">
                                 <input type="hidden" name="display" value="hide">
-                                <input type="submit" name="submitTypeVisibility" value="hide">
+                                <button type="submit" name="submitTypeVisibility" value="hide">
+                                    <img src="images/icons/hide_icon.png" width="90" height="50" alt="submit" />
+                                </button>
                             <?php endif; ?>
                         </form>
                     </div>
 
                     <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/severe_icon.png"> Severe ( <strong><?= $report['totalErrorTypes']['severe']; ?></strong> )
+                            <img src="./images/icons/severe_icon.png"><strong><?= $report['totalErrorTypes']['severe']; ?></strong>
                             <?php if( isset( $_SESSION['xmlModelErrorSevere'] ) && $_SESSION['xmlModelErrorSevere'] === "hide" ): ?>
                                     <input type="hidden" name="type" value="severe">
                                     <input type="hidden" name="display" value="show">
@@ -95,7 +106,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                             <?php else: ?>
                                     <input type="hidden" name="type" value="severe">
                                     <input type="hidden" name="display" value="hide">
-                                    <input type="submit" name="submitTypeVisibility" value="hide">
+                                    <input type="submit" name="submitTypeVisibility" value="">
                             <?php endif; ?>
                         </form>
                     </div>
@@ -103,7 +114,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                     <div class="modelReport-totalErrorType">
                         <div class="modelReport-totalErrorType-box">
                             <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                                <img src="./images/icons/red_cross_icon.png">Errors ( <strong><?= $report['totalErrorTypes']['error']; ?></strong> )
+                                <img src="./images/icons/red_cross_icon.png"><strong><?= $report['totalErrorTypes']['error']; ?></strong>
                                 <?php if( isset( $_SESSION['xmlModelErrorError'] ) && $_SESSION['xmlModelErrorError'] === "hide" ): ?>
                                     <input type="hidden" name="type" value="error">
                                     <input type="hidden" name="display" value="show">
@@ -117,9 +128,9 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                         </div>
                     </div>
 
-                    <div class="modelReport-totalErrorType modelReportWarningError">
+                    <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/warning_icon.png"> Warnings ( <strong><?= $report['totalErrorTypes']['warning']; ?></strong> )
+                            <img src="./images/icons/warning_icon.png"><strong><?= $report['totalErrorTypes']['warning']; ?></strong>
                             <?php if( isset( $_SESSION['xmlModelErrorWarning'] ) && $_SESSION['xmlModelErrorWarning'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="warning">
                                 <input type="hidden" name="display" value="show">
@@ -132,9 +143,9 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                         </form>
                     </div>
 
-                    <div class="modelReport-totalErrorType modelReportInfoError">
+                    <div class="modelReport-totalErrorType">
                         <form action="<?= LITENING_SELF.'?data='.$urlDataPRG; ?>" method="POST">
-                            <img src="./images/icons/info_icon_blue.png"> Info ( <strong><?= $report['totalErrorTypes']['info']; ?></strong> )
+                            <img src="./images/icons/info_icon_blue.png"><strong><?= $report['totalErrorTypes']['info']; ?></strong>
                             <?php if( isset( $_SESSION['xmlModelErrorInfo'] ) && $_SESSION['xmlModelErrorInfo'] === "hide" ): ?>
                                 <input type="hidden" name="type" value="info">
                                 <input type="hidden" name="display" value="show">
@@ -164,8 +175,6 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
              * Show all report items, excluding the validation array.
              */
                 if( !empty( $report ) ):
-
-                    echo '<div class="modelReport-Header">Model and extension</div>';
 
                     foreach( $report as $key => $v ):
 
@@ -215,8 +224,6 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                  * Initial value, data type, attribute documentation.
                  */
                 if( !empty( $report['initialValueType'] ) ):
-
-                    echo '<div class="modelReport-Header">Attributes</div>';
 
                     foreach( $report['initialValueType'] as $initialValueType => $value ):
 
@@ -274,8 +281,6 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                  * Documentation, tags, file, tab, cell, order.
                  */
                 if( !empty( $report['operations'] ) ):
-
-                    echo '<div class="modelReport-Header">Operations</div>';
 
                     foreach( $report['operations'] as $operation => $value ):
 

@@ -135,7 +135,7 @@ if( !class_exists( "IOXMLModelParser" ) ):
                             $classArray[$className]['documentation'] = ( new xmlController\XmlController( $property, "getNodeAttribute", "documentation" ) )->request();
                             $classArray[$className]['abstract']      = $abstract;
 
-                            /** Tags for excel file, sheet and cell */
+                            /** Tags for class order */
                             $tags = $element->tags->tag;
                             $totalTags = count($tags);
 
@@ -143,22 +143,20 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
                                 for($l = 0; $l < $totalTags; $l++):
 
-                                    $tagName  = (string) $element->tags->tag[$l]->attributes()->name;
-                                    $tagValue = (string) $element->tags->tag[$l]->attributes()->value;
+                                    $tagName = (string) $element->tags->tag[$l]->attributes()->name;
+                                    $order   = (string) $element->tags->tag[$l]->attributes()->value;
 
-                                    if( !empty( $tagValue ) ):
-                                        list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+                                    if( !empty( $order ) ):
 
-                                        $classArray[$className]['tags'][$tagName]['file'] = trim($file);
-                                        $classArray[$className]['tags'][$tagName]['tab']  = trim($tab);
-                                        $classArray[$className]['tags'][$tagName]['cell'] = trim($cell);
+                                        $classArray[$className]['tags'][$tagName]['order']      = trim( $order );
+                                        $classArray[$className]['tags'][$tagName]['className']   = trim( $className );
+
 
                                     endif;
 
                                 endfor;
 
                             endif;
-
 
                         endforeach;
 
@@ -171,7 +169,6 @@ if( !class_exists( "IOXMLModelParser" ) ):
                          * @var  $operations
                          * @var  $totalOperations
                          */
-
                         $operations      = $element->children()->operations;
                         $totalOperations = count( $operations->operation );
 
@@ -426,6 +423,18 @@ if( !class_exists( "IOXMLModelParser" ) ):
                 /** Add the connector idref to the connectors array */
                 $idref = (string) $connector->attributes( $xmiNamespace )->idref;
                 $connectorArray['connectors']['connector'.($i+1)]['idref'] = $idref;
+
+                /**
+                 * Get the labels of the connector
+                 */
+                $labels             = $connector->children()->labels;
+                $multiplicityStart  = ( !empty( $labels->attributes()->rb ) ? (string) $labels->attributes()->rb : "" );
+                $multiplicityEnd    = ( !empty( $labels->attributes()->lb ) ? (string) $labels->attributes()->lb : "" );
+                $multiplicityHead   = ( !empty( $labels->attributes()->mt ) ? (string) $labels->attributes()->mt : "" );
+
+                $connectorArray['connectors']['connector'.($i+1)]['labels']['multiplicity_start'] = $multiplicityStart;
+                $connectorArray['connectors']['connector'.($i+1)]['labels']['multiplicity_end']   = $multiplicityEnd;
+                $connectorArray['connectors']['connector'.($i+1)]['labels']['multiplicity_head']  = $multiplicityHead;
 
                 /**
                  * Get the connector source and add it as an array to the connectors array

@@ -1,12 +1,13 @@
 .modelReport
 {
-    width:75%;
-    min-width: 1000px;
+    width:90%;
+    min-width: 960px;
     height:auto;
     margin: 0 auto;
     margin-top:2em;
     margin-bottom:2em;
     padding: 0;
+    font-family: "Segoe UI";
 }
 
 .modelReport-Title
@@ -19,6 +20,27 @@
     font-size:110%;
     font-weight:bold;
     text-align:center;
+}
+
+.modelReport-FileName
+{
+    float:left;
+    width:13auto;
+    height:auto;
+    margin: 0 auto;
+    font-size:90%;
+    font-style: italic;
+}
+
+.modelReport-validationDuration
+{
+    float:left;
+    width:auto;
+    height:auto;
+    margin: 0 auto;
+    margin-left:0.5em;
+    font-size:90%;
+    font-style: italic;
 }
 
 .modelReport-exists
@@ -34,9 +56,6 @@
 
 .modelReport-container
 {
-    display:flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
     width:98%;
     height:auto;
     margin: 1em auto;
@@ -46,7 +65,6 @@
 .modelReport-Header
 {
     width:100%;
-    padding:0.5em;
     font-size:90%;
     border-bottom:1px solid #707070;
 }
@@ -68,26 +86,74 @@
 
 .modelReport-totalValidation
 {
-    width:100px;
+    float:left;
+    width:90px;
     height:1em;
     padding:1em;
     font-size:90%;
     text-align: center;
 }
 
+.modelReport-validationInfo
+{
+    float:left;
+    width:auto;
+    margin: 0 auto;
+    padding-top:1em;
+    padding-left:0.5em;
+    padding-bottom:0.5em;
+}
+
 .modelReport-totalErrorTypes
 {
     clear:both;
-    float:left;
-    width:830px;
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    width:100%;
+    margin: 0 auto;
     margin-left:1em;
-    overflow:hidden;
+    text-align:left;
+}
+
+.modelReport-totalErrorType
+{
+    width:auto;
+    margin-right:1em;
+    padding-top:1.25em;
+    font-size:90%;
+}
+
+.modelReport-totalErrorType strong
+{
+    font-size:90%;
+}
+
+.modelReport-totalErrorType img
+{
+    float:left;
+    width:20px;
+    height:20px;
+    padding-right:0.25em;
+}
+
+.modelReport-totalErrorType input[type=submit]
+{
+    border:0;
+    background: transparent;
+}
+
+.modelReport-totalErrorType input[type=submit]:hover
+{
+    cursor:pointer;
+    color:#FFFFFF;
+    background-color:#707070;
 }
 
 .modelReport-goBack
 {
     position:absolute;
-    width:150px;
+    width:500px;
     height:1em;
     top: 3.5em;
     left:1%;
@@ -96,69 +162,14 @@
 
 .modelReport-goBack a
 {
+    position:relative;
+    float:left;
+    margin-right:1em;
     padding:0.5em;
-    font-size:80%;
+    font-size:90%;
     color:#FFFFFF;
     text-decoration: none;
     background-color: #707070;
-}
-
-.modelReport-totalErrorType,
-.modelReport-totalErrorType-Valid
-{
-    float:left;
-    width:155px;
-    padding-top:1.25em;
-    font-size:75%;
-    text-align:left;
-}
-
-.modelReport-totalErrorType-Valid
-{
-    width:145px;
-}
-
-.modelReport-totalErrorType strong
-{
-    font-family: "Tahoma";
-    font-size:90%;
-}
-
-.modelReportInfoError
-{
-    margin-left:1.5em;
-}
-
-.modelReportWarningError
-{
-    width:165px;
-}
-
-.modelReport-totalErrorType img,
-.modelReport-totalErrorType-Valid img
-{
-    float:left;
-    width:17px;
-    height:17px;
-    padding-right:0.25em;
-}
-
-.modelReport-totalErrorType input[type=submit],
-.modelReport-totalErrorType-Valid input[type=submit]
-{
-    padding-right:0.25em;
-    font-size:95%;
-    letter-spacing: 0.1em;
-    border:none;
-    border:1px solid #404040;
-}
-
-.modelReport-totalErrorType input[type=submit]:hover,
-.modelReport-totalErrorType-Valid input[type=submit]:hover
-{
-    cursor:pointer;
-    color:#FFFFFF;
-    background-color:#707070;
 }
 
 .modelReport-grayBack
@@ -189,7 +200,7 @@
 {
     line-height:20px;
     padding:0.25em;
-    font-size:80%;
+    font-size:90%;
     text-align: left;
     border-left:1px solid #CCCCCC;
 }
@@ -205,8 +216,8 @@
 .modelReport-item-img img
 {
     float:left;
-    width:17px;
-    height:17px;
+    width:20px;
+    height:20px;
     padding-top:0.25em;
     padding-left:0.25em;
 }
@@ -216,7 +227,7 @@
     float:left;
     width:90%;
     line-height:20px;
-    font-size:80%;
+    font-size:90%;
     text-align:left;
 }
 

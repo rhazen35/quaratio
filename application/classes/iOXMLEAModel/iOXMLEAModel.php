@@ -33,17 +33,25 @@ if( !class_exists( "IOXMLEAModel" ) ):
 
             $returnData = ( new service\Service( $type, $database ) )->dbAction( $sql, $data, $format );
 
-            foreach( $returnData as $data ):
+            if( !empty( $returnData ) ):
 
-                $returnArray = array( 'user_id' => $data['user_id'],
-                                      'hash' => $data['hash'],
-                                      'date' => $data['date'],
-                                      'time' => $data['time']
-                                    );
+                foreach( $returnData as $data ):
 
-            endforeach;
+                    $returnArray = array( 'user_id' => $data['user_id'],
+                                          'hash' => $data['hash'],
+                                          'date' => $data['date'],
+                                          'time' => $data['time']
+                                        );
 
-            return( $returnArray );
+                endforeach;
+
+                return( $returnArray );
+
+            else:
+
+                return( false );
+
+            endif;
 
         }
 

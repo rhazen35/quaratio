@@ -188,6 +188,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                 $modifiedDates    = array();
                 $operations       = array();
                 $classNames       = array();
+                $classTags        = array();
 
                 if( !empty( $parsedClasses ) ):
 
@@ -221,7 +222,77 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                             $operations[] = $parsedClass['operations'];
                         endif;
 
+                        /**
+                        * Get all tags of the class
+                        */
+                        if( !empty( $parsedClass['tags'] ) ):
+                            $classTags[] = $parsedClass['tags'];
+                        endif;
+
                     endforeach;
+
+                    /**
+                     * Check if any duplicate class orders are present
+                     */
+                    $classOrderArray = array();
+                    $uniqueClassOrders = array();
+                    $duplicateClassOrders = 0;
+                    $duplicateClassOrderNames = array();
+                    $totalClassTags  = count( $classTags );
+                    for( $i = 0; $i < $totalClassTags; $i++ ):
+
+                        $order                      = $classTags[$i]['QR-Volgorde']['order'];
+                        $name                       = $classTags[$i]['QR-Volgorde']['className'];
+                        $classOrderArray[]          = $order;
+
+                        if( !in_array( $order, $uniqueClassOrders ) ):
+
+                            $uniqueClassOrders['order'] = $order;
+                            $uniqueClassOrders['name']  = $name;
+
+                        else:
+
+                            $duplicateClassOrders += 1;
+                            $duplicateClassOrderNames[] = $name;
+
+                        endif;
+
+                    endfor;
+
+
+                    if( count( $classOrderArray ) !== count( array_unique( $classOrderArray ) ) ):
+
+                        $parseReport['classOrder']              = array();
+                        $parseReport['classOrder']['name']      = ( $duplicateClassOrders === 1 ? "Duplicate class order" : "Duplicate class orders" );
+                        $parseReport['classOrder']['type']      = "severe";
+                        $parseReport['classOrder']['value']     = $duplicateClassOrders;
+                        $parseReport['classOrder']['valid']     = ( $duplicateClassOrders !== 0 && $duplicateClassOrders === 1 ? true : false );
+
+                        $message = $duplicateClassOrders." found.";
+                        $j = 1;
+
+                        foreach( $duplicateClassOrderNames as $classOrderName ):
+
+                            $message .= " ".$classOrderName;
+
+                            if( $j < $duplicateClassOrders ):
+
+                                if( $j === ( $duplicateClassOrders - 1 ) || $j === 2 ):
+                                    $message .= " and ";
+                                endif;
+
+                            else:
+                                $message .= ".";
+                            endif;
+                            $j++;
+
+                        endforeach;
+                        $parseReport['classOrder']['message']   = $message;
+                        $parseReport['classOrder']['info']      = "Duplicate class orders have been found and the model can not be processed.";
+
+                        $severe += 1;
+
+                    endif;
 
                     /**
                      * Get all true roots and add them to the true roots array

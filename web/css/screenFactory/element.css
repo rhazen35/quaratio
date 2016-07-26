@@ -1,0 +1,51 @@
+.element
+{
+    width:70%;
+    height:auto;
+    margin: 1em auto;
+    border:2px solid #404040;
+}
+
+.element-title
+{
+    padding:1em;
+    font-weight:bold;
+}
+
+.element-documentation
+{
+    padding:1em;
+}
+
+.element-documentation p
+{
+    font-size:90%;
+}
+
+.elementIntro-title
+{
+    padding:1em;
+    font-weight:bold;
+}
+
+.elementIntro-txt
+{
+    padding:1em;
+}
+
+.elementIntro-txt p
+{
+    font-size:90%;
+}
+
+.elementIntro-subTitle
+{
+    padding:1em;
+    font-style:italic;
+}
+
+.elementIntro-subIntro
+{
+    padding:1em;
+}
+
