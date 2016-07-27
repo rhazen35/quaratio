@@ -47,7 +47,9 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
 
         private function sortElements( $a, $b )
         {
-            return( strnatcmp( $a['order']['order'], $b['order']['order'] ) );
+            if( !empty( $a['order']['order'] ) && !empty( $b['order']['order'] ) ):
+                return( strnatcmp( $a['order']['order'], $b['order']['order'] ) );
+            endif;
         }
 
         public function extractAndOrderElements()
@@ -56,7 +58,7 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
             $modelData = ( new iOXMLEAModel\IOXMLEAModel( $this->xmlModel ) )->getModel();
 
             if( !empty( $modelData ) ):
-                $parsedElements  = ( new iOXMLModelParser\IOXMLModelParser( './files/'.$modelData['hash'].'.xml' ) )->parseXMLClasses();
+                $parsedElements   = ( new iOXMLModelParser\IOXMLModelParser( './files/'.$modelData['hash'].'.xml' ) )->parseXMLClasses();
 
                 $elementNames = $this->extractElementNames( $parsedElements );
                 $orderedElements = array();
@@ -73,8 +75,10 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
                     $documentation = ( isset( $class['documentation'] ) ? $class['documentation'] : "" );
                     $idref = ( isset( $class['idref'] ) ? $class['idref'] : "" );
                     $operations = ( isset( $class['operations'] ) ? $class['operations'] : "" );
+                    $target = $this->getMatchingConnector( $idref );
 
                     if( !empty( $order ) ):
+
                         $orderedElements[$i]['name'] = $name;
                         $orderedElements[$i]['idref'] = $idref;
                         $orderedElements[$i]['order'] = $order;
@@ -82,6 +86,31 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
                         $orderedElements[$i]['documentation'] = $documentation;
                         $orderedElements[$i]['fields'] = $fields;
                         $orderedElements[$i]['operations'] = $operations;
+
+                        if( !empty( $target ) ):
+
+                            $orderedElements[$i]['target'] = array();
+                            $orderedElements[$i]['target']['id'] = $target['id'];
+                            $orderedElements[$i]['target']['name'] = $target['name'];
+
+                            $targetClass = $parsedElements[$target['name']];
+
+                            $tags   = ( isset( $targetClass['tags'] ) ? $targetClass['tags'] : false );
+                            $order  = ( isset( $tags['QR-Volgorde'] ) ? $tags['QR-Volgorde'] : "");
+                            $documentation = ( isset( $targetClass['documentation'] ) ? $targetClass['documentation'] : "" );
+                            $idref = ( isset( $targetClass['idref'] ) ? $targetClass['idref'] : "" );
+                            $operations = ( isset( $targetClass['operations'] ) ? $targetClass['operations'] : "" );
+                            $fields = ( isset( $targetClass['fields'] ) ? $targetClass['fields'] : false );
+
+                            $orderedElements[$i]['target']['idref'] = $idref;
+                            $orderedElements[$i]['target']['order'] = $order;
+                            $orderedElements[$i]['target']['documentation'] = $documentation;
+                            $orderedElements[$i]['target']['fields'] = $operations;
+                            $orderedElements[$i]['target']['operations'] = $fields;
+
+
+                        endif;
+
                     endif;
 
                     $i++;
@@ -98,6 +127,36 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
             endif;
 
         }
+
+        private function getMatchingConnector( $idref )
+        {
+
+            $modelData = ( new iOXMLEAModel\IOXMLEAModel( $this->xmlModel ) )->getModel();
+
+            $parsedConnectors = ( new iOXMLModelParser\IOXMLModelParser( './files/'.$modelData['hash'].'.xml' ) )->parseConnectors();
+            $totalConnectors  = count( $parsedConnectors['connectors'] );
+
+            for( $j = 0; $j < $totalConnectors; $j++ ):
+
+                if( $idref === $parsedConnectors['connectors']['connector'.($j+1)]['source']['idref'] ):
+
+                    if( $parsedConnectors['connectors']['connector'.($j+1)]['properties']['ea_type'] === "Generalization" ):
+
+                        $target = $parsedConnectors['connectors']['connector'.($j+1)]['target']['idref'];
+                        $targetName = $parsedConnectors['connectors']['connector'.($j+1)]['target']['model']['name'];
+
+                        $targetArray = array( "id" => $target, "name" => $targetName );
+                        return( $targetArray );
+                        break;
+
+                    endif;
+
+                endif;
+
+            endfor;
+
+        }
+
 
         private function extractAndOrderOperations( $operations )
         {
@@ -169,9 +228,36 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
             $element .= '<div class="element-title">'. $title .'</div>';
             $element .= '<div class="element-documentation"><p>'. $documentation .'</p></div>';
 
+            $element .= $this->createForm( $class );
+
             $element .= '</div>';
 
             return( $element );
+        }
+
+        private function createForm( $class )
+        {
+
+            $fields = ( isset( $class['fields'] ) ? $class['fields'] : "" );
+            $target = ( isset( $class['target'] ) ? $class['target'] : "" );
+
+            $form = '<form action="" method="POST">';
+
+            if( !empty( $fields ) ):
+
+                foreach($fields as $field):
+                    $form .= '<div class="">'. $field['documentation'] .'</div>';
+                    $form .= $field['input_name'] .'<input type="text" name="'. $field['input_name'] .'" value="'.$field['initialValue'].'">';
+                endforeach;
+
+                $form .= '<input type="submit" name="submit" value="Next">';
+
+            endif;
+
+             $form .= '</form>';
+
+            return( $form );
+
         }
 
     }

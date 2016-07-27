@@ -478,6 +478,18 @@ if( !class_exists( "IOXMLModelParser" ) ):
                 $connectorArray['connectors']['connector'.($i+1)]['target']['model']['ea_localid']   = $modelEALocalId;
                 $connectorArray['connectors']['connector'.($i+1)]['target']['model']['multiplicity'] = $multiplicity;
 
+                /**
+                 * Get the connector target and add it as an array to the connectors array
+                 */
+                $properties = $connector->children()->properties;
+                $connectorArray['connectors']['connector'.($i+1)]['properties'] = array();
+
+                $ea_type     = (string) $properties->attributes()->ea_type;
+                $direction   = (string) $properties->attributes()->direction;
+
+                $connectorArray['connectors']['connector'.($i+1)]['properties']['ea_type'] = $ea_type;
+                $connectorArray['connectors']['connector'.($i+1)]['properties']['direction'] = $direction;
+
                 $i++;
 
             endforeach;
