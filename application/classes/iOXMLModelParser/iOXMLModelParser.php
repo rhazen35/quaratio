@@ -104,9 +104,8 @@ if( !class_exists( "IOXMLModelParser" ) ):
                             endif;
 
                             /**
-                             * Get the model node and add to the model node array
+                             * Get the package attribute value and add to the model node array
                              */
-
                             $modelNode = $element->children()->model;
                             $classArray[$className]['package']  = ( new xmlController\XmlController( $modelNode, "getNodeAttribute", "package" ) )->request();
                             $classArray[$className]['package2'] = ( new xmlController\XmlController( $modelNode, "getNodeAttribute", "package2" ) )->request();

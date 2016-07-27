@@ -202,6 +202,29 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                 <div class="modelReport-item-message">Description</div>
             </div>
 
+            <?php if( isset( $fileExists ) && $fileExists === true ): ?>
+                <div class="modelReport-item">
+                    <div class="modelReport-item-img">
+                        <img src="./images/icons/severe_icon.png"">
+                        <div class="modelReport-item-type"> severe</div>
+                    </div>
+                    <div class="modelReport-item-name">Model already exists</div>
+                    <div class="modelReport-item-value">exists</div>
+                    <div class="modelReport-item-message">Duplicate model found.</div>
+                </div>
+
+                <div class="modelReport-item">
+                    <div class="modelReport-item-img"></div>
+                    <div class="modelReport-item-info">
+                        <img src="./images/icons/arrow_right_up.png">
+                        <div class="modelReport-severe">
+                            Duplicate model: the uploaded model already exists, could not process the model.
+                        </div>
+                    </div>
+                </div>
+
+            <?php endif; ?>
+
             <?php
 
             /**
@@ -241,9 +264,9 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                                             </div>
                                         </div>
                                     </div>
-                                    <?php
+                                <?php endif; ?>
 
-                                endif;
+                                <?php
 
                             endif;
 

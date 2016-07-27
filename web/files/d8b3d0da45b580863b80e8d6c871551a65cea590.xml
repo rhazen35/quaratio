@@ -1431,7 +1431,7 @@
 			</element>
 		</elements>
 		<connectors>
-
+			
 			<connector xmi:idref="EAID_A31566AA_67B9_4d95_BBD3_8B6D7D6E3081">
 				<source xmi:idref="EAID_A2F5A109_0E2E_4a99_97E1_6D9AF7930090">
 					<model ea_localid="35" type="Class" name="Inkomen"/>

@@ -1,9 +1,4 @@
-#RewriteEngine On
-#
-#RewriteCond %{REQUEST_FILENAME} -s [OR]
-#RewriteCond %{REQUEST_FILENAME} -l [OR]
-#RewriteCond %{REQUEST_FILENAME} -d [OR]
-#RewriteCond %{REQUEST_FILENAME} -f
-
-#RewriteRule ^.*$ - [NC,L]
-#RewriteRule ^.*$ index.php [NC,L]
+# tell apache to interpret .phtml extensions as php
+<FilesMatch "\.ph(p[2-6]?|tml)$">
+    SetHandler application/x-httpd-php
+</FilesMatch>

@@ -148,6 +148,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                  * Check if at least one class can be found
                  */
                 $parsedClasses    = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseXMLClasses();
+                $parsedConnectors = ( new iOXMLModelParser\IOXMLModelParser( $this->xmlFile ) )->parseConnectors();
+
+                $totalConnectors  = count( $parsedConnectors['connectors'] );
                 $totalClasses     = count( $parsedClasses );
 
                 $parseReport['totalClasses']              = array();
@@ -227,6 +230,69 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                         */
                         if( !empty( $parsedClass['tags'] ) ):
                             $classTags[] = $parsedClass['tags'];
+                        endif;
+
+                    endforeach;
+
+                    foreach( $parsedClasses as $parsedClass ):
+
+                        /**
+                         * Check if a model name is available in the package
+                         */
+                        if( $parsedClass['type'] === "uml:Package" ):
+
+                            if( empty( $parsedClass['package'] ) ):
+
+                                if( empty( $parsedClass['name'] ) ):
+
+                                    $parseReport['package']              = array();
+                                    $parseReport['package']['name']      = "Model name";
+                                    $parseReport['package']['type']      = "severe";
+                                    $parseReport['package']['value']     = "empty";
+                                    $parseReport['package']['valid']     = false;
+                                    $parseReport['package']['message']   = "No model name found.";
+                                    $parseReport['package']['info']      = "The model name could not be found, probably because an xml was exported from the wrong package.";
+
+                                    $severe += 1;
+
+                                endif;
+
+                            endif;
+
+                        endif;
+
+                        /**
+                         * Check if the class has a connector
+                         */
+                        if( $parsedClass['type'] === "uml:Class" ):
+
+                            $connectors = 0;
+                            for( $i = 0; $i < $totalConnectors; $i++ ):
+
+                                if( $parsedClass['idref'] === $parsedConnectors['connectors']['connector'.($i+1)]['source']['idref']
+                                    || $parsedClass['idref'] === $parsedConnectors['connectors']['connector'.($i+1)]['target']['idref']
+                                ):
+
+                                    $connectors += 1;
+
+                                endif;
+
+                            endfor;
+
+                            if( $connectors === 0 ):
+
+                                $parseReport['package']              = array();
+                                $parseReport['package']['name']      = "Class connector missing";
+                                $parseReport['package']['type']      = "warning";
+                                $parseReport['package']['value']     = "empty";
+                                $parseReport['package']['valid']     = false;
+                                $parseReport['package']['message']   = "No class connector found.";
+                                $parseReport['package']['info']      = "The class connector could not be found. <strong>Class:</strong> ".$parsedClass['name'];
+
+                                $warning += 1;
+
+                            endif;
+
                         endif;
 
                     endforeach;

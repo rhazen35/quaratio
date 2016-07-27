@@ -1431,7 +1431,30 @@
 			</element>
 		</elements>
 		<connectors>
+			<connector xmi:idref="EAID_D2F1A6BB_25E3_45ff_BF3D_D6151DC78E97">
 
+				<target xmi:idref="EAID_A2F5A109_0E2E_4a99_97E1_6D9AF7930090">
+					<model ea_localid="35" type="Class" name="Inkomen"/>
+					<role visibility="Public" targetScope="instance"/>
+					<type aggregation="none" containment="Unspecified"/>
+					<constraints/>
+					<modifiers isOrdered="false" changeable="none" isNavigable="true"/>
+					<style value="Union=0;Derived=0;AllowDuplicates=0;"/>
+					<documentation/>
+					<xrefs/>
+					<tags/>
+				</target>
+				<model ea_localid="29"/>
+				<properties ea_type="Generalization" direction="Source -&gt; Destination"/>
+				<parameterSubstitutions/>
+				<documentation/>
+				<appearance linemode="3" linecolor="-1" linewidth="0" seqno="0" headStyle="0" lineStyle="0"/>
+				<labels/>
+				<extendedProperties virtualInheritance="0"/>
+				<style/>
+				<xrefs/>
+				<tags/>
+			</connector>
 			<connector xmi:idref="EAID_A31566AA_67B9_4d95_BBD3_8B6D7D6E3081">
 				<source xmi:idref="EAID_A2F5A109_0E2E_4a99_97E1_6D9AF7930090">
 					<model ea_localid="35" type="Class" name="Inkomen"/>
