@@ -157,13 +157,7 @@ if( $isLoggedIn === true ):
 
     if( !empty( $requestType ) && !empty( $requestAttribute ) && !empty( $requestDirectory ) ):
 
-        if( $requestType === "template" ):
-
-            ( new controller\Controller( $requestType, $requestAttribute, $requestDirectory ) )->request();
-
-        else:
-            echo 'A wrong type was passed to the display: instantiation aborted!';
-        endif;
+        ( new controller\Controller( $requestType, $requestAttribute, $requestDirectory ) )->request();
 
     else:
 

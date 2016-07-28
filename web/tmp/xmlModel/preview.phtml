@@ -13,16 +13,10 @@ use \application\classes\iOXMLEAScreenFactory;
 
 ( new controller\Controller( "class", "iOXMLEAScreenFactory", "iOXMLEAScreenFactory" ) )->request();
 
-$data    = unserialize( CMS_GET_DATA );
-$allowed = ['xmlModelId'];
-
-if( !empty( $data ) ):
-    foreach( $data as $key => $value ):
-        if( in_array( $key, $allowed ) ) ${$key} = $value;
-    endforeach;
-endif;
-
-$xmlModel = ( isset( $xmlModelId ) ? $xmlModelId : "" );
+/**
+ * Get the last inserted model id
+ */
+$xmlModel = ( !empty( $_SESSION['xmlModelId'] ) ? $_SESSION['xmlModelId'] : "" );
 
 $orderedElements = ( new iOXMLEAScreenFactory\IOXMLEAScreenFactory( $xmlModel ) )->extractAndOrderElements();
 $totalElements   = count( $orderedElements );

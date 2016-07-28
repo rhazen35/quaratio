@@ -1,9 +1,11 @@
 .modelUpload
 {
-    width:100%;
-    margin: 0 auto;
-    margin-top:2em;
+    width:65%;
+    margin: 2em auto ;
+    padding:2em;
     font-size:100%;
+    text-align:left;
+    background-color:#9acb9a;
 }
 
 .modelUpload-Title
@@ -13,21 +15,10 @@
     font-size:100%;
 }
 
-.modelUpload-project
-{
-    width:40%;
-    margin: 2em auto ;
-    padding:2em;
-    padding:2em;
-    font-size:100%;
-    text-align:left;
-    background-color:lightskyblue;
-}
-
 .modelUpload-form
 {
-    width:40%;
-    margin: 2em auto;
+    width:65%;
+    margin: 2em auto ;
     padding:2em;
     font-size:100%;
     text-align:left;

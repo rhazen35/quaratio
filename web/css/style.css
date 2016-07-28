@@ -16,11 +16,14 @@
 @import "screenFactory/element.css";
 @import "screenFactory/form.css";
 
+@import "project/project.css";
+
 /* Body & HTML */
 body {
     line-height: 1;
     background: #FFFFFF;
     overflow-y: scroll;
+    min-width:960px;
 }
 
 html, body {

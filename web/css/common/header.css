@@ -21,3 +21,37 @@ header
 {
     font-size:80%;
 }
+
+nav
+{
+    width:98%;
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    height:auto;
+    margin: 0 auto;
+}
+
+.menuItem
+{
+    padding:0.5em;
+    font-size:90%;
+    border-bottom: 2px solid transparent;
+}
+
+.menuItem a
+{
+    text-decoration:none;
+    color:#000000;
+}
+
+.menuItem a:hover
+{
+    text-decoration:underline;
+
+}
+
+.menuSelected
+{
+    border-bottom: 2px solid lightskyblue;
+}

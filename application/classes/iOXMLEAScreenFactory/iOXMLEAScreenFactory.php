@@ -57,8 +57,9 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
 
             $modelData = ( new iOXMLEAModel\IOXMLEAModel( $this->xmlModel ) )->getModel();
 
+
             if( !empty( $modelData ) ):
-                $parsedElements   = ( new iOXMLModelParser\IOXMLModelParser( './files/'.$modelData['hash'].'.xml' ) )->parseXMLClasses();
+                $parsedElements   = ( new iOXMLModelParser\IOXMLModelParser( './files/xml_models_tmp/'.$modelData['hash'].'.xml' ) )->parseXMLClasses();
 
                 $elementNames = $this->extractElementNames( $parsedElements );
                 $orderedElements = array();
@@ -133,7 +134,7 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
 
             $modelData = ( new iOXMLEAModel\IOXMLEAModel( $this->xmlModel ) )->getModel();
 
-            $parsedConnectors = ( new iOXMLModelParser\IOXMLModelParser( './files/'.$modelData['hash'].'.xml' ) )->parseConnectors();
+            $parsedConnectors = ( new iOXMLModelParser\IOXMLModelParser( './files/xml_models_tmp/'.$modelData['hash'].'.xml' ) )->parseConnectors();
             $totalConnectors  = count( $parsedConnectors['connectors'] );
 
             for( $j = 0; $j < $totalConnectors; $j++ ):

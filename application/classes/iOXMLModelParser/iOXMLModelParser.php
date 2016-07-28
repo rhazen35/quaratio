@@ -287,31 +287,9 @@ if( !class_exists( "IOXMLModelParser" ) ):
                             $classArray[$className]['fields'][$inputName]['initialValue'] = $inputInitialValue;
 
                             /**
+                             * TODO !!!
                              * Tags for excel address
                              */
-        //                    $tags = $attributes->attribute[$i]->tags->tag;
-        //                    $totalTags = count($tags);
-        //
-        //                    if( !empty( $totalTags ) ):
-        //
-        //                        for($l = 0; $l < $totalTags; $l++):
-        //
-        //                            $tagName  = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->name;
-        //                            $tagValue = (string) $attributes->attribute[$i]->tags->tag[$l]->attributes()->value;
-        //
-        //                            if( !empty( $tagValue ) ):
-        //
-        //                                list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
-        //
-        //                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['file'] = trim($file);
-        //                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['tab']  = trim($tab);
-        //                                $classArray[$className]['tags'][$inputName]['tags'][$tagName]['cell'] = trim($cell);
-        //
-        //                            endif;
-        //
-        //                        endfor;
-        //
-        //                    endif;
 
                         endfor;
 

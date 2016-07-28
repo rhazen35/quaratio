@@ -9,63 +9,14 @@
 
 namespace web\tmp\common\home;
 
-use \application\controller;
-
 ?>
+
 
 <div class="home">
 
-    <div class="homeTitle">From Model to User Experience</div>
 
-    <div class="modelUpload-project effect3">
-        <div class="modelUpload-Title">Project</div>
-        <div class="modelUpload-Header">
-            <p>
-                When a new model is uploaded and validation succeeded, a new project will be created.
-                <br>
-                Projects can be managed within the project manager and exchanged with other QuaRatio members.
-                <br><br>
-                A project can only be exchanged or put in production when al requirements are met:
-                <br>
-                <ul>
-                    <li>Model is uploaded and valid</li>
-                    <li>Screens are generated, pre-viewed and tested</li>
-                    <li>Calculator is uploaded and valid</li>
-                </ul>
-            </p>
-        </div>
-    </div>
-
-    <div class="modelUpload">
-        <div class="modelUpload-form effect4">
-            <div class="modelUpload-Title">Model upload</div>
-            <form action="" method="POST" enctype="multipart/form-data">
-                <div class="modelUpload-Header">
-                    <p>
-                        Choose an XMI file, generated door Enterprise Architecture.
-                        <br>
-                        Na het uploaden wordt het xmi bestand gevalideerd en een rapport getoond.
-                    </p>
-                </div>
-                <div class="modelUpload-Upload">
-                    <input type="file" name="xmlFile" value="" title="Kies een xml bestand.">
-                    <input type="submit" name="xmlFileUploadSubmit" value="Uploaden" title="Upload een xml file naar de parser.">
-                </div>
-            </form>
-        </div>
-    </div>
-
-<?php
-
-if( $_SERVER['REQUEST_METHOD'] === "POST" ):
-
-    ?> <div class="modelUpload"><div class="modelUpload-error"> <?php
-    ( new controller\Controller( "handler", "xmlModelUpload", "xmlModelUpload" ) )->request();
-    ?> </div></div> <?php
-
-endif;
-
-?>
 
 </div>
+
+
 

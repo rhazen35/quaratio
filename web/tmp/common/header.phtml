@@ -9,6 +9,20 @@ namespace web\tmp\common\header;
  * Time: 21:33
  */
 
+$data    = unserialize( CMS_GET_DATA );
+$allowed = ['requestAttribute'];
+
+if( !empty( $data ) ):
+    foreach( $data as $key => $value ):
+        if( in_array( $key, $allowed ) ) ${$key} = $value;
+    endforeach;
+endif;
+
+$requestAttribute = ( !empty( $requestAttribute ) ? $requestAttribute : "" );
+
+$urlDataHome     = base64_encode( json_encode( array( "requestType" => "template", "requestAttribute" => "home", "requestDirectory" => "common" ) ) );
+$urlDataProjects = base64_encode( json_encode( array( "requestType" => "template", "requestAttribute" => "projects", "requestDirectory" => "project" ) ) );
+
 ?>
 
 <html>
@@ -36,3 +50,37 @@ namespace web\tmp\common\header;
                     <div class="header-Logo">QuaRatio <span>- Content Management System</span></div>
                 </div>
             </header>
+
+            <nav>
+                <div class="menuItem <?= ( $requestAttribute === "home" ? "menuSelected" : "" ) ?>">
+                    <a href="<?= LITENING_SELF.'?data='.$urlDataHome; ?>">Home</a>
+                </div>
+                <div class="menuItem
+                    <?= ( $requestAttribute === "projects"
+                          || $requestAttribute === "xmlModelUpload"
+                          || $requestAttribute === "projectManager"
+                          ? "menuSelected" : "" ) ?>">
+                    <a href="<?= LITENING_SELF.'?data='.$urlDataProjects; ?>">Projects</a>
+                </div>
+                <div class="menuItem">
+                    <a href="">Database</a>
+                </div>
+                <div class="menuItem">
+                    <a href="">Account</a>
+                </div>
+            </nav>
+
+            <script>
+
+                $('a').click(function (event){
+                    var href = this.href;
+                    event.preventDefault();
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        dataType :'json',
+                        data : '{}',
+                        success:  document.location = href;
+                })
+                    return false;
+                });
+            </script>

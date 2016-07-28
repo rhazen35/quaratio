@@ -14,18 +14,18 @@ if( !class_exists( "IOXMLEAModel" ) ):
 
     class IOXMLEAModel
     {
-        protected $modelID;
+        protected $modelType;
 
         public function __construct( $modelId )
         {
-            $this->modelID = $modelId;
+            $this->modelId = $modelId;
         }
 
         public function getModel()
         {
 
             $sql        = "CALL proc_getModel(?)";
-            $data       = array("id" => $this->modelID);
+            $data       = array("id" => $this->modelId);
             $format     = array('i');
 
             $type       = "read";

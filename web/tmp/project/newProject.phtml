@@ -1,0 +1,54 @@
+<?php
+
+$urlData = array( "requestType" => "template", "requestAttribute" => "xmlModelUpload", "requestDirectory" => "xmlModel" );
+$urlData = base64_encode( json_encode( $urlData ) );
+
+?>
+
+<div class="project effect3">
+    <div class="project-Title">Create a new project</div>
+    <div class="project-Header">
+        <p>
+            New projects require a name and description, after project creation a model can be uploaded.
+        </p>
+    </div>
+</div>
+
+<div class="project-form">
+    <form action="" method="POST" id="newProject">
+        <div class="project-form-header">Start a new project</div>
+        <input type="text" name="name" value="" placeholder="Project name..">
+        <input type="text" name="description" value="" placeholder="Description..">
+        <div class="project-form-submit">
+            <input type="submit" name="newProjectSubmit" value="Create project">
+        </div>
+        <div id="ajaxResponse" class="project-form-message"></div>
+    </form>
+</div>
+
+
+<script>
+
+$("#newProject").submit(function(e) {
+
+    var url = "ajax/project/newProject.php";
+    var redirect = "<?= LITENING_SELF.'?data='.$urlData; ?>";
+
+    $.ajax({
+            type: "POST",
+            url: url,
+            data: $("#newProject").serialize(),
+            dataType: "text",
+            success: function(response)
+            {
+                if(response == "Project created!"){
+                    document.location = redirect;
+                } else{
+                    $("#ajaxResponse").html(response);
+                }
+            }
+        });
+
+        e.preventDefault();
+    });
+</script>

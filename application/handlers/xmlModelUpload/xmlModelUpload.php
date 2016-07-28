@@ -59,7 +59,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
 
                     if ( !move_uploaded_file(
                         $_FILES['xmlFile']['tmp_name'],
-                        sprintf('./files/%s.%s',
+                        sprintf('./files/xml_models/%s.%s',
                         sha1_file($_FILES['xmlFile']['tmp_name']),
                         $extension
                         )
@@ -77,6 +77,22 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
                 else:
 
                     $report['file_exists'] = true;
+
+                    if ( !move_uploaded_file(
+                        $_FILES['xmlFile']['tmp_name'],
+                        sprintf('./files/xml_models_tmp/%s.%s',
+                            sha1_file($_FILES['xmlFile']['tmp_name']),
+                            $extension
+                        )
+                    ) ):
+
+                        throw new \RuntimeException('Failed to move uploaded file.');
+
+                    else:
+
+                        $report['tmp_file_hash'] = $newFile;
+
+                    endif;
 
                 endif;
 

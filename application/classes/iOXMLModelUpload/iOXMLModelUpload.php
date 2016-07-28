@@ -43,6 +43,9 @@ if( !class_exists( "IOXMLModelUpload" ) ):
                 case"saveModel":
                     return( $this->saveModel() );
                     break;
+                case"saveModelTemporary":
+                    return( $this->saveModelTemporary() );
+                    break;
                 case"matchHash":
                     return( $this->matchHash() );
                     break;

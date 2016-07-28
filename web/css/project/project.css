@@ -1,0 +1,194 @@
+.project
+{
+    width:65%;
+    margin: 2em auto ;
+    padding:2em;
+    font-size:100%;
+    text-align:left;
+    background-color:#C1E8F5;
+}
+
+.project-Title
+{
+    width:100%;
+    margin: 0 auto;
+    font-size:110%;
+}
+
+.project-Header
+{
+    margin-top:2em;
+    font-size:80%;
+}
+
+.project ul
+{
+    list-style: decimal outside none;
+}
+
+.project ul li
+{
+    list-style-position: inside;
+}
+
+.project-form
+{
+    width:50%;
+    margin: 1em auto;
+    padding:1em;
+    font-size:100%;
+    text-align:left;
+}
+
+.project-form-header
+{
+    padding-top:1em;
+    padding-bottom:1em;
+}
+
+.project-form input[type=text]
+{
+    width:75%;
+    margin-bottom:0.5em;
+    padding:0.5em;
+}
+
+.project-form-submit
+{
+    width:75%;
+    margin-top:2em;
+    text-align:right;
+}
+
+.project-form-submit input[type=submit]
+{
+    padding:0.25em 0.5em 0.25em 0.5em;
+}
+
+.project-form-submit input[type=submit]:hover
+{
+    cursor:pointer;
+}
+
+.project-form-message
+{
+
+}
+
+.project-links
+{
+    width:65%;
+    margin: 0 auto;
+    margin-top: 4em;
+}
+
+.project-links a
+{
+    padding:0.5em;
+    text-decoration:none;
+    color:#FFFFFF;
+    font-size:90%;
+    background-color:#57a957;
+}
+
+.projects
+{
+    display:flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    width:65%;
+    margin:0 auto;
+    margin-top:1em;
+}
+
+.projects-item
+{
+    width:100%;
+    clear:both;
+    margin-top:0.25em;
+    padding:0.5em;
+    font-size:70%;
+    border:1px solid #CCCCCC;
+}
+
+.projects-head
+{
+    background-color:#404040;
+    color:#FFFFFF;
+    padding:0.5em;
+}
+
+.projects-item-name,
+.projects-item-descr,
+.projects-item-date,
+.projects-item-model,
+.projects-item-calculator,
+.projects-item-active,
+.projects-item-edit
+{
+    float:left;
+}
+
+.projects-item-name
+{
+    width:25%;
+}
+
+.projects-item-descr
+{
+    width:40%;
+}
+
+.projects-item-date
+{
+    width:20%;
+}
+
+.projects-item-model
+{
+    width:5%;
+}
+
+.projects-item-calculator
+{
+    width:5%;
+}
+
+.projects-item-active
+{
+    width:5%;
+}
+
+.projects-item-edit
+{
+    width:5%;
+}
+
+.projects-item-control
+{
+    display:flex;
+    flex-flow:row wrap;
+    justify-content: flex-end;
+    width:100%;
+    padding:0.25em;
+    text-align:right;
+}
+
+.projects-item-modelLink
+{
+    width:auto;
+    height:1.5em;
+    line-height:1.5em;
+    margin-left:0.5em;
+    font-size:80%;
+    background-color:#57a957;
+}
+
+.projects-item-modelLink a
+{
+    width:100%;
+    height:100%;
+    padding:0.25em;
+    color:#FFFFFF;
+    text-decoration:none;
+}

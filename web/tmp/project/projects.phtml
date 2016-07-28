@@ -1,0 +1,53 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Ruben Hazenbosch
+ * Date: 28-7-2016
+ * Time: 13:58
+ */
+
+namespace web\project\projects;
+
+$urlDataNew  = array( "requestType" => "template", "requestAttribute" => "newProject", "requestDirectory" => "project" );
+$urlDataMngr = array( "requestType" => "template", "requestAttribute" => "projectManager", "requestDirectory" => "project" );
+$urlDataNew  = base64_encode( json_encode( $urlDataNew ) );
+$urlDataMngr = base64_encode( json_encode( $urlDataMngr ) );
+
+?>
+
+<div class="project effect3">
+    <div class="project-Title">Projects</div>
+    <div class="project-Header">
+        <p>
+            Projects can be managed within the project manager and exchanged with other QuaRatio members.
+            <br><br>
+            A project can only be put in production or exchanged when al requirements are met:
+            <br>
+            <ul>
+                <li>Model is uploaded and valid</li>
+                <li>Screens are generated, pre-viewed and tested</li>
+                <li>Calculator is uploaded and valid</li>
+            </ul>
+        </p>
+    </div>
+</div>
+
+<div class="project-links">
+    <a href="<?= LITENING_SELF.'?data='.$urlDataMngr; ?>" title="Go to the project manager">Project manager</a>
+    <a href="<?= LITENING_SELF.'?data='.$urlDataNew; ?>" title="Create a new project">Create new project</a>
+</div>
+
+<script>
+
+    $('a').click(function (event){
+        var href = this.href;
+        event.preventDefault();
+        $.ajax({
+            url: $(this).attr('href'),
+            dataType :'json',
+            data : '{}',
+            success:  document.location = href;
+    })
+        return false;
+    });
+</script>
