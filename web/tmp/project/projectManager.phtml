@@ -17,6 +17,8 @@ use application\classes\iOXMLEAModel;
 
 $projects = ( new project\Project( "getAllProjectsByUser" ) )->request( $params = null );
 
+$urlDataPreview = array( "requestType" => "template", "requestAttribute" => "preview", "requestDirectory" => "xmlModel" );
+
 ?>
 
 <div class="project effect3">
@@ -50,21 +52,35 @@ $projects = ( new project\Project( "getAllProjectsByUser" ) )->request( $params 
     <?php foreach( $projects as $project ): ?>
         <?php
 
-            $params  = array( "project_id" => $project['id'] );
-            $modelId = ( new project\Project( "getModelIdByProjectId" ) )->request( $params );
-            $modelId = ( new iOXMLEAModel\IOXMLEAModel( $modelId ) )->getModel();
+            $params    = array( "project_id" => $project['id'] );
+            $modelData = ( new project\Project( "getModelIdByProjectId" ) )->request( $params );
+
+            if( !empty( $modelData ) ):
+
+                $hasModel = true;
+                $modelId = $modelData['model_id'];
+
+                $urlDataPreview['xmlModelId'] = $modelId;
+
+                $model = ( new iOXMLEAModel\IOXMLEAModel( $modelId ) )->getModel();
+
+            else:
+
+                $hasModel = false;
+
+            endif;
 
         ?>
         <div class="projects-item">
             <div class="projects-item-name"><?= $project['name']; ?></div>
             <div class="projects-item-descr"><?= $project['description']; ?></div>
             <div class="projects-item-date"><?= $project['date'].$project['time']; ?></div>
-            <div class="projects-item-model">hh</div>
+            <div class="projects-item-model"><?= ( $hasModel === true ? "yes" : "no" ); ?></div>
             <div class="projects-item-calculator">no</div>
             <div class="projects-item-active">no</div>
         </div>
         <div class="projects-item-control">
-            <div class="projects-item-modelLink"><a href="">model</a></div>
+            <div class="projects-item-modelLink"><a href="<?= LITENING_SELF.'?data='. base64_encode( json_encode( $urlDataPreview ) ) ?>">model</a></div>
             <div class="projects-item-modelLink"><a href="">calculator</a></div>
             <div class="projects-item-modelLink"><a href="">Edit</a></div>
         </div>

@@ -1,6 +1,26 @@
 .home
 {
-    width:98%;
+    width:70%;
+    margin: 0 auto;
+    font-size:90%;
+}
+
+.home h1
+{
+    height:3em;
+    padding: 1em;
+    color:#FFFFFF;
+    background-color: #57a957;
+}
+
+.home-welcome
+{
+    width:90%;
+    margin: 0 auto;
+}
+
+.home-welcome p
+{
     margin: 0 auto;
 }
 

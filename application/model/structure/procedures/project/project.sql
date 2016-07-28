@@ -21,7 +21,7 @@ CREATE PROCEDURE
 )
   BEGIN
     SELECT name, description, date, time FROM projects WHERE id = projectID;
-  END;
+  END $$
 
 CREATE PROCEDURE
 `proc_newProjectModel`(
@@ -41,3 +41,11 @@ CREATE PROCEDURE
   BEGIN
     SELECT id, name, description, date, time FROM projects WHERE user_id = userID;
 END $$
+
+CREATE PROCEDURE
+`proc_getModelIdByProjectId`(
+  IN projectId INT(11)
+)
+  BEGIN
+    SELECT model_id FROM projects_models WHERE project_id = projectId;
+  END $$

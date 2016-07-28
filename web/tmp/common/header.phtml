@@ -50,13 +50,14 @@ $urlDataProjects = base64_encode( json_encode( array( "requestType" => "template
                     <div class="header-Logo">QuaRatio <span>- Content Management System</span></div>
                 </div>
             </header>
-
+            <?php if( !empty( $_SESSION['userId'] ) ): ?>
             <nav>
-                <div class="menuItem <?= ( $requestAttribute === "home" ? "menuSelected" : "" ) ?>">
+                <div class="menuItem <?= ( $requestAttribute === "home" ? "menuSelected" : ( empty( $requestAttribute ) ? "menuSelected" : "" ) ) ?>">
                     <a href="<?= LITENING_SELF.'?data='.$urlDataHome; ?>">Home</a>
                 </div>
                 <div class="menuItem
                     <?= ( $requestAttribute === "projects"
+                          || $requestAttribute === "newProject"
                           || $requestAttribute === "xmlModelUpload"
                           || $requestAttribute === "projectManager"
                           ? "menuSelected" : "" ) ?>">
@@ -69,7 +70,7 @@ $urlDataProjects = base64_encode( json_encode( array( "requestType" => "template
                     <a href="">Account</a>
                 </div>
             </nav>
-
+            <?php endif; ?>
             <script>
 
                 $('a').click(function (event){

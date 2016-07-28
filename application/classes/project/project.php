@@ -143,8 +143,8 @@ if( !class_exists( "Project" ) ):
         private function getModelIdByProjectId( $params )
         {
 
-            $sql        = "CALL proc_getProjectById(?)";
-            $data       = array("id" => $params['id']);
+            $sql        = "CALL proc_getModelIdByProjectId(?)";
+            $data       = array("id" => $params['project_id']);
             $format     = array("i");
 
             $type       = "read";
@@ -155,10 +155,7 @@ if( !class_exists( "Project" ) ):
 
             foreach( $returnData as $returnDat ):
 
-                $returnArray['name'] = $returnDat['name'];
-                $returnArray['description'] = $returnDat['description'];
-                $returnArray['date'] = $returnDat['date'];
-                $returnArray['time'] = $returnDat['time'];
+                $returnArray['model_id'] = $returnDat['model_id'];
 
             endforeach;
 
