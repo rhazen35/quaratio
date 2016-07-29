@@ -83,11 +83,40 @@ $urlDataProjectDelete = array( "requestType" => "ajax", "requestAttribute" => "d
             <div class="projects-item-active">no</div>
         </div>
         <div class="projects-item-control">
+            <div id="ajaxResponse" class="project-form-message"></div>
             <div class="projects-item-modelLink"><a href="<?= LITENING_SELF.'?data='. base64_encode( json_encode( $urlDataPreview ) ) ?>">model</a></div>
             <div class="projects-item-modelLink"><a href="">calculator</a></div>
             <div class="projects-item-modelLink"><a href="">Edit</a></div>
-            <div class="projects-item-modelLink"><a href="<?= LITENING_SELF.'?data='. base64_encode( json_encode( $urlDataProjectDelete ) ) ?>">Delete</a></div>
+            <div class="projects-item-modelLink">
+                <form id="deleteProject" action="" method="POST">
+                    <input type="hidden" class="projectId" name="projectId" value="<?= $project['id']; ?>">
+                    <button name="submit" type="submit" class="submit">Delete</button>
+                </form>
+            </div>
         </div>
     <?php endforeach; ?>
+
+    <script>
+        $(".submit").click(function(e) {
+
+            var url = "../application/ajax/project/deleteProject.php";
+            var parentObj = $(this).closest('.projects-item-control');
+            var id = parentObj.find(' .projectId').attr('value');
+            console.log(id);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { projectId: id },
+                dataType: "text",
+                success: function(response)
+                {
+                    location.reload();
+                }
+            });
+
+            e.preventDefault();
+        });
+    </script>
 
 </div>

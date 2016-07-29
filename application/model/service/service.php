@@ -7,11 +7,13 @@ use application\classes\database;
 use application\model\data\create as dbCreate;
 use application\model\data\read as dbRead;
 use application\model\data\update as dbUpdate;
+use application\model\data\delete as dbDelete;
 
 (new core\Core( "class", "database", "database" ))->request();
 (new core\Core( "model", "create", "create" ))->request();
 (new core\Core( "model", "read", "read" ))->request();
 (new core\Core( "model", "update", "update" ))->request();
+(new core\Core( "model", "delete", "delete" ))->request();
 
 /**
  * Created by PhpStorm.
@@ -47,29 +49,36 @@ if(!class_exists( "Service" )):
 
         public function dbAction( $sql, $data, $format )
         {
-            switch($this->type):
+            if ( !in_array( $this->type, ['create', 'createWithOutput', 'read', 'update', 'delete'] ) ):
 
-                case"create":
-                    ( new dbCreate\DbCreate( $sql, $this->database ) )->dbInsert( $data, $format );
-                    break;
-                case"createWithOutput":
-                    $lastInsertedID = ( new dbCreate\DbCreate( $sql, $this->database ) )->dbInsertOut( $data, $format );
-                    return( $lastInsertedID );
-                    break;
-                case"read":
-                    $returnData = ( new dbRead\DbRead( $sql, $this->database ) )->dbSelect( $data, $format );
-                    return($returnData);
-                    break;
-                case"update":
-                    ( new dbUpdate\DbUpdate( $sql, $this->database ) )->dbUpdate( $data, $format );
-                    break;
-                case"delete":
+                echo 'Error: An invalid $type was passed to Service::dbAction()! Instantiation aborted!';
+                return( false );
 
-                    break;
-                default:
+            else:
 
-                    break;
-            endswitch;
+                switch($this->type):
+
+                    case"create":
+                        ( new dbCreate\DbCreate( $sql, $this->database ) )->dbInsert( $data, $format );
+                        break;
+                    case"createWithOutput":
+                        $lastInsertedID = ( new dbCreate\DbCreate( $sql, $this->database ) )->dbInsertOut( $data, $format );
+                        return( $lastInsertedID );
+                        break;
+                    case"read":
+                        $returnData = ( new dbRead\DbRead( $sql, $this->database ) )->dbSelect( $data, $format );
+                        return($returnData);
+                        break;
+                    case"update":
+                        ( new dbUpdate\DbUpdate( $sql, $this->database ) )->dbUpdate( $data, $format );
+                        break;
+                    case"delete":
+                        ( new dbDelete\DbDelete( $sql, $this->database ) )->dbDelete( $data, $format );
+                        break;
+
+                endswitch;
+
+            endif;
         }
 
         /**

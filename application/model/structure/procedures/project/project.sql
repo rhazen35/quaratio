@@ -49,3 +49,14 @@ CREATE PROCEDURE
   BEGIN
     SELECT model_id FROM projects_models WHERE project_id = projectId;
   END $$
+
+CREATE PROCEDURE
+`proc_deleteProject`(
+  IN projectId INT(11),
+  IN modelId INT(11)
+)
+  BEGIN
+    DELETE FROM projects_models WHERE project_id = projectId;
+    DELETE FROM projects WHERE id = projectId;
+    DELETE FROM xmi_models WHERE id = modelId;
+  END $$

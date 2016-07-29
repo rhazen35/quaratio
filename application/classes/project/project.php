@@ -42,6 +42,9 @@ if( !class_exists( "Project" ) ):
                 case"getModelIdByProjectId":
                     return( $this->getModelIdByProjectId( $params ) );
                 break;
+                case"deleteProject":
+                    $this->deleteProject( $params );
+                    break;
             endswitch;
 
         }
@@ -160,6 +163,22 @@ if( !class_exists( "Project" ) ):
             endforeach;
 
             return( $returnArray );
+
+        }
+
+        private function deleteProject( $params )
+        {
+
+            $projectId  = ( isset( $params['project_id'] ) ? $params['project_id'] : "" );
+            $modelId    = ( isset( $params['model_id'] ) ? $params['model_id'] : "" );
+
+            $sql        = "CALL proc_deleteProject(?,?)";
+            $data       = array("project_id" => $projectId, "model_id" => $modelId);
+            $format     = array("ii");
+
+            $type       = "delete";
+
+            ( new service\Service( $type, "quaratio" ) )->dbAction( $sql, $data, $format );
 
         }
 

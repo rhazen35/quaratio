@@ -80,7 +80,7 @@ $urlDataProjects = base64_encode( json_encode( array( "requestType" => "template
                         url: $(this).attr('href'),
                         dataType :'json',
                         data : '{}',
-                        success:  document.location = href;
+                        success:  document.location = href,
                 })
                     return false;
                 });

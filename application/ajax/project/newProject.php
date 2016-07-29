@@ -6,6 +6,8 @@
  * Time: 15:40
  */
 
+namespace application\ajax\project\newProject;
+
 require("../../../application/init/init.php");
 
 use \application\controller;
