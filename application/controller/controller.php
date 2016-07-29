@@ -42,7 +42,7 @@ if(!class_exists( "Controller" )):
         public function request()
         {
 
-            if ( !in_array( $this->type, ['template', 'handler', 'class'] ) ):
+            if ( !in_array( $this->type, ['template', 'handler', 'class', 'ajax'] ) ):
 
                 echo 'Error: An invalid $type was passed to Controller::request()! Instantiation aborted!';
                 return( false );
@@ -58,6 +58,9 @@ if(!class_exists( "Controller" )):
                         break;
                     case"class":
                         $this->classLoader();
+                        break;
+                    case"ajax":
+                        $this->ajaxLoader();
                         break;
                 endswitch;
 
@@ -129,6 +132,20 @@ if(!class_exists( "Controller" )):
 
             $path = LITENING_ROOT_DIRECTORY . 'application/classes/';
             $file = $path . $this->attribute . '/' . $this->attribute . '.php';
+
+            if ( !file_exists( $file ) ):
+                return false;
+            else:
+                require $file;
+            endif;
+
+        }
+
+        private function ajaxLoader()
+        {
+
+            $path = LITENING_ROOT_DIRECTORY . 'application/ajax/';
+            $file = $path . $this->directory . '/' . $this->attribute . '.php';
 
             if ( !file_exists( $file ) ):
                 return false;

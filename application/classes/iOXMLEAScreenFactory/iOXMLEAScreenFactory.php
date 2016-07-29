@@ -68,7 +68,7 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
                 foreach( $elementNames as $elementName ):
 
                     $class  = ( isset( $parsedElements[$elementName] ) && $parsedElements[$elementName]['type'] === "uml:Class" ? $parsedElements[$elementName] : "" );
-                    $fields = ( isset( $class['fields'] ) ? $class['fields'] : false );
+                    $fields = ( isset( $class['attributes'] ) ? $class['attributes'] : false );
                     $root   = ( isset( $class['Root'] ) ? $class['Root'] : false );
                     $name   = ( isset( $class['name'] ) ? $class['name'] : "" );
                     $tags   = ( isset( $class['tags'] ) ? $class['tags'] : false );
@@ -85,14 +85,14 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
                         $orderedElements[$i]['order'] = $order;
                         $orderedElements[$i]['root'] = $root;
                         $orderedElements[$i]['documentation'] = $documentation;
-                        $orderedElements[$i]['fields'] = $fields;
+                        $orderedElements[$i]['attributes'] = $fields;
                         $orderedElements[$i]['operations'] = $operations;
 
                         if( !empty( $target ) ):
 
-                            $orderedElements[$i]['target'] = array();
-                            $orderedElements[$i]['target']['id'] = $target['id'];
-                            $orderedElements[$i]['target']['name'] = $target['name'];
+                            $orderedElements[$i]['supertype'] = array();
+                            $orderedElements[$i]['supertype']['id'] = $target['id'];
+                            $orderedElements[$i]['supertype']['name'] = $target['name'];
 
                             $targetClass = $parsedElements[$target['name']];
 
@@ -101,13 +101,15 @@ if( !class_exists( "IOXMLEAScreenFactory" ) ):
                             $documentation = ( isset( $targetClass['documentation'] ) ? $targetClass['documentation'] : "" );
                             $idref = ( isset( $targetClass['idref'] ) ? $targetClass['idref'] : "" );
                             $operations = ( isset( $targetClass['operations'] ) ? $targetClass['operations'] : "" );
-                            $fields = ( isset( $targetClass['fields'] ) ? $targetClass['fields'] : false );
+                            $fields = ( isset( $targetClass['attributes'] ) ? $targetClass['attributes'] : false );
+                            $fieldTags = ( isset( $targetClass['attributes']['tags'] ) ? $targetClass['attributes']['tags'] : false );
 
-                            $orderedElements[$i]['target']['idref'] = $idref;
-                            $orderedElements[$i]['target']['order'] = $order;
-                            $orderedElements[$i]['target']['documentation'] = $documentation;
-                            $orderedElements[$i]['target']['fields'] = $operations;
-                            $orderedElements[$i]['target']['operations'] = $fields;
+                            $orderedElements[$i]['supertype']['idref'] = $idref;
+                            $orderedElements[$i]['supertype']['order'] = $order;
+                            $orderedElements[$i]['supertype']['documentation'] = $documentation;
+                            $orderedElements[$i]['supertype']['attributes'] = $fields;
+                            $orderedElements[$i]['supertype']['attributes']['tags'] = $fieldTags;
+                            $orderedElements[$i]['supertype']['operations'] = $operations;
 
 
                         endif;

@@ -435,9 +435,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                         $j = 0;
                         foreach( $parsedClasses as $parsedClass ):
 
-                            if( !empty( $parsedClass['fields'] ) ):
+                            if( !empty( $parsedClass['attributes'] ) ):
 
-                                foreach( $parsedClass['fields'] as $field ):
+                                foreach( $parsedClass['attributes'] as $field ):
 
                                     /**
                                      * Validate the initial value by matching it with the data type.
@@ -502,6 +502,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                         $n = 0;
                         $o = 0;
                         $p = 0;
+                        $q = 0;
                         foreach($operationsArray as $operations):
 
                             foreach( $operations as $operation ):
@@ -528,14 +529,28 @@ if( !class_exists( "IOXMLEAValidator" ) ):
 
                                 if( !empty( $operation['tags'] ) ):
 
-                                    $tagsArray = array();
+                                    $tagsArray      = array();
+                                    $tagsOrderArray = array();
 
                                     foreach($operation['tags'] as $tag):
 
                                         if( !empty( $tag['name'] ) && $tag['name'] === "QR-Volgorde" ):
+
+                                            /**
+                                             * Add print order name to the tags array
+                                             */
                                             $tagsArray[] = "QR-Volgorde";
+
+                                            /**
+                                             * Add print order number to tags order array
+                                             */
+                                            $tagsOrderArray[] = $tag['cell'];
+
                                         endif;
 
+                                        /**
+                                         * Check if an operation has a file specified
+                                         */
                                         if( empty( $tag['file'] ) && $tag['name'] !== "QR-Volgorde" ):
 
                                             $parseReport['operations']['file']['operation'.($k+1)]              = array();
@@ -552,6 +567,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
 
                                         endif;
 
+                                        /**
+                                         * Check if an operation has a tab specified
+                                         */
                                         if( empty( $tag['tab'] ) && $tag['name'] !== "QR-Volgorde" ):
 
                                             $parseReport['operations']['tab']['operation'.($l+1)]              = array();
@@ -568,6 +586,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
 
                                         endif;
 
+                                        /**
+                                         * Check if an operation has a cell specified
+                                         */
                                         if( empty( $tag['cell'] ) ):
 
                                             $parseReport['operations']['cell']['operation'.($m+1)]              = array();
@@ -582,6 +603,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                                             $error += 1;
                                             $m++;
 
+                                        /**
+                                         * Check if the operation cell has the right format
+                                         */
                                         elseif( !empty( $tag['cell'] && $tag['name'] !== "QR-Volgorde" ) ):
 
                                                 if( !preg_match( $this->matchExcelFormat , $tag['cell']) ):
@@ -604,6 +628,28 @@ if( !class_exists( "IOXMLEAValidator" ) ):
 
                                     endforeach;
 
+                                    /**
+                                     * Check for duplicate print orders
+                                     */
+                                    if( count( $tagsOrderArray ) !== count( array_unique( $tagsOrderArray ) ) ):
+
+                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]              = array();
+                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['name']      = "Duplicate operation order";
+                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['tagName']   = $tag['name'];
+                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['type']      = "error";
+                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['value']     = "duplicate";
+                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['valid']     = false;
+                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->order";
+                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['info']      = "A duplicate operation order has been found.";
+
+                                        $error += 1;
+                                        $q++;
+
+                                    endif;
+
+                                    /**
+                                     * Check if a print order is specified
+                                     */
                                     if( !in_array( "QR-Volgorde", $tagsArray ) ):
 
                                         $parseReport['operations']['order']['operation'.($p+1)]              = array();

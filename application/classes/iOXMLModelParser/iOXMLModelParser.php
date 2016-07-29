@@ -266,30 +266,55 @@ if( !class_exists( "IOXMLModelParser" ) ):
 
                             /** Input field names /enumeration/data type names */
                             $inputName = (string) $attributes->attribute[$i]->attributes()->name;
-                            $classArray[$className]['fields'][$inputName] = array();
+                            $classArray[$className]['attributes'][$inputName] = array();
 
                             /** Input field input name */
-                            $classArray[$className]['fields'][$inputName]['input_name'] = $inputName;
+                            $classArray[$className]['attributes'][$inputName]['input_name'] = $inputName;
 
                             /** Input class input name */
-                            $classArray[$className]['fields'][$inputName]['class_name'] = $className;
+                            $classArray[$className]['attributes'][$inputName]['class_name'] = $className;
 
                             /** Input field documentation */
                             $inputFieldDocumentation = (string) $attributes->attribute[$i]->documentation->attributes()->value;
-                            $classArray[$className]['fields'][$inputName]['documentation'] = $inputFieldDocumentation;
+                            $classArray[$className]['attributes'][$inputName]['documentation'] = $inputFieldDocumentation;
 
                             /** Input field data type */
                             $inputFieldDataType = (string) $attributes->attribute[$i]->properties->attributes()->type;
-                            $classArray[$className]['fields'][$inputName]['data_type'] = $inputFieldDataType;
+                            $classArray[$className]['attributes'][$inputName]['data_type'] = $inputFieldDataType;
 
                             /** Input field initial value */
                             $inputInitialValue = (string) $attributes->attribute[$i]->initial->attributes()->body;
-                            $classArray[$className]['fields'][$inputName]['initialValue'] = $inputInitialValue;
+                            $classArray[$className]['attributes'][$inputName]['initialValue'] = $inputInitialValue;
 
                             /**
-                             * TODO !!!
                              * Tags for excel address
                              */
+                            $tags = $attributes->attribute[$i]->tags->children();
+                            $totalTags = count( $tags );
+
+                            if( !empty( $tags ) && $tags !== 0 ):
+
+                                for( $j = 0; $j < $totalTags; $j++ ):
+
+                                    if( !empty( $tags ) ):
+                                        $tagName  = (string) $tags->tag[$j]->attributes()->name;
+                                        $tagValue = (string) $tags->tag[$j]->attributes()->value;
+                                    endif;
+
+                                    if( !empty( $tagValue ) ):
+                                        list($cell, $tab, $file) = array_pad(explode(",", $tagValue, 3),3, null);
+
+                                        $classArray[$className]['attributes'][$inputName]['tags'][$j]['attribute'] = $inputName;
+                                        $classArray[$className]['attributes'][$inputName]['tags'][$j]['name'] = $tagName;
+                                        $classArray[$className]['attributes'][$inputName]['tags'][$j]['file'] = $file;
+                                        $classArray[$className]['attributes'][$inputName]['tags'][$j]['tab'] = $tab;
+                                        $classArray[$className]['attributes'][$inputName]['tags'][$j]['cell'] = $cell;
+
+                                    endif;
+
+                                endfor;
+
+                            endif;
 
                         endfor;
 

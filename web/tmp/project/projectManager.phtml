@@ -18,6 +18,7 @@ use application\classes\iOXMLEAModel;
 $projects = ( new project\Project( "getAllProjectsByUser" ) )->request( $params = null );
 
 $urlDataPreview = array( "requestType" => "template", "requestAttribute" => "preview", "requestDirectory" => "xmlModel" );
+$urlDataProjectDelete = array( "requestType" => "ajax", "requestAttribute" => "deleteProject", "requestDirectory" => "project" );
 
 ?>
 
@@ -53,6 +54,8 @@ $urlDataPreview = array( "requestType" => "template", "requestAttribute" => "pre
         <?php
 
             $params    = array( "project_id" => $project['id'] );
+            $urlDataProjectDelete['projectId'] = $project['id'];
+
             $modelData = ( new project\Project( "getModelIdByProjectId" ) )->request( $params );
 
             if( !empty( $modelData ) ):
@@ -83,6 +86,7 @@ $urlDataPreview = array( "requestType" => "template", "requestAttribute" => "pre
             <div class="projects-item-modelLink"><a href="<?= LITENING_SELF.'?data='. base64_encode( json_encode( $urlDataPreview ) ) ?>">model</a></div>
             <div class="projects-item-modelLink"><a href="">calculator</a></div>
             <div class="projects-item-modelLink"><a href="">Edit</a></div>
+            <div class="projects-item-modelLink"><a href="<?= LITENING_SELF.'?data='. base64_encode( json_encode( $urlDataProjectDelete ) ) ?>">Delete</a></div>
         </div>
     <?php endforeach; ?>
 

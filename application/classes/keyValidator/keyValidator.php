@@ -75,6 +75,10 @@ if(!class_exists('KeyValidator')):
                 'hideValidatorType',
                 'hideValidatorAction',
                 'xmlModelId'
+            ),
+
+            'project' => array(
+                'projectId'
             )
 
         );

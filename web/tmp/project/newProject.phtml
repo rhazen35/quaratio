@@ -31,7 +31,7 @@ $urlData = base64_encode( json_encode( $urlData ) );
 
 $("#newProject").submit(function(e) {
 
-    var url = "ajax/project/newProject.php";
+    var url = "../application/ajax/project/newProject.php";
     var redirect = "<?= LITENING_SELF.'?data='.$urlData; ?>";
 
     $.ajax({

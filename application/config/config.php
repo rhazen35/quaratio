@@ -30,7 +30,8 @@ function allowedKeys()
         'pagination',
         'systemLogs',
         'excel',
-        'xmlModel'
+        'xmlModel',
+        'project'
     );
 
     return( $allowedKeys );
