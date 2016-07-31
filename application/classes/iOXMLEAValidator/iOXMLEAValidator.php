@@ -628,6 +628,8 @@ if( !class_exists( "IOXMLEAValidator" ) ):
 
                                     endforeach;
 
+                                    var_dump($tagsOrderArray);
+
                                     /**
                                      * Check for duplicate print orders
                                      */

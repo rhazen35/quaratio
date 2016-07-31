@@ -50,6 +50,8 @@ $projectData = ( new project\Project( "getProjectById" ) )->request( $params );
 </form>
 </div>
 
+<div class="ajaxResponse" id="ajaxResponse"></div>
+
 <script>
     $("#newModel").submit(function(e) {
 
@@ -67,13 +69,10 @@ $projectData = ( new project\Project( "getProjectById" ) )->request( $params );
             contentType: false,
             processData: false,
             data: form_data,
-            success: function(response)
-            {
-                if(response == "Upload ok"){
-                    document.location = redirect;
-                } else{
-                    $("#ajaxResponse").html(response);
-                }
+            success: function(response) {
+
+                //document.location = redirect;
+                alert(response);
             }
         });
 

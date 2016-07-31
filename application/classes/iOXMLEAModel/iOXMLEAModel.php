@@ -55,6 +55,37 @@ if( !class_exists( "IOXMLEAModel" ) ):
 
         }
 
+        public function getModelIdByHash()
+        {
+
+            $sql        = "CALL proc_getModelIdByHash(?)";
+            $data       = array("hash" => $this->modelId);
+            $format     = array('s');
+
+            $type       = "read";
+            $database   = "quaratio";
+
+            $returnData = ( new service\Service( $type, $database ) )->dbAction( $sql, $data, $format );
+
+            if( !empty( $returnData ) ):
+
+                foreach( $returnData as $data ):
+
+                    $returnArray = array( 'model_id' => $data['model_id'],);
+
+                endforeach;
+
+                return( $returnArray );
+
+            else:
+
+                return( false );
+
+            endif;
+
+        }
+
+
     }
 
 endif;

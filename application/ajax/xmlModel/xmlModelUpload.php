@@ -9,10 +9,12 @@
 require("../../../application/init/init.php");
 
 use \application\controller;
+use application\classes\iOXMLEAModel;
 use application\classes\iOXMLModelUpload;
 use application\classes\project;
 
 ( new controller\Controller( "class", "iOXMLModelUpload", "iOXMLModelUpload" ) )->request();
+( new controller\Controller( "class", "iOXMLEAModel", "iOXMLEAModel" ) )->request();
 ( new controller\Controller( "class", "project", "project" ) )->request();
 
 if( $_SERVER['REQUEST_METHOD'] === "POST" ):
@@ -35,11 +37,13 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
              * Check if the model already exists
              */
             $returnData = ( new iOXMLModelUpload\IOXMLModelUpload( "matchHash", $newFile, $uploadedAt ) )->request();
-            if( !empty( $returnData ) && $returnData !== false ):
+            if( !empty( $returnData ) ):
                 $matchHash = $returnData[0];
             else:
                 $matchHash = "";
             endif;
+
+            var_dump($returnData);
 
             /**
              * Pass the xml file with the new model command and the timestamp
@@ -77,10 +81,14 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
                         $extension
                     )) ;
 
+                $_SESSION['xmlModelId'] = ( isset( $lastInsertedID ) ? $lastInsertedID : "" );
+
             else:
 
                 $report['file_exists'] = true;
-
+                $returnData = ( new iOXMLEAModel\IOXMLEAModel( $matchHash ) )->getModelIdByHash();
+                var_dump($returnData);
+                $_SESSION['xmlModelId'] = ( !empty( $returnData['model_id'] ) ? $returnData['model_id'] : "" );
 
             endif;
 
@@ -90,7 +98,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
                 $hours = (int)($duration/60/60);
                 $minutes = (int)($duration/60)-$hours*60;
                 $seconds = $duration-$hours*60*60-$minutes*60;
-                return number_format((float)$seconds, 3, '.', '');
+                return( number_format((float)$seconds, 3, '.', '') );
             }
 
             $validationEndTime = microtimeFormat( $validationStartTime );
@@ -98,14 +106,6 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
             $report['startTime'] = $validationEndTime;
 
             $_SESSION['xmlValidatorReport'] = serialize( $report );
-            $_SESSION['xmlModelId'] = ( isset( $lastInsertedID ) ? $lastInsertedID : "" );
-
-            echo 'Upload ok';
-            exit();
-
-        else:
-
-            echo 'Er kon geen file gedetecteerd worden, kies het juiste bestand.';
 
         endif;
 

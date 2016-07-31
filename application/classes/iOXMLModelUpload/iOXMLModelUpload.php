@@ -76,11 +76,7 @@ if( !class_exists( "IOXMLModelUpload" ) ):
 
             if( !empty( $returnData ) ):
 
-                foreach($returnData as $returnDat):
-                    $hash = $returnDat;
-                endforeach;
-
-                return( $hash );
+                return( $returnData );
 
             else:
 

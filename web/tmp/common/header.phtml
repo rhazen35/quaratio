@@ -22,6 +22,7 @@ $requestAttribute = ( !empty( $requestAttribute ) ? $requestAttribute : "" );
 
 $urlDataHome     = base64_encode( json_encode( array( "requestType" => "template", "requestAttribute" => "home", "requestDirectory" => "common" ) ) );
 $urlDataProjects = base64_encode( json_encode( array( "requestType" => "template", "requestAttribute" => "projects", "requestDirectory" => "project" ) ) );
+$urlDataNew  = base64_encode( json_encode( array( "requestType" => "template", "requestAttribute" => "newProject", "requestDirectory" => "project" ) ) );
 
 ?>
 <!DOCTYPE html>
@@ -69,8 +70,20 @@ $urlDataProjects = base64_encode( json_encode( array( "requestType" => "template
                 <div class="menuItem">
                     <a href="">Account</a>
                 </div>
-            </nav>
+
+                <?php
+
+                    if( $requestAttribute === "projects"
+                        || $requestAttribute === "newProject"
+                        || $requestAttribute === "projectManager"
+                       ): ?>
+                        <div class="menuItem">
+                            <a href="<?= LITENING_SELF.'?data='.$urlDataNew; ?>">New project</a>
+                        </div>
+                    <?php endif; ?>
+
             <?php endif; ?>
+        </nav>
             <script>
 
                 $('a').click(function (event){

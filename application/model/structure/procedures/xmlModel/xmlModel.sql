@@ -31,3 +31,11 @@ CREATE PROCEDURE
   BEGIN
     SELECT user_id, hash, date, time FROM xmi_models WHERE id = modelId;
   END $$
+
+CREATE PROCEDURE
+`proc_getModelIdByHash`(
+  IN modelHash VARCHAR(256)
+)
+  BEGIN
+    SELECT id FROM xmi_models WHERE hash = modelHash;
+  END $$
