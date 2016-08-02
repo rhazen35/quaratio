@@ -7,7 +7,7 @@
  * - Validates the user input.
  * - Gets the user password with a corresponding email.
  * - Gets the user id for the login session.
- * 
+ *
  */
 
 namespace application\handlers\login;

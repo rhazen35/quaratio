@@ -14,7 +14,7 @@ if( !class_exists( "IOXMLEAModel" ) ):
 
     class IOXMLEAModel
     {
-        protected $modelType;
+        protected $modelId;
 
         public function __construct( $modelId )
         {
@@ -69,13 +69,7 @@ if( !class_exists( "IOXMLEAModel" ) ):
 
             if( !empty( $returnData ) ):
 
-                foreach( $returnData as $data ):
-
-                    $returnArray = array( 'model_id' => $data['model_id'],);
-
-                endforeach;
-
-                return( $returnArray );
+                return( $returnData );
 
             else:
 

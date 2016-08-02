@@ -39,6 +39,7 @@ $urlDataProjectDelete = array( "requestType" => "ajax", "requestAttribute" => "d
     </div>
 </div>
 
+
 <div class="projects">
 
     <div class="projects-item projects-head">
@@ -50,6 +51,9 @@ $urlDataProjectDelete = array( "requestType" => "ajax", "requestAttribute" => "d
         <div class="projects-item-active">Active</div>
     </div>
 
+
+    <div id="main">
+    <div class="inner">
     <?php foreach( $projects as $project ): ?>
         <?php
 
@@ -74,6 +78,7 @@ $urlDataProjectDelete = array( "requestType" => "ajax", "requestAttribute" => "d
             endif;
 
         ?>
+
         <div class="projects-item">
             <div class="projects-item-name"><?= $project['name']; ?></div>
             <div class="projects-item-descr"><?= $project['description']; ?></div>
@@ -81,37 +86,44 @@ $urlDataProjectDelete = array( "requestType" => "ajax", "requestAttribute" => "d
             <div class="projects-item-model"><?= ( $hasModel === true ? "yes" : "no" ); ?></div>
             <div class="projects-item-calculator">no</div>
             <div class="projects-item-active">no</div>
-        </div>
-        <div class="projects-item-control">
-            <div id="ajaxResponse" class="project-form-message"></div>
-            <div class="projects-item-modelLink"><a href="<?= LITENING_SELF.'?data='. base64_encode( json_encode( $urlDataPreview ) ) ?>">model</a></div>
-            <div class="projects-item-modelLink"><a href="">calculator</a></div>
-            <div class="projects-item-modelLink"><a href="">Edit</a></div>
-            <div class="projects-item-modelLink">
-                <form id="deleteProject" action="" method="POST">
-                    <input type="hidden" class="projectId" name="projectId" value="<?= $project['id']; ?>">
-                    <button name="submit" type="submit" class="submit">Delete</button>
-                </form>
+
+            <div class="projects-item-control">
+                <div id="ajaxResponse" class="project-form-message"></div>
+                <div class="projects-item-modelLink"><a href="<?= LITENING_SELF.'?data='. base64_encode( json_encode( $urlDataPreview ) ) ?>">model</a></div>
+                <div class="projects-item-modelLink"><a href="">calculator</a></div>
+                <div class="projects-item-modelLink"><a href="">Edit</a></div>
+                <div class="projects-item-modelLink">
+                    <form class="deleteProject" action="" method="POST">
+                        <input type="hidden" class="projectId" name="projectId" value="<?= $project['id']; ?>">
+                        <button name="submit" type="submit" class="submit">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
-    <?php endforeach; ?>
+
+
+
+        <?php endforeach; ?>
+        </div>
+        </div>
 
     <script>
         $(".submit").click(function(e) {
+            var $project = $(this).closest('.projects-item');
 
             var url = "../application/ajax/project/deleteProject.php";
-            var parentObj = $(this).closest('.projects-item-control');
-            var id = parentObj.find(' .projectId').attr('value');
-            console.log(id);
+            var parentObj = $(this).closest('.deleteProject');
+            var id = parentObj.find('.projectId').val();
 
             $.ajax({
                 type: "POST",
                 url: url,
                 data: { projectId: id },
-                dataType: "text",
+                dataType: "json",
                 success: function(response)
                 {
-                    location.reload();
+
+                    if(response.delete) $project.remove();
                 }
             });
 

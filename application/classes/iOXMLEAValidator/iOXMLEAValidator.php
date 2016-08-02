@@ -486,6 +486,7 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                      * Get all operations from the parsed classes and validate them
                      */
                     $operationsArray = array();
+                    $tagsOrderArray = array();
 
                     if( !empty( $operations ) ):
 
@@ -503,6 +504,9 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                         $o = 0;
                         $p = 0;
                         $q = 0;
+                        $r = 0;
+                        $s = 0;
+                        $t = 0;
                         foreach($operationsArray as $operations):
 
                             foreach( $operations as $operation ):
@@ -513,10 +517,8 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                                 if( $operation['documentation'] === "" ):
 
                                     $parseReport['operations']['documentation']['operation'.($j+1)]              = array();
-                                    $parseReport['operations']['documentation']['operation'.($j+1)]['name']      = ( "Operation documentation" );
-
+                                    $parseReport['operations']['documentation']['operation'.($j+1)]['name']      = "Operation documentation";
                                     $parseReport['operations']['documentation']['operation'.($j+1)]['type']      = "warning";
-
                                     $parseReport['operations']['documentation']['operation'.($j+1)]['value']     = "empty";
                                     $parseReport['operations']['documentation']['operation'.($j+1)]['valid']     = false;
                                     $parseReport['operations']['documentation']['operation'.($j+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Documentation";
@@ -530,7 +532,6 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                                 if( !empty( $operation['tags'] ) ):
 
                                     $tagsArray      = array();
-                                    $tagsOrderArray = array();
 
                                     foreach($operation['tags'] as $tag):
 
@@ -544,7 +545,39 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                                             /**
                                              * Add print order number to tags order array
                                              */
-                                            $tagsOrderArray[] = $tag['cell'];
+                                            if( !in_array( $tag['cell'], $tagsOrderArray ) ):
+                                                $tagsOrderArray[] = $tag['cell'];
+                                            else:
+
+                                                $parseReport['operations']['duplicateOperationOrder']['operation'.($q+1)]              = array();
+                                                $parseReport['operations']['duplicateOperationOrder']['operation'.($q+1)]['name']      = "Duplicate operation order";
+                                                $parseReport['operations']['duplicateOperationOrder']['operation'.($q+1)]['tagName']   = $tag['name'];
+                                                $parseReport['operations']['duplicateOperationOrder']['operation'.($q+1)]['type']      = "error";
+                                                $parseReport['operations']['duplicateOperationOrder']['operation'.($q+1)]['value']     = "empty";
+                                                $parseReport['operations']['duplicateOperationOrder']['operation'.($q+1)]['valid']     = false;
+                                                $parseReport['operations']['duplicateOperationOrder']['operation'.($q+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->cell";
+                                                $parseReport['operations']['duplicateOperationOrder']['operation'.($q+1)]['info']      = "A duplicate operation order has been found.";
+
+                                                $error += 1;
+                                                $q++;
+
+                                            endif;
+
+                                        endif;
+
+                                        if( empty( $tag['name'] ) ):
+
+                                            $parseReport['operations']['noOrderAndExcelTag']['operation'.($t+1)]              = array();
+                                            $parseReport['operations']['noOrderAndExcelTag']['operation'.($t+1)]['name']      = "Operation order has no order and excel";
+                                            $parseReport['operations']['noOrderAndExcelTag']['operation'.($t+1)]['tagName']   = $tag['name'];
+                                            $parseReport['operations']['noOrderAndExcelTag']['operation'.($t+1)]['type']      = "warning";
+                                            $parseReport['operations']['noOrderAndExcelTag']['operation'.($t+1)]['value']     = "empty";
+                                            $parseReport['operations']['noOrderAndExcelTag']['operation'.($t+1)]['valid']     = false;
+                                            $parseReport['operations']['noOrderAndExcelTag']['operation'.($t+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->cell";
+                                            $parseReport['operations']['noOrderAndExcelTag']['operation'.($t+1)]['info']      = "Operation has no order and no excel tag.";
+
+                                            $warning += 1;
+                                            $t++;
 
                                         endif;
 
@@ -556,13 +589,13 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                                             $parseReport['operations']['file']['operation'.($k+1)]              = array();
                                             $parseReport['operations']['file']['operation'.($k+1)]['name']      = "Operation file";
                                             $parseReport['operations']['file']['operation'.($k+1)]['tagName']   = $tag['name'];
-                                            $parseReport['operations']['file']['operation'.($k+1)]['type']      = "error";
+                                            $parseReport['operations']['file']['operation'.($k+1)]['type']      = "warning";
                                             $parseReport['operations']['file']['operation'.($k+1)]['value']     = "empty";
                                             $parseReport['operations']['file']['operation'.($k+1)]['valid']     = false;
                                             $parseReport['operations']['file']['operation'.($k+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->file";
                                             $parseReport['operations']['file']['operation'.($k+1)]['info']      = "Without a specified file, input and output can not be handled properly.";
 
-                                            $error += 1;
+                                            $warning += 1;
                                             $k++;
 
                                         endif;
@@ -594,13 +627,13 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                                             $parseReport['operations']['cell']['operation'.($m+1)]              = array();
                                             $parseReport['operations']['cell']['operation'.($m+1)]['name']      = "Operation cell";
                                             $parseReport['operations']['cell']['operation'.($m+1)]['tagName']   = $tag['name'];
-                                            $parseReport['operations']['cell']['operation'.($m+1)]['type']      = "error";
+                                            $parseReport['operations']['cell']['operation'.($m+1)]['type']      = "warning";
                                             $parseReport['operations']['cell']['operation'.($m+1)]['value']     = "empty";
                                             $parseReport['operations']['cell']['operation'.($m+1)]['valid']     = false;
                                             $parseReport['operations']['cell']['operation'.($m+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->cell";
-                                            $parseReport['operations']['cell']['operation'.($m+1)]['info']      = ( $tag['name'] === "QR-Volgorde" ? "Without an order operations can not be handled properly." : "Without a cell input and ouput can not be handled properly." );
+                                            $parseReport['operations']['cell']['operation'.($m+1)]['info']      = ( $tag['name'] === "QR-Volgorde" ? "Without an order operations can not be handled properly." : "Without a cell input and output can not be handled properly." );
 
-                                            $error += 1;
+                                            $warning += 1;
                                             $m++;
 
                                         /**
@@ -626,28 +659,23 @@ if( !class_exists( "IOXMLEAValidator" ) ):
 
                                         endif;
 
+                                        if( $tag['name'] === "QR-Volgorde" && !empty( $tag['cell'] && !is_numeric( $tag['cell'] ) ) ):
+
+                                            $parseReport['operations']['orderTagNotNumeric']['operation'.($s+1)]              = array();
+                                            $parseReport['operations']['orderTagNotNumeric']['operation'.($s+1)]['name']      = "Operation order tag not numeric";
+                                            $parseReport['operations']['orderTagNotNumeric']['operation'.($s+1)]['tagName']   = $tag['name'];
+                                            $parseReport['operations']['orderTagNotNumeric']['operation'.($s+1)]['type']      = "error";
+                                            $parseReport['operations']['orderTagNotNumeric']['operation'.($s+1)]['value']     = "not numeric";
+                                            $parseReport['operations']['orderTagNotNumeric']['operation'.($s+1)]['valid']     = false;
+                                            $parseReport['operations']['orderTagNotNumeric']['operation'.($s+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->file";
+                                            $parseReport['operations']['orderTagNotNumeric']['operation'.($s+1)]['info']      = "The operation order tag is not numeric. Example: 1 or 1.1 or 11.1";
+
+                                            $error += 1;
+                                            $s++;
+
+                                        endif;
+
                                     endforeach;
-
-                                    var_dump($tagsOrderArray);
-
-                                    /**
-                                     * Check for duplicate print orders
-                                     */
-                                    if( count( $tagsOrderArray ) !== count( array_unique( $tagsOrderArray ) ) ):
-
-                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]              = array();
-                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['name']      = "Duplicate operation order";
-                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['tagName']   = $tag['name'];
-                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['type']      = "error";
-                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['value']     = "duplicate";
-                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['valid']     = false;
-                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->order";
-                                        $parseReport['operations']['duplicateOrder']['operation'.($q+1)]['info']      = "A duplicate operation order has been found.";
-
-                                        $error += 1;
-                                        $q++;
-
-                                    endif;
 
                                     /**
                                      * Check if a print order is specified
@@ -655,16 +683,33 @@ if( !class_exists( "IOXMLEAValidator" ) ):
                                     if( !in_array( "QR-Volgorde", $tagsArray ) ):
 
                                         $parseReport['operations']['order']['operation'.($p+1)]              = array();
-                                        $parseReport['operations']['order']['operation'.($p+1)]['name']      = "Operation order";
+                                        $parseReport['operations']['order']['operation'.($p+1)]['name']      = "No operation order";
                                         $parseReport['operations']['order']['operation'.($p+1)]['tagName']   = $tag['name'];
                                         $parseReport['operations']['order']['operation'.($p+1)]['type']      = "info";
                                         $parseReport['operations']['order']['operation'.($p+1)]['value']     = "empty";
                                         $parseReport['operations']['order']['operation'.($p+1)]['valid']     = false;
                                         $parseReport['operations']['order']['operation'.($p+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->file";
-                                        $parseReport['operations']['order']['operation'.($p+1)]['info']      = "Operation order is not specified and will be executed alphabetically.";
+                                        $parseReport['operations']['order']['operation'.($p+1)]['info']      = "Operation order is not specified.";
 
                                         $info += 1;
                                         $p++;
+
+                                    /**
+                                     * Check if there are multiple occurrences of the print order in this tag.
+                                     */
+                                    elseif( count( $tagsArray ) !== count( array_unique( $tagsArray ) ) ):
+
+                                        $parseReport['operations']['duplicateOrderTag']['operation'.($r+1)]              = array();
+                                        $parseReport['operations']['duplicateOrderTag']['operation'.($r+1)]['name']      = "Multiple operation order tags";
+                                        $parseReport['operations']['duplicateOrderTag']['operation'.($r+1)]['tagName']   = $tag['name'];
+                                        $parseReport['operations']['duplicateOrderTag']['operation'.($r+1)]['type']      = "error";
+                                        $parseReport['operations']['duplicateOrderTag']['operation'.($r+1)]['value']     = "multiple";
+                                        $parseReport['operations']['duplicateOrderTag']['operation'.($r+1)]['valid']     = false;
+                                        $parseReport['operations']['duplicateOrderTag']['operation'.($r+1)]['message']   = "<strong>Class: </strong>".$operation['className']." <strong>Operation:</strong> ".$operation['name']. " <strong>Attribute:</strong> Tags->file";
+                                        $parseReport['operations']['duplicateOrderTag']['operation'.($r+1)]['info']      = "Multiple operation order tags have been found.";
+
+                                        $error += 1;
+                                        $r++;
 
                                     endif;
 

@@ -8,7 +8,7 @@ use \application\controller;
  * Get the last inserted model id
  * The model id is passed to the preview
  */
-echo $xmlModelId = ( !empty( $_SESSION['xmlModelId'] ) ? $_SESSION['xmlModelId'] : "" );
+$xmlModelId = ( !empty( $_SESSION['xmlModelId'] ) ? $_SESSION['xmlModelId'] : "" );
 
 /**
  * Handle error controls when posting
@@ -211,7 +211,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                     <div class="modelReport-item-img"></div>
                     <div class="modelReport-item-info">
                         <img src="./images/icons/arrow_right_up.png">
-                        <div class="modelReport-severe">
+                        <div class="">
                             Duplicate model: the uploaded model already exists, could not process the model.
                         </div>
                     </div>
@@ -236,9 +236,8 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                             else:
 
                                 ?>
-
+                                <?php $type = $report[$key]['type']; ?>
                                 <div class="modelReport-item">
-                                    <?php $type = $report[$key]['type']; ?>
                                     <div class="modelReport-item-img">
                                         <img src="./images/icons/<?= ( $type === "warning" ? "warning_icon.png" : ( $type === "info" ? "info_icon_blue.png" : ( $type === "severe" ? "severe_icon.png" : ( $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ) ) ); ?>">
                                         <div class="modelReport-item-type"> <?= $report[$key]['type']; ?></div>
@@ -253,7 +252,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                                         <div class="modelReport-item-img"></div>
                                         <div class="modelReport-item-info">
                                             <img src="./images/icons/arrow_right_up.png">
-                                            <div class="<?= ( $type === "warning" ? "modelReport-warning" : ( $type === "info" ? "modelReport-info" : ( $type === "severe" ? "modelReport-severe" : ( $type === "error" ? "modelReport-error" : "" ) ) ) ) ?>">
+                                            <div class="">
                                                 <?= $report[$key]['info']; ?>
                                             </div>
                                         </div>
@@ -290,8 +289,8 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                                 else:
 
                                     ?>
+                                    <?php $type = $report['initialValueType'][$initialValueType]['type'.($i+1)]['type']; ?>
                                         <div class="modelReport-item">
-                                            <?php $type = $report['initialValueType'][$initialValueType]['type'.($i+1)]['type']; ?>
                                             <div class="modelReport-item-img">
                                                 <img src="./images/icons/<?= ( $type === "warning" ? "warning_icon.png" : ( $type === "info" ? "info_icon_blue.png" : ( $type === "severe" ? "severe_icon.png" : ( $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ) ) ); ?>">
                                                 <div class="modelReport-item-type"> <?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['type']; ?></div>
@@ -306,7 +305,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                                                 <div class="modelReport-item-img"></div>
                                                 <div class="modelReport-item-info">
                                                     <img src="./images/icons/arrow_right_up.png">
-                                                    <div class="<?= ( $type === "warning" ? "modelReport-warning" : ( $type === "info" ? "modelReport-info" : ( $type === "severe" ? "modelReport-severe" : ( $type === "error" ? "modelReport-error" : "" ) ) ) ) ?>">
+                                                    <div class="">
                                                         <?= $report['initialValueType'][$initialValueType]['type'.($i+1)]['info']; ?>
                                                     </div>
                                                 </div>
@@ -345,8 +344,8 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                             else:
 
                                 ?>
+                                <?php $type = $report['operations'][$operation]['operation'.($i+1)]['type']; ?>
                                     <div class="modelReport-item">
-                                        <?php $type = $report['operations'][$operation]['operation'.($i+1)]['type']; ?>
                                         <div class="modelReport-item-img">
                                             <img src="./images/icons/<?= ( $type === "warning" ? "warning_icon.png" : ( $type === "info" ? "info_icon_blue.png" : ( $type === "severe" ? "severe_icon.png" : ( $type === "error" ? "red_cross_icon.png" : "checkgreen_icon.png") ) ) ); ?>">
                                             <div class="modelReport-item-type"> <?= $report['operations'][$operation]['operation'.($i+1)]['type']; ?></div>
@@ -361,7 +360,7 @@ $urlDataPreview = base64_encode( json_encode( $urlDataPreview ) );
                                             <div class="modelReport-item-img"></div>
                                             <div class="modelReport-item-info">
                                                 <img src="./images/icons/arrow_right_up.png">
-                                                <div class="<?= ( $type === "warning" ? "modelReport-warning" : ( $type === "info" ? "modelReport-info" : ( $type === "severe" ? "modelReport-severe" : ( $type === "error" ? "modelReport-error" : "" ) ) ) ) ?>">
+                                                <div class="">
                                                     <?= $report['operations'][$operation]['operation'.($i+1)]['info']; ?>
                                                 </div>
                                             </div>

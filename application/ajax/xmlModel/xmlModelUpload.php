@@ -36,14 +36,14 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
             /**
              * Check if the model already exists
              */
-            $returnData = ( new iOXMLModelUpload\IOXMLModelUpload( "matchHash", $newFile, $uploadedAt ) )->request();
-            if( !empty( $returnData ) ):
-                $matchHash = $returnData[0];
+            $matchHash = ( new iOXMLModelUpload\IOXMLModelUpload( "matchHash", $newFile, $uploadedAt ) )->request();
+            if( !empty( $matchHash ) ):
+                $matchHash = $matchHash;
             else:
                 $matchHash = "";
             endif;
 
-            var_dump($returnData);
+
 
             /**
              * Pass the xml file with the new model command and the timestamp
@@ -87,8 +87,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
 
                 $report['file_exists'] = true;
                 $returnData = ( new iOXMLEAModel\IOXMLEAModel( $matchHash ) )->getModelIdByHash();
-                var_dump($returnData);
-                $_SESSION['xmlModelId'] = ( !empty( $returnData['model_id'] ) ? $returnData['model_id'] : "" );
+                $_SESSION['xmlModelId'] = ( !empty( $returnData[0]['id'] ) ? $returnData[0]['id'] : "" );
 
             endif;
 

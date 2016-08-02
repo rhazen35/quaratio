@@ -1245,7 +1245,8 @@
 						<styleex/>
 						<documentation value="Zoals alle financiele planners, kan ook deze financiele planner kan niet zonder uw gegevens een toekomstbeeld geven van uw financiele planning. &#xA;&#xA;Als u uw gegevens niet weet, is dat geen probleem. In dat geval maakt deze planner gebruik van (landelijke) gemiddelden. let dan wel op, het toekomstbeeld dat deze planner dan geeft is gebaseerd op deze landelijke gemiddelden en kan behoorlijk afwijken van uw situatie. &#xA;&#xA;Wat wel van belang is om aan te geven welke inkomens- en kostensoorten van toepassing zijn, zodat op basis daarvan (al dan niet) met landelijke gemiddelden gerekend kan worden. "/>
 						<tags>
-							<tag xmi:id="EAID_6DA327A6_452B_476e_BEA5_B2CFA47DACAF" name="" value="2"/>
+							<tag xmi:id="EAID_6DA327A6_452B_476e_BEA5_B2CFA47DACAF" name="QR-Volgorde" value="2"/>
+							<tag xmi:id="EAID_6DA327A6_452B_476e_BEA5_B2CFA47DACAF" name="QR-Volgorde" value="2"/>
 						</tags>
 						<parameters>
 							<parameter xmi:idref="EAID_RETURNID_F9F0_495f_8E17_C873DAE4D80E" visibility="public">

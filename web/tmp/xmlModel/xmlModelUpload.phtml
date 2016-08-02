@@ -71,8 +71,8 @@ $projectData = ( new project\Project( "getProjectById" ) )->request( $params );
             data: form_data,
             success: function(response) {
 
-                //document.location = redirect;
-                alert(response);
+                document.location = redirect;
+                //$("#ajaxResponse").html(response);
             }
         });
 

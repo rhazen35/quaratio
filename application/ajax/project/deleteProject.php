@@ -18,13 +18,14 @@ use application\classes\iOXMLEAModel;
 ( new controller\Controller( "class", "project", "project" ) )->request();
 ( new controller\Controller( "class", "iOXMLEAModel", "iOXMLEAModel" ) )->request();
 
+header('Content-Type: application/json; charset=UTF-8');
 if( $_SERVER['REQUEST_METHOD'] === "POST" ):
 
     $projectId   = ( !empty( $_POST['projectId'] ) ? $_POST['projectId'] : "" );
 
     if( empty( $projectId ) ):
 
-        echo 'Could not find the project.';
+        echo json_encode( ['delete' => false] );
         exit();
 
     else:
@@ -44,6 +45,7 @@ if( $_SERVER['REQUEST_METHOD'] === "POST" ):
 
         ( new project\Project( "deleteProject" ) )->request( $params );
 
+        echo json_encode( ['delete' => true] );
         exit();
 
     endif;
